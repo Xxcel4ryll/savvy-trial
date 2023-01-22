@@ -108,7 +108,7 @@ __decorate([
 ], Users.prototype, "state", void 0);
 __decorate([
     (0, sequelize_typescript_1.Column)({
-        type: sequelize_typescript_1.DataType.TEXT,
+        type: sequelize_typescript_1.DataType.STRING,
         allowNull: true,
     }),
     __metadata("design:type", String)

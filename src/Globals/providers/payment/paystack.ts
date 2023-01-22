@@ -88,7 +88,7 @@ export default class Paystack {
 
     const user = {
       customer: customer.code,
-      preferred_bank: 'wema-bank',
+      preferred_bank: 'test-bank',
     };
 
     try {

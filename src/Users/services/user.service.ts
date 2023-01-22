@@ -40,7 +40,7 @@ export class UserService {
         ...payload,
         password: await this.cryptoEncrypt.hashPassword(password),
       });
-
+      
       if (!created) {
         return created;
       }

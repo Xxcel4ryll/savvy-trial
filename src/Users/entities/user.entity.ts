@@ -101,7 +101,7 @@ export default class Users extends Model<Users> {
   state: string;
 
   @Column({
-    type: DataType.TEXT,
+    type: DataType.STRING,
     allowNull: true,
   })
   validId: string;
