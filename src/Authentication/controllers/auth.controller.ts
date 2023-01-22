@@ -16,6 +16,14 @@ import {
 export class AuthController {
   constructor(private authService: AuthService) {}
 
+  @Post('status')
+  status() {
+    return {
+      status: true,
+      message: 'Savvy backend alright'
+    };
+  }
+
   @UsePipes(new JoiValidationPipe(loginSchema))
   @Post('login')
   signIn(@Body() auth: LoginDto) {
