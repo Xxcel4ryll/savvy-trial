@@ -21,6 +21,12 @@ let AuthController = class AuthController {
     constructor(authService) {
         this.authService = authService;
     }
+    status() {
+        return {
+            status: true,
+            message: 'Savvy backend alright'
+        };
+    }
     signIn(auth) {
         return this.authService.signIn(auth);
     }
@@ -34,6 +40,12 @@ let AuthController = class AuthController {
         return this.authService.resetPassword(auth);
     }
 };
+__decorate([
+    (0, common_1.Post)('status'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
+], AuthController.prototype, "status", null);
 __decorate([
     (0, common_1.UsePipes)(new validate_pipe_1.JoiValidationPipe(index_1.loginSchema)),
     (0, common_1.Post)('login'),

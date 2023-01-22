@@ -3,6 +3,10 @@ import { LoginDto, RegisterDto, FindUserDto, ResetPasswordDto } from '../dtos/in
 export declare class AuthController {
     private authService;
     constructor(authService: AuthService);
+    status(): {
+        status: boolean;
+        message: string;
+    };
     signIn(auth: LoginDto): Promise<{
         token: string | boolean;
         id: string;
