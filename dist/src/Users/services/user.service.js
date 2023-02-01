@@ -38,8 +38,8 @@ let UserService = class UserService {
     async create(payload) {
         const transaction = (await sequelize).transaction();
         try {
-            const { password } = payload;
-            const [user, created] = await this.usersRepository.create(Object.assign(Object.assign({}, payload), { password: await this.cryptoEncrypt.hashPassword(password) }));
+            const { password, userType = 'USER' } = payload;
+            const [user, created] = await this.usersRepository.create(Object.assign(Object.assign({}, payload), { userType, password: await this.cryptoEncrypt.hashPassword(password) }));
             if (!created) {
                 return created;
             }

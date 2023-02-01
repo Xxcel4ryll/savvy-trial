@@ -34,10 +34,11 @@ export class UserService {
   async create(payload) {
     const transaction = (await sequelize).transaction();
     try {
-      const { password } = payload;
+      const { password, userType = 'USER' } = payload;
 
       const [user, created] = await this.usersRepository.create({
         ...payload,
+        userType,
         password: await this.cryptoEncrypt.hashPassword(password),
       });
       
