@@ -29,6 +29,12 @@ let ProductController = class ProductController {
     createProduct(req, product) {
         return this.productService.create(product);
     }
+    updateProduct(req, product) {
+        return this.productService.update(product);
+    }
+    viewProduct(req, { productId }) {
+        return this.productService.view(productId);
+    }
 };
 __decorate([
     (0, common_1.UseGuards)((0, role_guard_1.default)([role_enum_1.default.Admin, role_enum_1.default.User])),
@@ -48,6 +54,25 @@ __decorate([
     __metadata("design:paramtypes", [Object, index_1.ProductDto]),
     __metadata("design:returntype", void 0)
 ], ProductController.prototype, "createProduct", null);
+__decorate([
+    (0, common_1.UseGuards)((0, role_guard_1.default)([role_enum_1.default.Admin, role_enum_1.default.User])),
+    (0, common_1.UsePipes)(new validate_pipe_1.JoiValidationPipe(index_1.updateProductSchema)),
+    (0, common_1.Put)(),
+    __param(0, (0, common_1.Req)()),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, index_1.ProductDto]),
+    __metadata("design:returntype", void 0)
+], ProductController.prototype, "updateProduct", null);
+__decorate([
+    (0, common_1.UseGuards)((0, role_guard_1.default)([role_enum_1.default.Admin, role_enum_1.default.User])),
+    (0, common_1.Get)(':productId'),
+    __param(0, (0, common_1.Req)()),
+    __param(1, (0, common_1.Param)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, index_1.ProductDto]),
+    __metadata("design:returntype", void 0)
+], ProductController.prototype, "viewProduct", null);
 ProductController = __decorate([
     (0, common_1.Controller)('products'),
     __metadata("design:paramtypes", [product_service_1.ProductService])

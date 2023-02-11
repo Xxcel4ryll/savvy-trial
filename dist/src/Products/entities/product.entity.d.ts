@@ -9,4 +9,7 @@ export default class Product extends Model<Product> {
     salesOption: string;
     productTypes: ProductTypes;
     productTypeId: string;
+    price: string;
+    quantity: string;
+    description: string;
 }

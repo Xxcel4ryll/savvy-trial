@@ -28,10 +28,10 @@ __decorate([
         allowNull: false,
     }),
     __metadata("design:type", Number)
-], ProductPrices.prototype, "amount", void 0);
+], ProductPrices.prototype, "price", void 0);
 ProductPrices = __decorate([
     (0, sequelize_typescript_1.Table)({
-        timestamps: true,
+        timestamps: false,
         underscored: true,
         tableName: 'product_prices',
     })

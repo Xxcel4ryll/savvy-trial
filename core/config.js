@@ -37,6 +37,7 @@ module.exports = {
     host: process.env.DB_HOST,
     port: process.env.DB_PORT,
     // dialect: process.env.DB_DIALECT,
+    // dialect: 'postgres',
     dialect: 'mysql',
     timezone: '+01:00',
     logging: true,

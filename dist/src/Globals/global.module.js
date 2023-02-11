@@ -16,6 +16,7 @@ const strategy_1 = require("./strategy");
 const user_module_1 = require("../Users/user.module");
 const email_1 = require("./providers/email");
 const payment_1 = require("./providers/payment");
+const upload_1 = require("./providers/upload");
 let GlobalModule = class GlobalModule {
 };
 GlobalModule = __decorate([
@@ -29,8 +30,8 @@ GlobalModule = __decorate([
             }),
             user_module_1.UserModule,
         ],
-        providers: [encrypt_1.CryptoEncrypt, encode_1.Encode, strategy_1.JwtStrategy, payment_1.Wallet, email_1.Email],
-        exports: [encrypt_1.CryptoEncrypt, encode_1.Encode, strategy_1.JwtStrategy, payment_1.Wallet, email_1.Email],
+        providers: [encrypt_1.CryptoEncrypt, encode_1.Encode, strategy_1.JwtStrategy, payment_1.Wallet, email_1.Email, upload_1.CloudinaryService],
+        exports: [encrypt_1.CryptoEncrypt, encode_1.Encode, strategy_1.JwtStrategy, payment_1.Wallet, email_1.Email, upload_1.CloudinaryService],
     })
 ], GlobalModule);
 exports.GlobalModule = GlobalModule;

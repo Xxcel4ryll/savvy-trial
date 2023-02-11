@@ -71,6 +71,27 @@ __decorate([
     }),
     __metadata("design:type", String)
 ], Product.prototype, "productTypeId", void 0);
+__decorate([
+    (0, sequelize_typescript_1.Column)({
+        type: sequelize_typescript_1.DataType.FLOAT,
+        allowNull: false,
+    }),
+    __metadata("design:type", String)
+], Product.prototype, "price", void 0);
+__decorate([
+    (0, sequelize_typescript_1.Column)({
+        type: sequelize_typescript_1.DataType.INTEGER,
+        allowNull: false,
+    }),
+    __metadata("design:type", String)
+], Product.prototype, "quantity", void 0);
+__decorate([
+    (0, sequelize_typescript_1.Column)({
+        type: sequelize_typescript_1.DataType.TEXT,
+        allowNull: true,
+    }),
+    __metadata("design:type", String)
+], Product.prototype, "description", void 0);
 Product = __decorate([
     (0, sequelize_typescript_1.Table)({
         timestamps: true,

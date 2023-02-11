@@ -1,6 +1,8 @@
 import Product from '../entities/product.entity';
 import ProductType from '../entities/product_type.entity';
 import ProductPrice from '../entities/product_price.entity';
+import ProductImage from '../entities/product_images.entity';
+import ProductSpecification from '../entities/product_specification.entity';
 
 export const ProductProviders = [
   {
@@ -14,5 +16,13 @@ export const ProductProviders = [
   {
     provide: 'PRODUCT_PRICE_ENTITY',
     useValue: ProductPrice,
+  },
+  {
+    provide: 'PRODUCT_IMAGE_ENTITY',
+    useValue: ProductImage,
+  },
+  {
+    provide: 'PRODUCT_SPECS_ENTITY',
+    useValue: ProductSpecification,
   },
 ];

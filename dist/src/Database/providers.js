@@ -11,6 +11,9 @@ const transaction_entity_1 = require("../Transactions/entities/transaction.entit
 const product_entity_1 = require("../Products/entities/product.entity");
 const product_price_entity_1 = require("../Products/entities/product_price.entity");
 const product_type_entity_1 = require("../Products/entities/product_type.entity");
+const product_specification_entity_1 = require("../Products/entities/product_specification.entity");
+const product_images_entity_1 = require("../Products/entities/product_images.entity");
+const user_favourite_entity_1 = require("../Users/entities/user_favourite.entity");
 exports.databaseProviders = [
     {
         provide: 'SEQUELIZE',
@@ -33,6 +36,9 @@ exports.databaseProviders = [
                 paystack_entity_1.default,
                 wallet_entity_1.default,
                 transaction_entity_1.default,
+                product_specification_entity_1.default,
+                product_images_entity_1.default,
+                user_favourite_entity_1.default,
             ]);
             return sequelize;
         },

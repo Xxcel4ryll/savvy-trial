@@ -19,6 +19,7 @@ const index_1 = require("../dtos/index");
 const validate_pipe_1 = require("../../Globals/providers/validate/validate.pipe");
 const role_enum_1 = require("../../Globals/role.enum");
 const role_guard_1 = require("../../Globals/Guards/role.guard");
+const dtos_1 = require("../../Products/dtos");
 let UserController = class UserController {
     constructor(userService) {
         this.userService = userService;
@@ -28,6 +29,12 @@ let UserController = class UserController {
     }
     updateUser(req, updateInfo) {
         return this.userService.updateAccount({ req, updateInfo });
+    }
+    favoriteProduct({ user }, { productId }) {
+        return this.userService.favoriteProduct(user, productId);
+    }
+    viewFavoriteProduct({ user }) {
+        return this.userService.viewFavoriteProduct(user);
     }
 };
 __decorate([
@@ -48,6 +55,23 @@ __decorate([
     __metadata("design:paramtypes", [Object, index_1.UserDto]),
     __metadata("design:returntype", void 0)
 ], UserController.prototype, "updateUser", null);
+__decorate([
+    (0, common_1.UseGuards)((0, role_guard_1.default)([role_enum_1.default.Admin, role_enum_1.default.User])),
+    (0, common_1.Post)('favourite'),
+    __param(0, (0, common_1.Req)()),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, dtos_1.ProductDto]),
+    __metadata("design:returntype", void 0)
+], UserController.prototype, "favoriteProduct", null);
+__decorate([
+    (0, common_1.UseGuards)((0, role_guard_1.default)([role_enum_1.default.Admin, role_enum_1.default.User])),
+    (0, common_1.Get)('favourite'),
+    __param(0, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], UserController.prototype, "viewFavoriteProduct", null);
 UserController = __decorate([
     (0, common_1.Controller)('users'),
     __metadata("design:paramtypes", [user_service_1.UserService])

@@ -5,10 +5,12 @@ export declare class ProductDto {
     brand?: string;
     isVisible?: string;
     salesOption?: string;
+    productId?: string;
 }
 export declare class ProductTypeDto {
     name: string;
     description: string;
 }
 export declare const productSchema: Joi.ObjectSchema<any>;
+export declare const updateProductSchema: Joi.ObjectSchema<any>;
 export declare const productTypeSchema: Joi.ObjectSchema<any>;

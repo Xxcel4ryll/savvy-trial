@@ -1,7 +1,7 @@
 import { Table, Column, Model, DataType } from 'sequelize-typescript';
 
 @Table({
-  timestamps: true,
+  timestamps: false,
   underscored: true,
   tableName: 'product_prices',
 })
@@ -19,5 +19,5 @@ export default class ProductPrices extends Model<ProductPrices> {
     unique: true,
     allowNull: false,
   })
-  amount: number;
+  price: number;
 }

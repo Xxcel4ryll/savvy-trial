@@ -14,6 +14,8 @@ const product_repository_1 = require("./repositories/product.repository");
 const product_service_1 = require("./services/product.service");
 const product_type_controller_1 = require("./controllers/product_type.controller");
 const product_type_repository_1 = require("./repositories/product_type.repository");
+const product_images_repository_1 = require("./repositories/product_images.repository");
+const product_specifications_repository_1 = require("./repositories/product_specifications.repository");
 const product_type_service_1 = require("./services/product_type.service");
 let ProductModule = class ProductModule {
 };
@@ -25,6 +27,8 @@ ProductModule = __decorate([
             product_type_service_1.ProductTypeService,
             product_repository_1.default,
             product_type_repository_1.default,
+            product_images_repository_1.default,
+            product_specifications_repository_1.default,
             ...product_provider_1.ProductProviders,
         ],
         exports: [

@@ -9,15 +9,7 @@ module.exports = {
         unique: true,
       },
 
-      product_id: {
-        type: Sequelize.DataTypes.UUID,
-        references: {
-          model: 'products',
-          key: 'id',
-        },
-      },
-
-      amount: {
+      price: {
         type: Sequelize.DOUBLE,
         allowNull: false,
       },

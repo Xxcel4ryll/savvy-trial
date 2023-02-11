@@ -4,13 +4,15 @@ import { CryptoEncrypt } from '../../Globals/providers/encrypt/index';
 import { Wallet } from '../../Globals/providers/payment';
 import { FindUserDto } from 'src/Authentication/dtos';
 import WalletRepository from 'src/Transactions/repositories/wallet.repository';
+import UserFavoritesRepository from '../repositories/user_favorites.repository';
 export declare class UserService {
     private cryptoEncrypt;
     private usersRepository;
+    private userFavouriteRepository;
     private paymentService;
     private paystackRepository;
     private walletRepository;
-    constructor(cryptoEncrypt: CryptoEncrypt, usersRepository: UserRepository, paymentService: Wallet, paystackRepository: PaystackRepository, walletRepository: WalletRepository);
+    constructor(cryptoEncrypt: CryptoEncrypt, usersRepository: UserRepository, userFavouriteRepository: UserFavoritesRepository, paymentService: Wallet, paystackRepository: PaystackRepository, walletRepository: WalletRepository);
     find({ email, phoneNumber, id }: FindUserDto): Promise<import("../entities/user.entity").default>;
     create(payload: any): Promise<boolean | import("../entities/user.entity").default>;
     resetPassword(data: any): Promise<boolean>;
@@ -19,5 +21,10 @@ export declare class UserService {
         updateInfo: any;
     }): Promise<{
         message: string;
+    }>;
+    favoriteProduct(user: any, productId: any): Promise<import("../entities/user_favourite.entity").default>;
+    viewFavoriteProduct(user: any): Promise<{
+        rows: import("../entities/user_favourite.entity").default[];
+        count: number;
     }>;
 }

@@ -2,6 +2,8 @@ import {
   Body,
   Controller,
   Get,
+  Param,
+  Post,
   Put,
   Req,
   UseGuards,
@@ -13,6 +15,7 @@ import { JoiValidationPipe } from 'src/Globals/providers/validate/validate.pipe'
 import Roles from 'src/Globals/role.enum';
 import RoleGuard from 'src/Globals/Guards/role.guard';
 import { Request } from 'express';
+import { ProductDto } from 'src/Products/dtos';
 
 @Controller('users')
 export class UserController {
@@ -29,5 +32,17 @@ export class UserController {
   @Put('account')
   updateUser(@Req() req: Request, @Body() updateInfo: UserDto) {
     return this.userService.updateAccount({ req, updateInfo });
+  }
+
+  @UseGuards(RoleGuard([Roles.Admin, Roles.User]))
+  @Post('favourite')
+  favoriteProduct(@Req() {user}: Request, @Body() { productId }: ProductDto) {    
+    return this.userService.favoriteProduct(user, productId);
+  }
+
+  @UseGuards(RoleGuard([Roles.Admin, Roles.User]))
+  @Get('favourite')
+  viewFavoriteProduct(@Req() { user }: Request) {    
+    return this.userService.viewFavoriteProduct(user);
   }
 }

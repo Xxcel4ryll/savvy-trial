@@ -35,6 +35,7 @@ export declare class AuthController {
         deletedAt?: any;
         version?: any;
         _attributes: import("../../Users/entities/user.entity").default;
+        dataValues: import("../../Users/entities/user.entity").default;
         _creationAttributes: import("../../Users/entities/user.entity").default;
         isNewRecord: boolean;
         sequelize: import("sequelize").Sequelize;

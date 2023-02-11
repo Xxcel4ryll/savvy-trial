@@ -15,7 +15,7 @@ module.exports = {
                     key: 'id',
                 },
             },
-            amount: {
+            price: {
                 type: Sequelize.DOUBLE,
                 allowNull: false,
             },

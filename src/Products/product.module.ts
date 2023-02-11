@@ -5,6 +5,8 @@ import ProductRepository from './repositories/product.repository';
 import { ProductService } from './services/product.service';
 import { ProductTypeController } from './controllers/product_type.controller';
 import ProductTypeRepository from './repositories/product_type.repository';
+import ProductImageRepository from './repositories/product_images.repository';
+import ProductSpecsRepository from './repositories/product_specifications.repository';
 import { ProductTypeService } from './services/product_type.service';
 
 @Module({
@@ -14,6 +16,8 @@ import { ProductTypeService } from './services/product_type.service';
     ProductTypeService,
     ProductRepository,
     ProductTypeRepository,
+    ProductImageRepository,
+    ProductSpecsRepository,
     ...ProductProviders,
   ],
   exports: [

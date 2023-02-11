@@ -17,11 +17,13 @@ const index_1 = require("../../Globals/providers/encrypt/index");
 const payment_1 = require("../../Globals/providers/payment");
 const providers_1 = require("../../Database/providers");
 const wallet_repository_1 = require("../../Transactions/repositories/wallet.repository");
+const user_favorites_repository_1 = require("../repositories/user_favorites.repository");
 const sequelize = providers_1.databaseProviders[0].useFactory();
 let UserService = class UserService {
-    constructor(cryptoEncrypt, usersRepository, paymentService, paystackRepository, walletRepository) {
+    constructor(cryptoEncrypt, usersRepository, userFavouriteRepository, paymentService, paystackRepository, walletRepository) {
         this.cryptoEncrypt = cryptoEncrypt;
         this.usersRepository = usersRepository;
+        this.userFavouriteRepository = userFavouriteRepository;
         this.paymentService = paymentService;
         this.paystackRepository = paystackRepository;
         this.walletRepository = walletRepository;
@@ -38,8 +40,9 @@ let UserService = class UserService {
     async create(payload) {
         const transaction = (await sequelize).transaction();
         try {
-            const { password, userType = 'USER' } = payload;
-            const [user, created] = await this.usersRepository.create(Object.assign(Object.assign({}, payload), { userType, password: await this.cryptoEncrypt.hashPassword(password) }));
+            const { password, userType = 'USER', countryCode = 'NG' } = payload;
+            const [user, created] = await this.usersRepository.create(Object.assign(Object.assign({}, payload), { userType,
+                countryCode, password: await this.cryptoEncrypt.hashPassword(password) }));
             if (!created) {
                 return created;
             }
@@ -80,11 +83,19 @@ let UserService = class UserService {
         }
         return { message: 'Account setup successfully completed' };
     }
+    async favoriteProduct(user, productId) {
+        const [favourite] = await this.userFavouriteRepository.create({ userId: user.id, productId });
+        return favourite;
+    }
+    viewFavoriteProduct(user) {
+        return this.userFavouriteRepository.find(user.id);
+    }
 };
 UserService = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [index_1.CryptoEncrypt,
         user_repository_1.default,
+        user_favorites_repository_1.default,
         payment_1.Wallet,
         paystack_repository_1.default,
         wallet_repository_1.default])

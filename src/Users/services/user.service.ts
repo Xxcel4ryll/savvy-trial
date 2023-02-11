@@ -6,6 +6,7 @@ import { Wallet } from '../../Globals/providers/payment';
 import { FindUserDto } from 'src/Authentication/dtos';
 import { databaseProviders } from 'src/Database/providers';
 import WalletRepository from 'src/Transactions/repositories/wallet.repository';
+import UserFavoritesRepository from '../repositories/user_favorites.repository';
 
 const sequelize = databaseProviders[0].useFactory();
 
@@ -14,6 +15,7 @@ export class UserService {
   constructor(
     private cryptoEncrypt: CryptoEncrypt,
     private usersRepository: UserRepository,
+    private userFavouriteRepository: UserFavoritesRepository,
     private paymentService: Wallet,
     private paystackRepository: PaystackRepository,
     private walletRepository: WalletRepository,
@@ -34,11 +36,12 @@ export class UserService {
   async create(payload) {
     const transaction = (await sequelize).transaction();
     try {
-      const { password, userType = 'USER' } = payload;
+      const { password, userType = 'USER', countryCode = 'NG' } = payload;
 
       const [user, created] = await this.usersRepository.create({
         ...payload,
         userType,
+        countryCode,
         password: await this.cryptoEncrypt.hashPassword(password),
       });
       
@@ -106,5 +109,16 @@ export class UserService {
     }
 
     return { message: 'Account setup successfully completed' };
+  }
+
+  async favoriteProduct(user, productId) {
+    const [favourite] = await this.userFavouriteRepository.create(
+      { userId: user.id, productId }
+    );
+    return favourite;
+  }
+
+  viewFavoriteProduct(user) {
+    return this.userFavouriteRepository.find(user.id);
   }
 }

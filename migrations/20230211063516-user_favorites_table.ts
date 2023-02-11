@@ -1,6 +1,6 @@
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('products', {
+    await queryInterface.createTable('user_favourites', {
       id: {
         type: Sequelize.UUID,
         allowNull: false,
@@ -9,38 +9,14 @@ module.exports = {
         unique: true,
       },
 
-      name: {
-        type: Sequelize.STRING,
+      product_id: {
+        type: Sequelize.UUID,
         allowNull: false,
       },
 
-      title: {
-        type: Sequelize.STRING,
+      user_id: {
+        type: Sequelize.UUID,
         allowNull: false,
-      },
-
-      brand: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
-
-      is_visible: {
-        type: Sequelize.BOOLEAN,
-        allowNull: false,
-      },
-
-      sales_option: {
-        type: Sequelize.ENUM,
-        allowNull: false,
-        values: ['RENT', 'BUY'],
-      },
-
-      product_type_id: {
-        type: Sequelize.DataTypes.UUID,
-        references: {
-          model: 'product_types',
-          key: 'id',
-        },
       },
 
       created_at: {
@@ -60,6 +36,6 @@ module.exports = {
 
   // eslint-disable-next-line no-unused-vars
   down: async (queryInterface) => {
-    await queryInterface.dropTable('products');
+    await queryInterface.dropTable('user_favourites');
   },
 };

@@ -10,7 +10,10 @@ import Transaction from '../Transactions/entities/transaction.entity';
 import Products from '../Products/entities/product.entity';
 import ProductPrices from '../Products/entities/product_price.entity';
 import ProductTypes from '../Products/entities/product_type.entity';
-
+import ProductSpecs from '../Products/entities/product_specification.entity';
+import ProductImages from '../Products/entities/product_images.entity';
+import UserFavourite from 'src/Users/entities/user_favourite.entity';
+// /home/idunyelc/backend.idunu.co
 export const databaseProviders = [
   {
     provide: 'SEQUELIZE',
@@ -21,7 +24,7 @@ export const databaseProviders = [
           config = databaseConfig.database;
           break;
         default:
-          config = databaseConfig.database;
+          config = databaseConfig.database; 
       }
       const sequelize = new Sequelize({
         // repositoryMode: true,
@@ -36,6 +39,9 @@ export const databaseProviders = [
         Paystack,
         Wallet,
         Transaction,
+        ProductSpecs,
+        ProductImages,
+        UserFavourite,
       ]);
       return sequelize;
     },

@@ -7,6 +7,7 @@ import {
   ForeignKey,
 } from 'sequelize-typescript';
 import ProductTypes from './product_type.entity';
+import ProductPrice from './product_price.entity';
 
 @Table({
   timestamps: true,
@@ -63,4 +64,26 @@ export default class Product extends Model<Product> {
     allowNull: false,
   })
   productTypeId: string;
+
+  // @BelongsTo(() => ProductPrice, 'price')
+  // productPrice: ProductPrice;
+
+  // @ForeignKey(() => ProductPrice)
+  @Column({
+    type: DataType.FLOAT,
+    allowNull: false,
+  })
+  price: string
+
+  @Column({
+    type: DataType.INTEGER,
+    allowNull: false,
+  })
+  quantity: string
+
+  @Column({
+    type: DataType.TEXT,
+    allowNull: true,
+  })
+  description: string
 }

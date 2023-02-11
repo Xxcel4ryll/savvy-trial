@@ -17,14 +17,14 @@ let ProductsRepository = class ProductsRepository {
     constructor(productEntity) {
         this.productEntity = productEntity;
     }
-    create(payload) {
-        return this.productEntity.findOrCreate({
-            where: {
-                name: payload.name,
-            },
-            defaults: payload,
-            raw: true,
+    async create(payload) {
+        const productExist = await this.check({
+            name: payload.name,
         });
+        if (productExist) {
+            throw new Error('Product already exist!');
+        }
+        return this.productEntity.create(payload);
     }
     modify(criteria, updates) {
         return this.productEntity.update(updates, {
@@ -33,6 +33,11 @@ let ProductsRepository = class ProductsRepository {
     }
     find(criteria) {
         return this.productEntity.findAndCountAll({
+            where: criteria,
+        });
+    }
+    check(criteria) {
+        return this.productEntity.findOne({
             where: criteria,
         });
     }
