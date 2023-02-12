@@ -11,5 +11,5 @@ export declare class TransactionController {
         walletBalance: number;
         wallet: import("../entities/wallet.entity").default[];
     }>;
-    transactionWebhook(webhook: object): Promise<void>;
+    transactionWebhook(webhook: object): Promise<any>;
 }

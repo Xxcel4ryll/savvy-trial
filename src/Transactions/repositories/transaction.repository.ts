@@ -1,6 +1,9 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { Sequelize, Op } from 'sequelize';
+import { databaseProviders } from 'src/Database/providers';
 import Transaction from '../entities/transaction.entity';
+
+const DB = databaseProviders[0].useFactory();
 
 @Injectable()
 export default class TransactionRepository {
@@ -8,6 +11,25 @@ export default class TransactionRepository {
     @Inject('TRANSACTION_ENTITY')
     private readonly transactionEntity: typeof Transaction,
   ) {}
+
+  async deposit(
+    txObject,
+    { returnObj = false } = {},
+  ) {
+    return (await DB).transaction(async (transaction) => {
+      if (returnObj) {
+        return txObject;
+      }
+
+      await this.transactionEntity.create<Transaction>(txObject, {
+        transaction
+      });
+      // TODO:
+      // Notification alert for payment
+
+      return true;
+    });
+  }
 
   find(id): Promise<Transaction> {
     return this.transactionEntity.findOne<Transaction>({
@@ -88,6 +110,14 @@ export default class TransactionRepository {
         ],
       ],
       raw: true,
+    });
+  }
+
+  findByReference(reference) {
+    return this.transactionEntity.count({
+      where: {
+        transactionReference: reference,
+      },
     });
   }
 }

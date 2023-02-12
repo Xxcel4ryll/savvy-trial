@@ -14,9 +14,22 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const common_1 = require("@nestjs/common");
 const sequelize_1 = require("sequelize");
+const providers_1 = require("../../Database/providers");
+const DB = providers_1.databaseProviders[0].useFactory();
 let TransactionRepository = class TransactionRepository {
     constructor(transactionEntity) {
         this.transactionEntity = transactionEntity;
+    }
+    async deposit(txObject, { returnObj = false } = {}) {
+        return (await DB).transaction(async (transaction) => {
+            if (returnObj) {
+                return txObject;
+            }
+            await this.transactionEntity.create(txObject, {
+                transaction
+            });
+            return true;
+        });
     }
     find(id) {
         return this.transactionEntity.findOne({
@@ -81,6 +94,13 @@ let TransactionRepository = class TransactionRepository {
                 ],
             ],
             raw: true,
+        });
+    }
+    findByReference(reference) {
+        return this.transactionEntity.count({
+            where: {
+                transactionReference: reference,
+            },
         });
     }
 };

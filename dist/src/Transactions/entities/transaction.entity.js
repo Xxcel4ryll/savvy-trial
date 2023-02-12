@@ -34,6 +34,13 @@ __decorate([
         allowNull: true,
     }),
     __metadata("design:type", String)
+], Transaction.prototype, "transactionReference", void 0);
+__decorate([
+    (0, sequelize_typescript_1.Column)({
+        type: sequelize_typescript_1.DataType.STRING,
+        allowNull: true,
+    }),
+    __metadata("design:type", String)
 ], Transaction.prototype, "senderType", void 0);
 __decorate([
     (0, sequelize_typescript_1.Column)({

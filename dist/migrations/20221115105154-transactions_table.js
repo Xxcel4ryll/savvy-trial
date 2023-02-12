@@ -23,6 +23,10 @@ module.exports = {
             currency: {
                 type: Sequelize.STRING,
             },
+            transaction_reference: {
+                type: Sequelize.STRING,
+                allowNull: false,
+            },
             amount: {
                 type: Sequelize.FLOAT,
                 allowNull: false,

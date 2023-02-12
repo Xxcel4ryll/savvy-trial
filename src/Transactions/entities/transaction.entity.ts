@@ -30,6 +30,12 @@ export default class Transaction extends Model<Transaction> {
     type: DataType.STRING,
     allowNull: true,
   })
+  transactionReference: string
+
+  @Column({
+    type: DataType.STRING,
+    allowNull: true,
+  })
   senderType: string;
 
   @Column({
