@@ -5,6 +5,9 @@ export default class TransactionRepository {
     deposit(txObject: any, { returnObj }?: {
         returnObj?: boolean;
     }): Promise<any>;
+    debit(txObject: any, { returnObj }?: {
+        returnObj?: boolean;
+    }): Promise<any>;
     find(id: any): Promise<Transaction>;
     tranzact({ id: userId, userType, txType, }: {
         id: any;

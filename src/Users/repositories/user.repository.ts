@@ -43,6 +43,9 @@ export default class UserRepository {
   }
 
   modify(criteriaObj, updates) {
+    console.log(updates);
+    console.log(criteriaObj);
+    
     return this.userEntity.update<Users>(updates, {
       where: criteriaObj,
     });

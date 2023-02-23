@@ -14,6 +14,7 @@ const product_type_entity_1 = require("../Products/entities/product_type.entity"
 const product_specification_entity_1 = require("../Products/entities/product_specification.entity");
 const product_images_entity_1 = require("../Products/entities/product_images.entity");
 const user_favourite_entity_1 = require("../Users/entities/user_favourite.entity");
+const purchased_product_entity_1 = require("../Transactions/entities/purchased-product.entity");
 exports.databaseProviders = [
     {
         provide: 'SEQUELIZE',
@@ -39,6 +40,7 @@ exports.databaseProviders = [
                 product_specification_entity_1.default,
                 product_images_entity_1.default,
                 user_favourite_entity_1.default,
+                purchased_product_entity_1.default
             ]);
             return sequelize;
         },

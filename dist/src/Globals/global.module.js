@@ -30,8 +30,8 @@ GlobalModule = __decorate([
             }),
             user_module_1.UserModule,
         ],
-        providers: [encrypt_1.CryptoEncrypt, encode_1.Encode, strategy_1.JwtStrategy, payment_1.Wallet, email_1.Email, upload_1.CloudinaryService],
-        exports: [encrypt_1.CryptoEncrypt, encode_1.Encode, strategy_1.JwtStrategy, payment_1.Wallet, email_1.Email, upload_1.CloudinaryService],
+        providers: [encrypt_1.CryptoEncrypt, encode_1.Encode, strategy_1.JwtStrategy, payment_1.PaystackService, email_1.Email, upload_1.CloudinaryService],
+        exports: [encrypt_1.CryptoEncrypt, encode_1.Encode, strategy_1.JwtStrategy, payment_1.PaystackService, email_1.Email, upload_1.CloudinaryService],
     })
 ], GlobalModule);
 exports.GlobalModule = GlobalModule;

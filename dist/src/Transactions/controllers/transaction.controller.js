@@ -29,6 +29,12 @@ let TransactionController = class TransactionController {
     getWallet(req) {
         return this.transactionService.wallet(req.user);
     }
+    payment(req, payload) {
+        return this.transactionService.payment(req.user, payload);
+    }
+    verifyPayment(req, payload) {
+        return this.transactionService.verify(req.user, payload);
+    }
     transactionWebhook(webhook) {
         return this.transactionService.transactionWebhook(webhook);
     }
@@ -50,6 +56,26 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)
 ], TransactionController.prototype, "getWallet", null);
+__decorate([
+    (0, common_1.UseGuards)((0, role_guard_1.default)([role_enum_1.default.Admin, role_enum_1.default.User])),
+    (0, common_1.UsePipes)(new validate_pipe_1.JoiValidationPipe(index_1.paymentSchema)),
+    (0, common_1.Post)('payment'),
+    __param(0, (0, common_1.Req)()),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:returntype", void 0)
+], TransactionController.prototype, "payment", null);
+__decorate([
+    (0, common_1.UseGuards)((0, role_guard_1.default)([role_enum_1.default.Admin, role_enum_1.default.User])),
+    (0, common_1.UsePipes)(new validate_pipe_1.JoiValidationPipe(index_1.verifyPaymentSchema)),
+    (0, common_1.Post)('verify'),
+    __param(0, (0, common_1.Req)()),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:returntype", void 0)
+], TransactionController.prototype, "verifyPayment", null);
 __decorate([
     (0, common_1.Post)('webhook/paystack'),
     __param(0, (0, common_1.Body)()),

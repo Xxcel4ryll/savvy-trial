@@ -14,6 +14,7 @@ const transaction_repository_1 = require("./repositories/transaction.repository"
 const transaction_service_1 = require("./services/transaction.service");
 const transaction_controller_1 = require("./controllers/transaction.controller");
 const user_module_1 = require("../Users/user.module");
+const product_module_1 = require("../Products/product.module");
 let TransactionModule = class TransactionModule {
 };
 TransactionModule = __decorate([
@@ -32,6 +33,7 @@ TransactionModule = __decorate([
             ...transaction_provider_1.TransactionProviders,
         ],
         imports: [
+            product_module_1.ProductModule,
             (0, common_1.forwardRef)(() => user_module_1.UserModule),
         ],
     })

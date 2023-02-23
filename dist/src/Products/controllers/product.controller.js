@@ -32,6 +32,9 @@ let ProductController = class ProductController {
     updateProduct(req, product) {
         return this.productService.update(product);
     }
+    searchProduct(req) {
+        return this.productService.search(req.query.search);
+    }
     viewProduct(req, { productId }) {
         return this.productService.view(productId);
     }
@@ -66,6 +69,13 @@ __decorate([
 ], ProductController.prototype, "updateProduct", null);
 __decorate([
     (0, common_1.UseGuards)((0, role_guard_1.default)([role_enum_1.default.Admin, role_enum_1.default.User])),
+    (0, common_1.Get)('search/'),
+    __param(0, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], ProductController.prototype, "searchProduct", null);
+__decorate([
     (0, common_1.Get)(':productId'),
     __param(0, (0, common_1.Req)()),
     __param(1, (0, common_1.Param)()),

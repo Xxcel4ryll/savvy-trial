@@ -31,6 +31,22 @@ export default class TransactionRepository {
     });
   }
 
+  async debit(txObject, { returnObj = false } = {}) {
+    return (await DB).transaction(async (transaction) => {
+
+      if (returnObj) {
+        return txObject;
+      }
+
+      return this.transactionEntity.create<Transaction>(txObject, {
+        transaction
+      });
+
+      // TODO:
+      // Notification alert for withdrawal
+    });
+  }
+
   find(id): Promise<Transaction> {
     return this.transactionEntity.findOne<Transaction>({
       where: {
@@ -62,11 +78,9 @@ export default class TransactionRepository {
           },
         ],
       },
+      order: [['createdAt', 'DESC']]
     });
   }
-
-  // create(options) {
-  // }
 
   calculateBalance({
     userId,

@@ -1,19 +1,105 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
-import { FindUserDto } from 'src/Authentication/dtos';
 import { databaseProviders } from 'src/Database/providers';
 import WalletRepository from 'src/Transactions/repositories/wallet.repository';
 import TransactionRepository from 'src/Transactions/repositories/transaction.repository';
+import { ProductService } from 'src/Products/services/product.service';
 import UserRepository from 'src/Users/repositories/user.repository';
+import { PaystackService } from '../../Globals/providers/payment';
 
-const sequelize = databaseProviders[0].useFactory();
+import * as _ from 'lodash';
+import { Op } from 'sequelize';
+
+
+const DB = databaseProviders[0].useFactory();
 
 @Injectable()
 export class TransactionService {
   constructor(
     private transactionRepository: TransactionRepository,
+    private productsService: ProductService,
+    private paymentService: PaystackService,
     private walletRepository: WalletRepository,
     private userRepository: UserRepository,
   ) {}
+
+  async payment(user, payload) {
+    try {
+      const { id: userId, userType } = user;
+
+      // TODO: 
+      // 1. 
+
+      const availableProducts = await this.productsService.productAvailability(payload.products);
+      
+      const totalAmount = availableProducts.reduce((total, item) => total + item.price, 0)
+      
+      return (await DB).transaction(async (transaction) => {
+        if (payload.paymentMethod.toLowerCase() === 'wallet') {
+          const balance = await this.walletRepository.balanceLogic({
+            userId,
+            userType,
+          });
+    
+          if (balance['walletBalance'] >= totalAmount) {
+            const txObject = await this.debit({
+              userId: user.id,
+              userType: user.userType,
+              category: payload.paymentType,
+              currency: 'NGN',
+              email: user.email,
+              amount: totalAmount,
+            });
+
+            const productCharge = await this.transactionRepository.debit(txObject);
+            
+            // Record and update purchase products
+            await this.productsService.recordPurchasedProduct({
+              transactionId: productCharge.id,
+              paymentType: payload.paymentType,
+              userId,
+              products: availableProducts,
+            });
+
+            return _.omit(productCharge.dataValues, [
+              'currency',
+              'txType',
+              'updatedAt',
+              'senderId',
+              'senderType'
+            ]);
+          }
+
+          throw new HttpException(
+            {
+              statusCode: HttpStatus.PRECONDITION_FAILED,
+              name: 'WALLET',
+              error: 'Insufficient wallet balance',
+            },
+            HttpStatus.PRECONDITION_FAILED,
+          );
+        }
+
+        const { data } = await this.paymentService.cardDeposit({
+          ...user,
+          amount: totalAmount,
+          method: payload.paymentMethod
+        });
+        
+        return data
+      });
+    } catch (error: any) {
+      throw error;
+    }
+  }
+
+  async verify(user, payload) {
+    try {
+      const { data } = await this.paymentService.verifyTransaction(payload);
+
+    } catch (error: any) {
+      throw error;
+    }
+  }
 
   async wallet(user) {
     try {
@@ -143,7 +229,7 @@ export class TransactionService {
       transactionObject;
 
     if (
-      ['TRANSFER', 'RENT', 'WITHDRAWAL'].includes(category) &&
+      ['TRANSFER', 'WITHDRAWAL'].includes(category) &&
       [receiverId, receiverType, senderId, senderType].some((elem) => !elem)
     ) {
       throw new Error(

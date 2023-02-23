@@ -30,6 +30,9 @@ let UserController = class UserController {
     updateUser(req, updateInfo) {
         return this.userService.updateAccount({ req, updateInfo });
     }
+    updateUserImage(req, updateInfo) {
+        return this.userService.updateAccount({ req, updateInfo });
+    }
     favoriteProduct({ user }, { productId }) {
         return this.userService.favoriteProduct(user, productId);
     }
@@ -55,6 +58,16 @@ __decorate([
     __metadata("design:paramtypes", [Object, index_1.UserDto]),
     __metadata("design:returntype", void 0)
 ], UserController.prototype, "updateUser", null);
+__decorate([
+    (0, common_1.UseGuards)((0, role_guard_1.default)([role_enum_1.default.Admin, role_enum_1.default.User])),
+    (0, common_1.UsePipes)(new validate_pipe_1.JoiValidationPipe(index_1.profileUpdateSchema)),
+    (0, common_1.Put)('image'),
+    __param(0, (0, common_1.Req)()),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, index_1.UserDto]),
+    __metadata("design:returntype", void 0)
+], UserController.prototype, "updateUserImage", null);
 __decorate([
     (0, common_1.UseGuards)((0, role_guard_1.default)([role_enum_1.default.Admin, role_enum_1.default.User])),
     (0, common_1.Post)('favourite'),

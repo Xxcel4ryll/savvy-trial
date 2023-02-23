@@ -73,7 +73,7 @@ let UserService = class UserService {
         return !!isReset;
     }
     async updateAccount({ req, updateInfo }) {
-        const [updated] = await this.usersRepository.modify({ email: req.user.email }, updateInfo.setup);
+        const [updated] = await this.usersRepository.modify({ email: req.user.email }, updateInfo.setup || { profilePicture: updateInfo.profilePicture });
         if (!updated) {
             throw new common_1.HttpException({
                 statusCode: common_1.HttpStatus.PRECONDITION_FAILED,
@@ -81,7 +81,11 @@ let UserService = class UserService {
                 error: 'Account setup failed',
             }, common_1.HttpStatus.PRECONDITION_FAILED);
         }
-        return { message: 'Account setup successfully completed' };
+        return {
+            message: `${(updateInfo === null || updateInfo === void 0 ? void 0 : updateInfo.profilePicture) ?
+                'Profile image successfully uploaded' :
+                'Account setup successfully completed'}`
+        };
     }
     async favoriteProduct(user, productId) {
         const [favourite] = await this.userFavouriteRepository.create({ userId: user.id, productId });
@@ -96,7 +100,7 @@ UserService = __decorate([
     __metadata("design:paramtypes", [index_1.CryptoEncrypt,
         user_repository_1.default,
         user_favorites_repository_1.default,
-        payment_1.Wallet,
+        payment_1.PaystackService,
         paystack_repository_1.default,
         wallet_repository_1.default])
 ], UserService);

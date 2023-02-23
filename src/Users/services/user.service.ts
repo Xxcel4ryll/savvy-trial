@@ -2,7 +2,7 @@ import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import UserRepository from '../repositories/user.repository';
 import PaystackRepository from '../../Paystack/repositories/paystack.repository';
 import { CryptoEncrypt } from '../../Globals/providers/encrypt/index';
-import { Wallet } from '../../Globals/providers/payment';
+import { PaystackService } from '../../Globals/providers/payment';
 import { FindUserDto } from 'src/Authentication/dtos';
 import { databaseProviders } from 'src/Database/providers';
 import WalletRepository from 'src/Transactions/repositories/wallet.repository';
@@ -16,7 +16,7 @@ export class UserService {
     private cryptoEncrypt: CryptoEncrypt,
     private usersRepository: UserRepository,
     private userFavouriteRepository: UserFavoritesRepository,
-    private paymentService: Wallet,
+    private paymentService: PaystackService,
     private paystackRepository: PaystackRepository,
     private walletRepository: WalletRepository,
   ) {}
@@ -94,9 +94,9 @@ export class UserService {
   async updateAccount({ req, updateInfo }) {
     const [updated] = await this.usersRepository.modify(
       { email: req.user.email },
-      updateInfo.setup,
+      updateInfo.setup || { profilePicture: updateInfo.profilePicture },
     );
-
+      
     if (!updated) {
       throw new HttpException(
         {
@@ -108,7 +108,13 @@ export class UserService {
       );
     }
 
-    return { message: 'Account setup successfully completed' };
+    return { 
+      message: `${
+        updateInfo?.profilePicture ? 
+        'Profile image successfully uploaded' : 
+        'Account setup successfully completed'
+      }` 
+    };
   }
 
   async favoriteProduct(user, productId) {

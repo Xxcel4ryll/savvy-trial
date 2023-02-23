@@ -9,4 +9,5 @@ export default class ProductsRepository {
         count: number;
     }>;
     check(criteria: any): Promise<Products>;
+    search(query: any): Promise<Products>;
 }

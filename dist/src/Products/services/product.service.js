@@ -8,6 +8,9 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ProductService = void 0;
 const common_1 = require("@nestjs/common");
@@ -17,7 +20,8 @@ const product_specifications_repository_1 = require("../repositories/product_spe
 const providers_1 = require("../../Database/providers");
 const sequelize = providers_1.databaseProviders[0].useFactory();
 let ProductService = class ProductService {
-    constructor(productRepository, productImageRepository, productSpecsRepository) {
+    constructor(purchasedProduct, productRepository, productImageRepository, productSpecsRepository) {
+        this.purchasedProduct = purchasedProduct;
         this.productRepository = productRepository;
         this.productImageRepository = productImageRepository;
         this.productSpecsRepository = productSpecsRepository;
@@ -59,15 +63,18 @@ let ProductService = class ProductService {
             const [product] = await this.productRepository.modify({
                 id: payload.productId
             }, payload);
-            const images = await this.productImageRepository.modify({
-                id: payload.productId
-            }, payload.images);
-            const specifications = await this.productSpecsRepository.modify({
-                id: payload.productId,
-            }, payload.specification);
-            if (product) {
-                return 'Product successfully updated!';
+            if (payload === null || payload === void 0 ? void 0 : payload.images) {
+                await this.productImageRepository.modify({
+                    id: payload.productId
+                }, payload.images);
             }
+            if (payload === null || payload === void 0 ? void 0 : payload.specification) {
+                await this.productSpecsRepository.modify({
+                    id: payload.productId,
+                }, payload.specification);
+            }
+            return !!product ? 'Product successfully updated!' :
+                'Product failed to update';
         }
         catch (error) {
             (await transaction).rollback();
@@ -88,14 +95,73 @@ let ProductService = class ProductService {
         const specification = await this.productSpecsRepository.find({
             productId: product.id
         });
+        console.log('oo');
+        product['images'] = images;
+        product['specifications'] = specification;
+        return product;
+    }
+    async search(query) {
+        const product = await this.productRepository.search(query);
+        if (!product) {
+            throw new common_1.HttpException({
+                statusCode: common_1.HttpStatus.PRECONDITION_FAILED,
+                name: 'Product',
+                error: 'Product not found',
+            }, common_1.HttpStatus.PRECONDITION_FAILED);
+        }
+        const images = await this.productImageRepository.find({
+            productId: product.id
+        });
+        const specification = await this.productSpecsRepository.find({
+            productId: product.id
+        });
         product.dataValues['images'] = images;
         product.dataValues['specifications'] = specification;
         return product;
     }
+    productAvailability(products) {
+        return Promise.all(products.map(async (product) => {
+            const isProduct = await this.productRepository.check({
+                id: product.id,
+            });
+            if (!isProduct) {
+                throw new common_1.HttpException({
+                    statusCode: common_1.HttpStatus.PRECONDITION_FAILED,
+                    name: 'PRODUCT',
+                    error: 'Out of stock',
+                }, common_1.HttpStatus.PRECONDITION_FAILED);
+            }
+            if (product.quantity >= isProduct.quantity) {
+                throw new common_1.HttpException({
+                    statusCode: common_1.HttpStatus.PRECONDITION_FAILED,
+                    name: 'PRODUCT',
+                    error: `${isProduct.name} has ${isProduct.quantity} units left`,
+                }, common_1.HttpStatus.PRECONDITION_FAILED);
+            }
+            return Object.assign(Object.assign({}, isProduct), { paidQuantity: product.quantity });
+        }));
+    }
+    recordPurchasedProduct(products) {
+        products.products.map(async (product) => {
+            await this.purchasedProduct.create({
+                transactionId: products.transactionId,
+                paymentType: products.paymentType,
+                userId: products.userId,
+                productId: product.id,
+                amount: product.price,
+            });
+            await this.productRepository.modify({
+                id: product.id
+            }, {
+                quantity: parseInt(product.quantity) - parseInt(product.paidQuantity)
+            });
+        });
+    }
 };
 ProductService = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [product_repository_1.default,
+    __param(0, (0, common_1.Inject)('PURCHASED_ENTITY')),
+    __metadata("design:paramtypes", [Object, product_repository_1.default,
         product_images_repository_1.default,
         product_specifications_repository_1.default])
 ], ProductService);

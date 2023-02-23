@@ -1,12 +1,13 @@
 import { v2 } from 'cloudinary';
+const config = require('../../../../core/config');
 
 export const CloudinaryProvider = {
   provide: 'CLOUDINARY',
   useFactory: () => {
     return v2.config({
-      cloud_name: 'duhx38bd0',
-      api_key: '228737482825761',
-      api_secret: 'f1PXE_s47Ai19xaW7YEhRxHgO_Q',
+      cloud_name: config.file.cloud_name,
+      api_key: config.file.api_key,
+      api_secret: config.file.api_secret,
     });
   },
 };

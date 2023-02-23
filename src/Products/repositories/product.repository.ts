@@ -1,4 +1,5 @@
 import { Injectable, Inject, HttpException, HttpStatus } from '@nestjs/common';
+import { Op } from 'sequelize';
 import Products from '../entities/product.entity';
 import ProductPrice from '../entities/product_price.entity';
 
@@ -35,6 +36,42 @@ export default class ProductsRepository {
   check(criteria): Promise<Products> {
     return this.productEntity.findOne<Products>({
       where: criteria,
+      raw: true
+    });
+  }
+
+  search(query): Promise<Products> {
+    return this.productEntity.findOne<Products>({
+      where: {
+        isVisible: true,
+        [Op.or]: [
+          {
+            title: {
+              [Op.like]: `%${query}%`,
+            },
+          },
+          {
+            name: {
+              [Op.like]: `%${query}%`,
+            },
+          },
+          {
+            brand: {
+              [Op.like]: `%${query}%`,
+            },
+          },
+          {
+            price: {
+              [Op.like]: `%${query}%`,
+            },
+          },
+          {
+            description: {
+              [Op.like]: `%${query}%`,
+            },
+          },
+        ]
+      },
     });
   }
 }

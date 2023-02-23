@@ -13,6 +13,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const common_1 = require("@nestjs/common");
+const sequelize_1 = require("sequelize");
 let ProductsRepository = class ProductsRepository {
     constructor(productEntity) {
         this.productEntity = productEntity;
@@ -39,6 +40,41 @@ let ProductsRepository = class ProductsRepository {
     check(criteria) {
         return this.productEntity.findOne({
             where: criteria,
+            raw: true
+        });
+    }
+    search(query) {
+        return this.productEntity.findOne({
+            where: {
+                isVisible: true,
+                [sequelize_1.Op.or]: [
+                    {
+                        title: {
+                            [sequelize_1.Op.like]: `%${query}%`,
+                        },
+                    },
+                    {
+                        name: {
+                            [sequelize_1.Op.like]: `%${query}%`,
+                        },
+                    },
+                    {
+                        brand: {
+                            [sequelize_1.Op.like]: `%${query}%`,
+                        },
+                    },
+                    {
+                        price: {
+                            [sequelize_1.Op.like]: `%${query}%`,
+                        },
+                    },
+                    {
+                        description: {
+                            [sequelize_1.Op.like]: `%${query}%`,
+                        },
+                    },
+                ]
+            },
         });
     }
 };

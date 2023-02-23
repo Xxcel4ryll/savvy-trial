@@ -80,6 +80,7 @@ class Paystack {
             amount: card.amount * 100,
             reference: '' + Math.floor(Math.random() * 1000000000 + 1),
             callback_url: '',
+            channels: [card.method]
         };
         try {
             const { data } = await this.paystackAPI.post(`/transaction/initialize`, user, {

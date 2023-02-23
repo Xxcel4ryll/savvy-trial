@@ -43,12 +43,12 @@ module.exports = {
             },
             category: {
                 type: Sequelize.ENUM,
-                values: ['DEPOSIT', 'TRANSFER', 'WITHDRAWAL', 'AIRTIME'],
+                values: ['DEPOSIT', 'TRANSFER', 'BUY', 'RENT'],
                 allowNull: false,
             },
             medium: {
                 type: Sequelize.ENUM,
-                values: ['CARD', 'WALLET', 'TRANSFER'],
+                values: ['CARD', 'WALLET', 'BANK'],
                 allowNull: false,
                 defaultValue: 'WALLET',
             },

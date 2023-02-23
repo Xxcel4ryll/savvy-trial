@@ -25,13 +25,75 @@ const common_1 = require("@nestjs/common");
 const providers_1 = require("../../Database/providers");
 const wallet_repository_1 = require("../repositories/wallet.repository");
 const transaction_repository_1 = require("../repositories/transaction.repository");
+const product_service_1 = require("../../Products/services/product.service");
 const user_repository_1 = require("../../Users/repositories/user.repository");
-const sequelize = providers_1.databaseProviders[0].useFactory();
+const payment_1 = require("../../Globals/providers/payment");
+const _ = require("lodash");
+const DB = providers_1.databaseProviders[0].useFactory();
 let TransactionService = class TransactionService {
-    constructor(transactionRepository, walletRepository, userRepository) {
+    constructor(transactionRepository, productsService, paymentService, walletRepository, userRepository) {
         this.transactionRepository = transactionRepository;
+        this.productsService = productsService;
+        this.paymentService = paymentService;
         this.walletRepository = walletRepository;
         this.userRepository = userRepository;
+    }
+    async payment(user, payload) {
+        try {
+            const { id: userId, userType } = user;
+            const availableProducts = await this.productsService.productAvailability(payload.products);
+            const totalAmount = availableProducts.reduce((total, item) => total + item.price, 0);
+            return (await DB).transaction(async (transaction) => {
+                if (payload.paymentMethod.toLowerCase() === 'wallet') {
+                    const balance = await this.walletRepository.balanceLogic({
+                        userId,
+                        userType,
+                    });
+                    if (balance['walletBalance'] >= totalAmount) {
+                        const txObject = await this.debit({
+                            userId: user.id,
+                            userType: user.userType,
+                            category: payload.paymentType,
+                            currency: 'NGN',
+                            email: user.email,
+                            amount: totalAmount,
+                        });
+                        const productCharge = await this.transactionRepository.debit(txObject);
+                        await this.productsService.recordPurchasedProduct({
+                            transactionId: productCharge.id,
+                            paymentType: payload.paymentType,
+                            userId,
+                            products: availableProducts,
+                        });
+                        return _.omit(productCharge.dataValues, [
+                            'currency',
+                            'txType',
+                            'updatedAt',
+                            'senderId',
+                            'senderType'
+                        ]);
+                    }
+                    throw new common_1.HttpException({
+                        statusCode: common_1.HttpStatus.PRECONDITION_FAILED,
+                        name: 'WALLET',
+                        error: 'Insufficient wallet balance',
+                    }, common_1.HttpStatus.PRECONDITION_FAILED);
+                }
+                const { data } = await this.paymentService.cardDeposit(Object.assign(Object.assign({}, user), { amount: totalAmount, method: payload.paymentMethod }));
+                return data;
+            });
+        }
+        catch (error) {
+            throw error;
+        }
+    }
+    async verify(user, payload) {
+        try {
+            const { data } = await this.paymentService.verifyTransaction(payload);
+        }
+        catch (error) {
+            throw error;
+        }
     }
     async wallet(user) {
         try {
@@ -117,7 +179,7 @@ let TransactionService = class TransactionService {
             throw new Error('Cannot create a transaction without category or currency');
         }
         const { category, receiverId, receiverType, senderId, senderType } = transactionObject;
-        if (['TRANSFER', 'RENT', 'WITHDRAWAL'].includes(category) &&
+        if (['TRANSFER', 'WITHDRAWAL'].includes(category) &&
             [receiverId, receiverType, senderId, senderType].some((elem) => !elem)) {
             throw new Error(`Cannot handle a ${category} transaction without receiverId, receiverType, senderId or senderType set`);
         }
@@ -138,6 +200,8 @@ let TransactionService = class TransactionService {
 TransactionService = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [transaction_repository_1.default,
+        product_service_1.ProductService,
+        payment_1.PaystackService,
         wallet_repository_1.default,
         user_repository_1.default])
 ], TransactionService);

@@ -41,8 +41,14 @@ export class ProductController {
   }
 
   @UseGuards(RoleGuard([Roles.Admin, Roles.User]))
+  @Get('search/')
+  searchProduct(@Req() req: Request) {    
+    return this.productService.search(req.query.search);
+  }
+
+  // @UseGuards(RoleGuard([Roles.Admin, Roles.User]))
   @Get(':productId')
-  viewProduct(@Req() req: Request, @Param() { productId }: ProductDto) {    
+  viewProduct(@Req() req: Request, @Param() { productId }: ProductDto) {        
     return this.productService.view(productId);
   }
 }

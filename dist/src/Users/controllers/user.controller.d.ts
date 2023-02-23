@@ -10,6 +10,9 @@ export declare class UserController {
     updateUser(req: Request, updateInfo: UserDto): Promise<{
         message: string;
     }>;
+    updateUserImage(req: Request, updateInfo: UserDto): Promise<{
+        message: string;
+    }>;
     favoriteProduct({ user }: Request, { productId }: ProductDto): Promise<import("../entities/user_favourite.entity").default>;
     viewFavoriteProduct({ user }: Request): Promise<{
         rows: import("../entities/user_favourite.entity").default[];

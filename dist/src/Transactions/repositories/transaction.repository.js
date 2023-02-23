@@ -31,6 +31,16 @@ let TransactionRepository = class TransactionRepository {
             return true;
         });
     }
+    async debit(txObject, { returnObj = false } = {}) {
+        return (await DB).transaction(async (transaction) => {
+            if (returnObj) {
+                return txObject;
+            }
+            return this.transactionEntity.create(txObject, {
+                transaction
+            });
+        });
+    }
     find(id) {
         return this.transactionEntity.findOne({
             where: {
@@ -57,6 +67,7 @@ let TransactionRepository = class TransactionRepository {
                     },
                 ],
             },
+            order: [['createdAt', 'DESC']]
         });
     }
     calculateBalance({ userId, userType, currency = 'NGN', category = ['DEPOSIT', 'AIRTIME', 'TRANSFER'], }) {

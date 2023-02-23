@@ -48,6 +48,8 @@ let UserRepository = class UserRepository {
         });
     }
     modify(criteriaObj, updates) {
+        console.log(updates);
+        console.log(criteriaObj);
         return this.userEntity.update(updates, {
             where: criteriaObj,
         });

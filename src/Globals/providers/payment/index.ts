@@ -3,7 +3,7 @@ import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import Paystack from './paystack';
 
 @Injectable()
-export class Wallet {
+export class PaystackService {
   paymentProvider = new Paystack();
 
   constructor() {

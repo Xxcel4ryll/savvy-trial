@@ -3,7 +3,6 @@ import {
   Column,
   Model,
   DataType,
-  // AfterCreate,
 } from 'sequelize-typescript';
 
 @Table({
@@ -79,14 +78,14 @@ export default class Transaction extends Model<Transaction> {
 
   @Column({
     type: DataType.ENUM,
-    values: ['DEPOSIT', 'TRANSFER', 'WITHDRAWAL', 'RENT'],
-    allowNull: false,
+    values: ['DEPOSIT', 'TRANSFER', 'BUY', 'RENT'],
+    allowNull: false, 
   })
   category: string;
 
   @Column({
     type: DataType.ENUM,
-    values: ['CARD', 'WALLET', 'TRANSFER'],
+    values: ['CARD', 'WALLET', 'BANK'],
     allowNull: false,
     defaultValue: 'WALLET',
   })

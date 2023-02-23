@@ -1,5 +1,5 @@
 import Paystack from './paystack';
-export declare class Wallet {
+export declare class PaystackService {
     paymentProvider: Paystack;
     constructor();
     customer(customer: any): Promise<any>;

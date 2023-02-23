@@ -33,6 +33,7 @@ export declare class ProductController {
         sequelize: import("sequelize").Sequelize;
         _model: import("sequelize").Model<import("../entities/product.entity").default, import("../entities/product.entity").default>;
     }>;
-    updateProduct(req: Request, product: ProductDto): Promise<string>;
+    updateProduct(req: Request, product: ProductDto): Promise<"Product successfully updated!" | "Product failed to update">;
+    searchProduct(req: Request): Promise<import("../entities/product.entity").default>;
     viewProduct(req: Request, { productId }: ProductDto): Promise<import("../entities/product.entity").default>;
 }

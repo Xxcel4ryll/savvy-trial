@@ -15,13 +15,14 @@ exports.profileUpdateSchema = Joi.object()
     phoneNumber: Joi.string(),
     firstName: Joi.string(),
     lastName: Joi.string(),
+    profilePicture: Joi.string(),
     countryCode: Joi.string(),
     homeAddress: Joi.string(),
     userType: Joi.string(),
     city: Joi.string(),
     state: Joi.string(),
 })
-    .or('email', 'phoneNumber', 'firstName', 'lastName', 'countryCode', 'homeAddress', 'city', 'state');
+    .or('email', 'phoneNumber', 'firstName', 'profilePicture', 'lastName', 'countryCode', 'homeAddress', 'city', 'state');
 exports.completeProfileSchema = Joi.object().keys({
     accountType: Joi.string().valid('INDIVIDUAL', 'CORPORATION').required(),
     setup: Joi.object()

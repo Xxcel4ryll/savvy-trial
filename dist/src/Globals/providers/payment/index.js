@@ -9,10 +9,10 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Wallet = void 0;
+exports.PaystackService = void 0;
 const common_1 = require("@nestjs/common");
 const paystack_1 = require("./paystack");
-let Wallet = class Wallet {
+let PaystackService = class PaystackService {
     constructor() {
         this.paymentProvider = new paystack_1.default();
         this.paymentProvider = new paystack_1.default();
@@ -89,9 +89,9 @@ let Wallet = class Wallet {
         }
     }
 };
-Wallet = __decorate([
+PaystackService = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [])
-], Wallet);
-exports.Wallet = Wallet;
+], PaystackService);
+exports.PaystackService = PaystackService;
 //# sourceMappingURL=index.js.map

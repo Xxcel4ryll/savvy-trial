@@ -1,11 +1,13 @@
 import ProductRepository from '../repositories/product.repository';
 import ProductImageRepository from '../repositories/product_images.repository';
 import ProductSpecsRepository from '../repositories/product_specifications.repository';
+import PurchasedProduct from 'src/Transactions/entities/purchased-product.entity';
 export declare class ProductService {
+    private purchasedProduct;
     private productRepository;
     private productImageRepository;
     private productSpecsRepository;
-    constructor(productRepository: ProductRepository, productImageRepository: ProductImageRepository, productSpecsRepository: ProductSpecsRepository);
+    constructor(purchasedProduct: typeof PurchasedProduct, productRepository: ProductRepository, productImageRepository: ProductImageRepository, productSpecsRepository: ProductSpecsRepository);
     find(query: any): Promise<{
         count: number;
         products: import("../entities/product.entity").default[];
@@ -35,6 +37,9 @@ export declare class ProductService {
         sequelize: import("sequelize").Sequelize;
         _model: import("sequelize").Model<import("../entities/product.entity").default, import("../entities/product.entity").default>;
     }>;
-    update(payload: any): Promise<string>;
+    update(payload: any): Promise<"Product successfully updated!" | "Product failed to update">;
     view(productId: any): Promise<import("../entities/product.entity").default>;
+    search(query: any): Promise<import("../entities/product.entity").default>;
+    productAvailability(products: any): Promise<any[]>;
+    recordPurchasedProduct(products: any): void;
 }

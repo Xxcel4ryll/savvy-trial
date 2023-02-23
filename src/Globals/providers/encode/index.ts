@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-// const config = require('../../../../core/config');
+const config = require('../../../../core/config');
 
 @Injectable()
 export class Encode {
@@ -10,7 +10,7 @@ export class Encode {
   sign(payload) {
     try {
       return this.jwtService.sign(payload, {
-        expiresIn: '15m',
+        expiresIn: '7d',
         secret: 'config.auth.secret',
       });
     } catch (e) {

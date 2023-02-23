@@ -6,7 +6,7 @@ import { Encode } from './providers/encode';
 import { JwtStrategy } from './strategy';
 import { UserModule } from 'src/Users/user.module';
 import { Email } from './providers/email';
-import { Wallet } from './providers/payment';
+import { PaystackService } from './providers/payment';
 import { CloudinaryService } from './providers/upload';
 
 @Global()
@@ -19,7 +19,7 @@ import { CloudinaryService } from './providers/upload';
     }),
     UserModule,
   ],
-  providers: [CryptoEncrypt, Encode, JwtStrategy, Wallet, Email, CloudinaryService],
-  exports: [CryptoEncrypt, Encode, JwtStrategy, Wallet, Email, CloudinaryService],
+  providers: [CryptoEncrypt, Encode, JwtStrategy, PaystackService, Email, CloudinaryService],
+  exports: [CryptoEncrypt, Encode, JwtStrategy, PaystackService, Email, CloudinaryService],
 })
 export class GlobalModule {}

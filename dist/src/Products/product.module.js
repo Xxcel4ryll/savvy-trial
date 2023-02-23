@@ -17,6 +17,7 @@ const product_type_repository_1 = require("./repositories/product_type.repositor
 const product_images_repository_1 = require("./repositories/product_images.repository");
 const product_specifications_repository_1 = require("./repositories/product_specifications.repository");
 const product_type_service_1 = require("./services/product_type.service");
+const transaction_module_1 = require("../Transactions/transaction.module");
 let ProductModule = class ProductModule {
 };
 ProductModule = __decorate([
@@ -37,6 +38,7 @@ ProductModule = __decorate([
             product_repository_1.default,
             ...product_provider_1.ProductProviders,
         ],
+        imports: [(0, common_1.forwardRef)(() => transaction_module_1.TransactionModule)]
     })
 ], ProductModule);
 exports.ProductModule = ProductModule;

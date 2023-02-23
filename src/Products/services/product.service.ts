@@ -1,7 +1,8 @@
-import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus, Inject } from '@nestjs/common';
 import ProductRepository from '../repositories/product.repository';
 import ProductImageRepository from '../repositories/product_images.repository';
 import ProductSpecsRepository from '../repositories/product_specifications.repository';
+import PurchasedProduct from 'src/Transactions/entities/purchased-product.entity';
 import { ProductDto } from '../dtos';
 import { databaseProviders } from 'src/Database/providers';
 
@@ -10,6 +11,8 @@ const sequelize = databaseProviders[0].useFactory();
 @Injectable()
 export class ProductService {
   constructor(
+    @Inject('PURCHASED_ENTITY')
+    private purchasedProduct: typeof PurchasedProduct,
     private productRepository: ProductRepository,
     private productImageRepository: ProductImageRepository,
     private productSpecsRepository: ProductSpecsRepository) {}
@@ -69,21 +72,24 @@ export class ProductService {
         id: payload.productId
       }, payload);
 
-      const images = await this.productImageRepository.modify({
-        id: payload.productId
-      },
-        payload.images
-      );
-
-      const specifications = await this.productSpecsRepository.modify({
-        id: payload.productId,
-      },
-        payload.specification
-      );
-
-      if (product) {
-        return 'Product successfully updated!';
+      if (payload?.images) {
+        await this.productImageRepository.modify({
+          id: payload.productId
+        },
+          payload.images
+        );
       }
+
+      if (payload?.specification) {
+        await this.productSpecsRepository.modify({
+          id: payload.productId,
+        },
+          payload.specification
+        );
+      }
+
+      return !!product ? 'Product successfully updated!' :
+      'Product failed to update'
     } catch (error) {
       (await transaction).rollback();
       throw new HttpException(
@@ -109,10 +115,92 @@ export class ProductService {
     const specification = await this.productSpecsRepository.find({
       productId: product.id
     });
+    console.log('oo');
+
+
+    product['images'] = images;
+    product['specifications'] = specification;
+
+    return product;
+  }
+
+  async search(query) {
+    const product = await this.productRepository.search(query);
+
+    if (!product) {
+      throw new HttpException(
+        {
+          statusCode: HttpStatus.PRECONDITION_FAILED,
+          name: 'Product',
+          error: 'Product not found',
+        },
+        HttpStatus.PRECONDITION_FAILED,
+      );
+    }
+
+    const images = await this.productImageRepository.find({
+      productId: product.id
+    });
+
+    const specification = await this.productSpecsRepository.find({
+      productId: product.id
+    });
 
     product.dataValues['images'] = images;
     product.dataValues['specifications'] = specification;
 
     return product;
+  }
+
+  productAvailability(products) {
+    return Promise.all(
+      products.map(async product => {
+        const isProduct = await this.productRepository.check({
+          id: product.id,
+        });
+
+        if (!isProduct) {
+          throw new HttpException(
+            {
+              statusCode: HttpStatus.PRECONDITION_FAILED,
+              name: 'PRODUCT',
+              error: 'Out of stock',
+            },
+            HttpStatus.PRECONDITION_FAILED,
+          );
+        }
+
+        if (product.quantity >= isProduct.quantity) {
+          throw new HttpException(
+            {
+              statusCode: HttpStatus.PRECONDITION_FAILED,
+              name: 'PRODUCT',
+              error: `${isProduct.name} has ${isProduct.quantity} units left`,
+            },
+            HttpStatus.PRECONDITION_FAILED,
+          );
+        }
+
+        return {...isProduct,paidQuantity:product.quantity};
+    }))
+  }
+
+  recordPurchasedProduct(products) {
+    products.products.map(async product => {
+      await this.purchasedProduct.create<PurchasedProduct>({
+        transactionId: products.transactionId,
+        paymentType: products.paymentType,
+        userId: products.userId,
+        productId: product.id,
+        amount: product.price,
+      })
+
+      await this.productRepository.modify({
+        id: product.id
+      }, {
+        quantity: parseInt(product.quantity) - parseInt(product.paidQuantity)
+      });
+
+    })
   }
 }

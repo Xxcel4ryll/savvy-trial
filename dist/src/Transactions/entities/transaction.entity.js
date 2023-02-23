@@ -90,7 +90,7 @@ __decorate([
 __decorate([
     (0, sequelize_typescript_1.Column)({
         type: sequelize_typescript_1.DataType.ENUM,
-        values: ['DEPOSIT', 'TRANSFER', 'WITHDRAWAL', 'RENT'],
+        values: ['DEPOSIT', 'TRANSFER', 'BUY', 'RENT'],
         allowNull: false,
     }),
     __metadata("design:type", String)
@@ -98,7 +98,7 @@ __decorate([
 __decorate([
     (0, sequelize_typescript_1.Column)({
         type: sequelize_typescript_1.DataType.ENUM,
-        values: ['CARD', 'WALLET', 'TRANSFER'],
+        values: ['CARD', 'WALLET', 'BANK'],
         allowNull: false,
         defaultValue: 'WALLET',
     }),

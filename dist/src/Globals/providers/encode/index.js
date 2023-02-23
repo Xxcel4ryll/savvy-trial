@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Encode = void 0;
 const common_1 = require("@nestjs/common");
 const jwt_1 = require("@nestjs/jwt");
+const config = require('../../../../core/config');
 let Encode = class Encode {
     constructor(jwtService) {
         this.jwtService = jwtService;
@@ -19,7 +20,7 @@ let Encode = class Encode {
     sign(payload) {
         try {
             return this.jwtService.sign(payload, {
-                expiresIn: '15m',
+                expiresIn: '7d',
                 secret: 'config.auth.secret',
             });
         }

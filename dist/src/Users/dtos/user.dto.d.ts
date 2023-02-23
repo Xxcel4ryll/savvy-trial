@@ -9,6 +9,7 @@ export declare class UserDto {
     homeAddress?: string;
     userType?: string;
     city?: string;
+    image?: string;
     state?: string;
 }
 export declare const userSchema: Joi.ObjectSchema<any>;

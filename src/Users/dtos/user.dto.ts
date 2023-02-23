@@ -10,6 +10,7 @@ export class UserDto {
   homeAddress?: string;
   userType?: string;
   city?: string;
+  image?: string;
   state?: string;
 }
 
@@ -24,6 +25,7 @@ export const profileUpdateSchema = Joi.object()
     phoneNumber: Joi.string(),
     firstName: Joi.string(),
     lastName: Joi.string(),
+    profilePicture: Joi.string(),
     countryCode: Joi.string(),
     homeAddress: Joi.string(),
     userType: Joi.string(),
@@ -34,6 +36,7 @@ export const profileUpdateSchema = Joi.object()
     'email',
     'phoneNumber',
     'firstName',
+    'profilePicture',
     'lastName',
     'countryCode',
     'homeAddress',

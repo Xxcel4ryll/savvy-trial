@@ -30,6 +30,11 @@ module.exports = {
     user: process.env.EMAIL_USER,
     password: process.env.EMAIL_PASSWORD,
   },
+  file: {
+    cloud_name: process.env.CLOUDINARY_NAME,
+    api_key: process.env.CLOUDINARY_KEY,
+    api_secret: process.env.CLOUDINARY_SECRET,
+  },
   database: {
     username: process.env.DB_USER,
     password: process.env.DB_PASSWORD,

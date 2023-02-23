@@ -6,6 +6,7 @@ import { TransactionService } from './services/transaction.service';
 import { TransactionController } from './controllers/transaction.controller';
 import { UserModule } from 'src/Users/user.module';
 import UserRepository from 'src/Users/repositories/user.repository';
+import { ProductModule } from 'src/Products/product.module';
 
 @Module({
   controllers: [TransactionController],
@@ -22,6 +23,7 @@ import UserRepository from 'src/Users/repositories/user.repository';
     ...TransactionProviders,
   ],
   imports: [
+    ProductModule,
     forwardRef(() => UserModule),
   ],
 })
