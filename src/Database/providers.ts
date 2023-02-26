@@ -14,6 +14,7 @@ import ProductSpecs from '../Products/entities/product_specification.entity';
 import ProductImages from '../Products/entities/product_images.entity';
 import UserFavourite from 'src/Users/entities/user_favourite.entity';
 import PurchasedProduct from 'src/Transactions/entities/purchased-product.entity';
+import { Faqs, TermsAndCondition } from 'src/Settings/entities/settings.entity';
 
 // /home/idunyelc/backend.idunu.co
 export const databaseProviders = [
@@ -44,7 +45,9 @@ export const databaseProviders = [
         ProductSpecs,
         ProductImages,
         UserFavourite,
-        PurchasedProduct
+        PurchasedProduct,
+        Faqs,
+        TermsAndCondition
       ]);
       return sequelize;
     },

@@ -13,6 +13,7 @@ const global_module_1 = require("./Globals/global.module");
 const database_module_1 = require("./Database/database.module");
 const product_module_1 = require("./Products/product.module");
 const file_module_1 = require("./Files/file.module");
+const settings_module_1 = require("./Settings/settings.module");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
@@ -23,6 +24,7 @@ AppModule = __decorate([
             auth_module_1.AuthModule,
             product_module_1.ProductModule,
             file_module_1.FileModule,
+            settings_module_1.SettingsModule
         ],
         exports: [],
     })

@@ -1,0 +1,1 @@
+{"version":3,"file":"settings.provider.js","sourceRoot":"","sources":["../../../../src/Settings/providers/settings.provider.ts"],"names":[],"mappings":";;;AAAA,iEAAoE;AAEvD,QAAA,gBAAgB,GAAG;IAC9B;QACE,OAAO,EAAE,aAAa;QACtB,QAAQ,EAAE,sBAAI;KACf;IACD;QACE,OAAO,EAAE,cAAc;QACvB,QAAQ,EAAE,mCAAiB;KAC5B;CACF,CAAC"}

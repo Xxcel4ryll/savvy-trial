@@ -13,6 +13,15 @@ export default class UserRepository {
       where: {
         email,
       },
+      attributes: [
+        'id',
+        'firstName',
+        'lastName',
+        'phoneNumber',
+        'password',
+        'userType',
+        'profilePicture',
+      ]
     });
   }
 
@@ -21,6 +30,15 @@ export default class UserRepository {
       where: {
         phoneNumber,
       },
+      attributes: [
+        'id',
+        'firstName',
+        'lastName',
+        'phoneNumber',
+        'password',
+        'userType',
+        'profilePicture',
+      ]
     });
   }
 
@@ -29,6 +47,15 @@ export default class UserRepository {
       where: {
         id,
       },
+      attributes: [
+        'id',
+        'firstName',
+        'lastName',
+        'password',
+        'phoneNumber',
+        'userType',
+        'profilePicture',
+      ]
     });
   }
 

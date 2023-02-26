@@ -22,6 +22,15 @@ let UserRepository = class UserRepository {
             where: {
                 email,
             },
+            attributes: [
+                'id',
+                'firstName',
+                'lastName',
+                'phoneNumber',
+                'password',
+                'userType',
+                'profilePicture',
+            ]
         });
     }
     findByPhone(phoneNumber) {
@@ -29,6 +38,15 @@ let UserRepository = class UserRepository {
             where: {
                 phoneNumber,
             },
+            attributes: [
+                'id',
+                'firstName',
+                'lastName',
+                'phoneNumber',
+                'password',
+                'userType',
+                'profilePicture',
+            ]
         });
     }
     findById(id) {
@@ -36,6 +54,15 @@ let UserRepository = class UserRepository {
             where: {
                 id,
             },
+            attributes: [
+                'id',
+                'firstName',
+                'lastName',
+                'password',
+                'phoneNumber',
+                'userType',
+                'profilePicture',
+            ]
         });
     }
     create(payload) {
