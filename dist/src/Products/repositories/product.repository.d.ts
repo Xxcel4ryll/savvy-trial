@@ -4,7 +4,11 @@ export default class ProductsRepository {
     constructor(productEntity: typeof Products);
     create(payload: any): Promise<Products>;
     modify(criteria: any, updates: any): Promise<[affectedCount: number]>;
-    find(criteria: any): Promise<{
+    find({ limit, offset, ...criteria }: {
+        [x: string]: any;
+        limit: any;
+        offset: any;
+    }): Promise<{
         rows: Products[];
         count: number;
     }>;

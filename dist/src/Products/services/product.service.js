@@ -36,6 +36,7 @@ let ProductService = class ProductService {
                 productId: product.id
             });
             product.dataValues['images'] = images;
+            product.dataValues['price'] = Number(product.price).toLocaleString();
             product.dataValues['specifications'] = specification;
         }
         return { count, products };
@@ -95,7 +96,6 @@ let ProductService = class ProductService {
         const specification = await this.productSpecsRepository.find({
             productId: product.id
         });
-        console.log('oo');
         product['images'] = images;
         product['specifications'] = specification;
         return product;

@@ -13,7 +13,7 @@ const RoleGuard = (allowedRoles): Type<CanActivate> => {
       allowedRoles = Array.isArray(allowedRoles)
         ? allowedRoles
         : [allowedRoles];
-
+        
       return allowedRoles
         .map((allowedRole) => allowedRole.toUpperCase())
         .includes(user?.role.toUpperCase());

@@ -28,6 +28,7 @@ let UserRepository = class UserRepository {
                 'lastName',
                 'phoneNumber',
                 'password',
+                'role',
                 'userType',
                 'profilePicture',
             ]
@@ -45,6 +46,7 @@ let UserRepository = class UserRepository {
                 'phoneNumber',
                 'password',
                 'userType',
+                'role',
                 'profilePicture',
             ]
         });
@@ -60,6 +62,7 @@ let UserRepository = class UserRepository {
                 'lastName',
                 'password',
                 'phoneNumber',
+                'role',
                 'userType',
                 'profilePicture',
             ]
@@ -75,8 +78,6 @@ let UserRepository = class UserRepository {
         });
     }
     modify(criteriaObj, updates) {
-        console.log(updates);
-        console.log(criteriaObj);
         return this.userEntity.update(updates, {
             where: criteriaObj,
         });

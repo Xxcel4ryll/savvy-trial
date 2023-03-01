@@ -27,9 +27,11 @@ export default class ProductsRepository {
     });
   }
 
-  find(criteria): Promise<{ rows: Products[]; count: number }> {
+  find({ limit, offset, ...criteria}): Promise<{ rows: Products[]; count: number }> {    
     return this.productEntity.findAndCountAll<Products>({
       where: criteria,
+      limit: parseInt(limit) || 10,
+      offset: parseInt(offset) || 0
     });
   }
 

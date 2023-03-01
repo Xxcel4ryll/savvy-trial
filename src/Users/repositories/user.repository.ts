@@ -19,6 +19,7 @@ export default class UserRepository {
         'lastName',
         'phoneNumber',
         'password',
+        'role',
         'userType',
         'profilePicture',
       ]
@@ -37,6 +38,7 @@ export default class UserRepository {
         'phoneNumber',
         'password',
         'userType',
+        'role',
         'profilePicture',
       ]
     });
@@ -53,6 +55,7 @@ export default class UserRepository {
         'lastName',
         'password',
         'phoneNumber',
+        'role',
         'userType',
         'profilePicture',
       ]
@@ -70,8 +73,6 @@ export default class UserRepository {
   }
 
   modify(criteriaObj, updates) {
-    console.log(updates);
-    console.log(criteriaObj);
     
     return this.userEntity.update<Users>(updates, {
       where: criteriaObj,

@@ -15,7 +15,8 @@ export class ProductService {
     private purchasedProduct: typeof PurchasedProduct,
     private productRepository: ProductRepository,
     private productImageRepository: ProductImageRepository,
-    private productSpecsRepository: ProductSpecsRepository) {}
+    private productSpecsRepository: ProductSpecsRepository
+  ) {}
 
   async find(query) {
     const { count, rows: products } = await this.productRepository.find(query);
@@ -30,6 +31,7 @@ export class ProductService {
       });
 
       product.dataValues['images'] = images;
+      product.dataValues['price'] = Number(product.price).toLocaleString();
       product.dataValues['specifications'] = specification;
     }
 
@@ -115,8 +117,6 @@ export class ProductService {
     const specification = await this.productSpecsRepository.find({
       productId: product.id
     });
-    console.log('oo');
-
 
     product['images'] = images;
     product['specifications'] = specification;
