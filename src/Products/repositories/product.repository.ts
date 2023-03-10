@@ -30,6 +30,7 @@ export default class ProductsRepository {
   find({ limit, offset, ...criteria}): Promise<{ rows: Products[]; count: number }> {    
     return this.productEntity.findAndCountAll<Products>({
       where: criteria,
+      order: [['createdAt', 'DESC']],
       limit: parseInt(limit) || 10,
       offset: parseInt(offset) || 0
     });

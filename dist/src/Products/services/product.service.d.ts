@@ -1,13 +1,15 @@
 import ProductRepository from '../repositories/product.repository';
 import ProductImageRepository from '../repositories/product_images.repository';
 import ProductSpecsRepository from '../repositories/product_specifications.repository';
+import ProductTypeRepository from '../repositories/product_type.repository';
 import PurchasedProduct from 'src/Transactions/entities/purchased-product.entity';
 export declare class ProductService {
     private purchasedProduct;
     private productRepository;
+    private productTypeRepository;
     private productImageRepository;
     private productSpecsRepository;
-    constructor(purchasedProduct: typeof PurchasedProduct, productRepository: ProductRepository, productImageRepository: ProductImageRepository, productSpecsRepository: ProductSpecsRepository);
+    constructor(purchasedProduct: typeof PurchasedProduct, productRepository: ProductRepository, productTypeRepository: ProductTypeRepository, productImageRepository: ProductImageRepository, productSpecsRepository: ProductSpecsRepository);
     find(query: any): Promise<{
         count: number;
         products: import("../entities/product.entity").default[];

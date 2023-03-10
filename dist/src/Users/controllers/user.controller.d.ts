@@ -10,7 +10,7 @@ export declare class UserController {
     updateUser(req: Request, updateInfo: UserDto): Promise<{
         message: string;
     }>;
-    updateUserImage(req: Request, updateInfo: UserDto): Promise<{
+    updateUserImage(req: Request, file: any): Promise<{
         message: string;
     }>;
     favoriteProduct({ user }: Request, { productId }: ProductDto): Promise<import("../entities/user_favourite.entity").default>;

@@ -36,6 +36,12 @@ let ProductTypesRepository = class ProductTypesRepository {
             where: criteria,
         });
     }
+    findOne(criteria, attributes = []) {
+        return this.productTypesEntity.findOne({
+            where: criteria,
+            attributes
+        });
+    }
 };
 ProductTypesRepository = __decorate([
     (0, common_1.Injectable)(),

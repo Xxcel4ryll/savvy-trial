@@ -28,4 +28,11 @@ export default class ProductTypesRepository {
       where: criteria,
     });
   }
+
+  findOne(criteria, attributes = []): Promise<ProductTypes> {
+    return this.productTypesEntity.findOne<ProductTypes>({
+      where: criteria,
+      attributes
+    });
+  }
 }

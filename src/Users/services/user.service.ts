@@ -7,6 +7,7 @@ import { FindUserDto } from 'src/Authentication/dtos';
 import { databaseProviders } from 'src/Database/providers';
 import WalletRepository from 'src/Transactions/repositories/wallet.repository';
 import UserFavoritesRepository from '../repositories/user_favorites.repository';
+import { FileService } from 'src/Files/services/file.service';
 
 const sequelize = databaseProviders[0].useFactory();
 
@@ -19,6 +20,7 @@ export class UserService {
     private paymentService: PaystackService,
     private paystackRepository: PaystackRepository,
     private walletRepository: WalletRepository,
+    private fileService: FileService,
   ) {}
 
   find({ email, phoneNumber, id }: FindUserDto) {
@@ -91,10 +93,10 @@ export class UserService {
     return !!isReset;
   }
 
-  async updateAccount({ req, updateInfo }) {
+  async updateAccount(req, upload) {
     const [updated] = await this.usersRepository.modify(
       { email: req.user.email },
-      updateInfo.setup || { profilePicture: updateInfo.profilePicture },
+      upload.setup || { profilePicture: upload.secure_url },
     );
       
     if (!updated) {
@@ -110,11 +112,17 @@ export class UserService {
 
     return { 
       message: `${
-        updateInfo?.profilePicture ? 
+        upload?.resource_type ? 
         'Profile image successfully uploaded' : 
         'Account setup successfully completed'
       }` 
     };
+  }
+
+  async updateImage(req, file) {
+    const uploadedImage = await this.fileService.handleUploadedFile(file);
+
+    return this.updateAccount(req, uploadedImage);
   }
 
   async favoriteProduct(user, productId) {

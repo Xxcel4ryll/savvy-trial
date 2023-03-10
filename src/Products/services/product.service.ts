@@ -2,6 +2,7 @@ import { Injectable, HttpException, HttpStatus, Inject } from '@nestjs/common';
 import ProductRepository from '../repositories/product.repository';
 import ProductImageRepository from '../repositories/product_images.repository';
 import ProductSpecsRepository from '../repositories/product_specifications.repository';
+import ProductTypeRepository from '../repositories/product_type.repository';
 import PurchasedProduct from 'src/Transactions/entities/purchased-product.entity';
 import { ProductDto } from '../dtos';
 import { databaseProviders } from 'src/Database/providers';
@@ -14,6 +15,7 @@ export class ProductService {
     @Inject('PURCHASED_ENTITY')
     private purchasedProduct: typeof PurchasedProduct,
     private productRepository: ProductRepository,
+    private productTypeRepository: ProductTypeRepository,
     private productImageRepository: ProductImageRepository,
     private productSpecsRepository: ProductSpecsRepository
   ) {}
@@ -30,9 +32,14 @@ export class ProductService {
         productId: product.id
       });
 
+      const category = await this.productTypeRepository.findOne({
+        id: product.productTypeId,
+      }, ['name']);
+
       product.dataValues['images'] = images;
       product.dataValues['price'] = Number(product.price).toLocaleString();
       product.dataValues['specifications'] = specification;
+      product.dataValues['category'] = category;
     }
 
     return { count, products };

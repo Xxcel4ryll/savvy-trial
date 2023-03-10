@@ -12,17 +12,7 @@ export default class UserRepository {
     return this.userEntity.findOne<Users>({
       where: {
         email,
-      },
-      attributes: [
-        'id',
-        'firstName',
-        'lastName',
-        'phoneNumber',
-        'password',
-        'role',
-        'userType',
-        'profilePicture',
-      ]
+      }
     });
   }
 
@@ -49,16 +39,16 @@ export default class UserRepository {
       where: {
         id,
       },
-      attributes: [
-        'id',
-        'firstName',
-        'lastName',
-        'password',
-        'phoneNumber',
-        'role',
-        'userType',
-        'profilePicture',
-      ]
+      // attributes: [
+      //   'id',
+      //   'firstName',
+      //   'lastName',
+      //   'password',
+      //   'phoneNumber',
+      //   'role',
+      //   'userType',
+      //   'profilePicture',
+      // ]
     });
   }
 

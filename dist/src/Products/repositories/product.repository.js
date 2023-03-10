@@ -47,6 +47,7 @@ let ProductsRepository = class ProductsRepository {
         var { limit, offset } = _a, criteria = __rest(_a, ["limit", "offset"]);
         return this.productEntity.findAndCountAll({
             where: criteria,
+            order: [['createdAt', 'DESC']],
             limit: parseInt(limit) || 10,
             offset: parseInt(offset) || 0
         });

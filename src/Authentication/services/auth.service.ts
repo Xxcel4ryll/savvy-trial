@@ -1,4 +1,6 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
+import * as _ from 'lodash';
+
 import { Encode } from 'src/Globals/providers/encode';
 import { CryptoEncrypt } from 'src/Globals/providers/encrypt';
 import { UserOtpService } from 'src/Otp/services/users-otp.service';
@@ -52,7 +54,24 @@ export class AuthService {
       role: user.role,
     });
 
-    return { ...user.toJSON(), token };
+    return _.omit({
+      ...user.dataValues,
+      isCompleted: Object.values(user.dataValues).every(props => props !== null && props !== ''),
+      token
+    }, [
+      'password',
+      'homeAddress',
+      'city',
+      'state',
+      'validId',
+      'income',
+      'schoolName',
+      'matricNo',
+      'natureOfBusiness',
+      'roleInCompany',
+      'registrationNo',
+      'companyLocation'
+    ]);
   }
 
   async signUp(payload: RegisterDto) {

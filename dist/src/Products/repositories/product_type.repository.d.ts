@@ -8,4 +8,5 @@ export default class ProductTypesRepository {
         rows: ProductTypes[];
         count: number;
     }>;
+    findOne(criteria: any, attributes?: any[]): Promise<ProductTypes>;
 }

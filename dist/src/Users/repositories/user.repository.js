@@ -21,17 +21,7 @@ let UserRepository = class UserRepository {
         return this.userEntity.findOne({
             where: {
                 email,
-            },
-            attributes: [
-                'id',
-                'firstName',
-                'lastName',
-                'phoneNumber',
-                'password',
-                'role',
-                'userType',
-                'profilePicture',
-            ]
+            }
         });
     }
     findByPhone(phoneNumber) {
@@ -56,16 +46,6 @@ let UserRepository = class UserRepository {
             where: {
                 id,
             },
-            attributes: [
-                'id',
-                'firstName',
-                'lastName',
-                'password',
-                'phoneNumber',
-                'role',
-                'userType',
-                'profilePicture',
-            ]
         });
     }
     create(payload) {

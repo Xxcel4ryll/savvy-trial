@@ -20,6 +20,7 @@ const validate_pipe_1 = require("../../Globals/providers/validate/validate.pipe"
 const role_enum_1 = require("../../Globals/role.enum");
 const role_guard_1 = require("../../Globals/Guards/role.guard");
 const dtos_1 = require("../../Products/dtos");
+const platform_express_1 = require("@nestjs/platform-express");
 let UserController = class UserController {
     constructor(userService) {
         this.userService = userService;
@@ -28,10 +29,10 @@ let UserController = class UserController {
         return req.user;
     }
     updateUser(req, updateInfo) {
-        return this.userService.updateAccount({ req, updateInfo });
+        return this.userService.updateAccount(req, updateInfo);
     }
-    updateUserImage(req, updateInfo) {
-        return this.userService.updateAccount({ req, updateInfo });
+    updateUserImage(req, file) {
+        return this.userService.updateImage(req, file);
     }
     favoriteProduct({ user }, { productId }) {
         return this.userService.favoriteProduct(user, productId);
@@ -59,13 +60,13 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], UserController.prototype, "updateUser", null);
 __decorate([
-    (0, common_1.UseGuards)((0, role_guard_1.default)([role_enum_1.default.Admin, role_enum_1.default.User])),
-    (0, common_1.UsePipes)(new validate_pipe_1.JoiValidationPipe(index_1.profileUpdateSchema)),
     (0, common_1.Put)('image'),
+    (0, common_1.UseGuards)((0, role_guard_1.default)([role_enum_1.default.Admin, role_enum_1.default.User])),
+    (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)("profilePicture")),
     __param(0, (0, common_1.Req)()),
-    __param(1, (0, common_1.Body)()),
+    __param(1, (0, common_1.UploadedFile)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, index_1.UserDto]),
+    __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", void 0)
 ], UserController.prototype, "updateUserImage", null);
 __decorate([

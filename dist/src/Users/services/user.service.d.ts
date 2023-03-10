@@ -5,6 +5,7 @@ import { PaystackService } from '../../Globals/providers/payment';
 import { FindUserDto } from 'src/Authentication/dtos';
 import WalletRepository from 'src/Transactions/repositories/wallet.repository';
 import UserFavoritesRepository from '../repositories/user_favorites.repository';
+import { FileService } from 'src/Files/services/file.service';
 export declare class UserService {
     private cryptoEncrypt;
     private usersRepository;
@@ -12,14 +13,15 @@ export declare class UserService {
     private paymentService;
     private paystackRepository;
     private walletRepository;
-    constructor(cryptoEncrypt: CryptoEncrypt, usersRepository: UserRepository, userFavouriteRepository: UserFavoritesRepository, paymentService: PaystackService, paystackRepository: PaystackRepository, walletRepository: WalletRepository);
+    private fileService;
+    constructor(cryptoEncrypt: CryptoEncrypt, usersRepository: UserRepository, userFavouriteRepository: UserFavoritesRepository, paymentService: PaystackService, paystackRepository: PaystackRepository, walletRepository: WalletRepository, fileService: FileService);
     find({ email, phoneNumber, id }: FindUserDto): Promise<import("../entities/user.entity").default>;
     create(payload: any): Promise<boolean | import("../entities/user.entity").default>;
     resetPassword(data: any): Promise<boolean>;
-    updateAccount({ req, updateInfo }: {
-        req: any;
-        updateInfo: any;
-    }): Promise<{
+    updateAccount(req: any, upload: any): Promise<{
+        message: string;
+    }>;
+    updateImage(req: any, file: any): Promise<{
         message: string;
     }>;
     favoriteProduct(user: any, productId: any): Promise<import("../entities/user_favourite.entity").default>;

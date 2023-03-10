@@ -18,15 +18,17 @@ const payment_1 = require("../../Globals/providers/payment");
 const providers_1 = require("../../Database/providers");
 const wallet_repository_1 = require("../../Transactions/repositories/wallet.repository");
 const user_favorites_repository_1 = require("../repositories/user_favorites.repository");
+const file_service_1 = require("../../Files/services/file.service");
 const sequelize = providers_1.databaseProviders[0].useFactory();
 let UserService = class UserService {
-    constructor(cryptoEncrypt, usersRepository, userFavouriteRepository, paymentService, paystackRepository, walletRepository) {
+    constructor(cryptoEncrypt, usersRepository, userFavouriteRepository, paymentService, paystackRepository, walletRepository, fileService) {
         this.cryptoEncrypt = cryptoEncrypt;
         this.usersRepository = usersRepository;
         this.userFavouriteRepository = userFavouriteRepository;
         this.paymentService = paymentService;
         this.paystackRepository = paystackRepository;
         this.walletRepository = walletRepository;
+        this.fileService = fileService;
     }
     find({ email, phoneNumber, id }) {
         if (email) {
@@ -72,8 +74,8 @@ let UserService = class UserService {
         });
         return !!isReset;
     }
-    async updateAccount({ req, updateInfo }) {
-        const [updated] = await this.usersRepository.modify({ email: req.user.email }, updateInfo.setup || { profilePicture: updateInfo.profilePicture });
+    async updateAccount(req, upload) {
+        const [updated] = await this.usersRepository.modify({ email: req.user.email }, upload.setup || { profilePicture: upload.secure_url });
         if (!updated) {
             throw new common_1.HttpException({
                 statusCode: common_1.HttpStatus.PRECONDITION_FAILED,
@@ -82,10 +84,14 @@ let UserService = class UserService {
             }, common_1.HttpStatus.PRECONDITION_FAILED);
         }
         return {
-            message: `${(updateInfo === null || updateInfo === void 0 ? void 0 : updateInfo.profilePicture) ?
+            message: `${(upload === null || upload === void 0 ? void 0 : upload.resource_type) ?
                 'Profile image successfully uploaded' :
                 'Account setup successfully completed'}`
         };
+    }
+    async updateImage(req, file) {
+        const uploadedImage = await this.fileService.handleUploadedFile(file);
+        return this.updateAccount(req, uploadedImage);
     }
     async favoriteProduct(user, productId) {
         const [favourite] = await this.userFavouriteRepository.create({ userId: user.id, productId });
@@ -102,7 +108,8 @@ UserService = __decorate([
         user_favorites_repository_1.default,
         payment_1.PaystackService,
         paystack_repository_1.default,
-        wallet_repository_1.default])
+        wallet_repository_1.default,
+        file_service_1.FileService])
 ], UserService);
 exports.UserService = UserService;
 //# sourceMappingURL=user.service.js.map

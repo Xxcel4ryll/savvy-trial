@@ -17,12 +17,14 @@ const common_1 = require("@nestjs/common");
 const product_repository_1 = require("../repositories/product.repository");
 const product_images_repository_1 = require("../repositories/product_images.repository");
 const product_specifications_repository_1 = require("../repositories/product_specifications.repository");
+const product_type_repository_1 = require("../repositories/product_type.repository");
 const providers_1 = require("../../Database/providers");
 const sequelize = providers_1.databaseProviders[0].useFactory();
 let ProductService = class ProductService {
-    constructor(purchasedProduct, productRepository, productImageRepository, productSpecsRepository) {
+    constructor(purchasedProduct, productRepository, productTypeRepository, productImageRepository, productSpecsRepository) {
         this.purchasedProduct = purchasedProduct;
         this.productRepository = productRepository;
+        this.productTypeRepository = productTypeRepository;
         this.productImageRepository = productImageRepository;
         this.productSpecsRepository = productSpecsRepository;
     }
@@ -35,9 +37,13 @@ let ProductService = class ProductService {
             const specification = await this.productSpecsRepository.find({
                 productId: product.id
             });
+            const category = await this.productTypeRepository.findOne({
+                id: product.productTypeId,
+            }, ['name']);
             product.dataValues['images'] = images;
             product.dataValues['price'] = Number(product.price).toLocaleString();
             product.dataValues['specifications'] = specification;
+            product.dataValues['category'] = category;
         }
         return { count, products };
     }
@@ -162,6 +168,7 @@ ProductService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, common_1.Inject)('PURCHASED_ENTITY')),
     __metadata("design:paramtypes", [Object, product_repository_1.default,
+        product_type_repository_1.default,
         product_images_repository_1.default,
         product_specifications_repository_1.default])
 ], ProductService);

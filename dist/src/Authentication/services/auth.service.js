@@ -11,6 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthService = void 0;
 const common_1 = require("@nestjs/common");
+const _ = require("lodash");
 const encode_1 = require("../../Globals/providers/encode");
 const encrypt_1 = require("../../Globals/providers/encrypt");
 const users_otp_service_1 = require("../../Otp/services/users-otp.service");
@@ -44,7 +45,20 @@ let AuthService = class AuthService {
             id: user.id,
             role: user.role,
         });
-        return Object.assign(Object.assign({}, user.toJSON()), { token });
+        return _.omit(Object.assign(Object.assign({}, user.dataValues), { isCompleted: Object.values(user.dataValues).every(props => props !== null && props !== ''), token }), [
+            'password',
+            'homeAddress',
+            'city',
+            'state',
+            'validId',
+            'income',
+            'schoolName',
+            'matricNo',
+            'natureOfBusiness',
+            'roleInCompany',
+            'registrationNo',
+            'companyLocation'
+        ]);
     }
     async signUp(payload) {
         const userExist = await this.userService.create(payload);
