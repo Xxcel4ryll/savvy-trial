@@ -7,6 +7,7 @@ import PurchasedProduct from 'src/Transactions/entities/purchased-product.entity
 import { ProductDto } from '../dtos';
 import { databaseProviders } from 'src/Database/providers';
 
+import * as _ from 'lodash' 
 const sequelize = databaseProviders[0].useFactory();
 
 @Injectable()
@@ -21,8 +22,10 @@ export class ProductService {
   ) {}
 
   async find(query) {
-    const { count, rows: products } = await this.productRepository.find(query);
-
+    const { count, rows: products } = await this.productRepository.find(
+      _.omit(query, ['category'])
+    );
+    
     for (let product of products) {
       const images = await this.productImageRepository.find({
         productId: product.id

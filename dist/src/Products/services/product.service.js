@@ -19,6 +19,7 @@ const product_images_repository_1 = require("../repositories/product_images.repo
 const product_specifications_repository_1 = require("../repositories/product_specifications.repository");
 const product_type_repository_1 = require("../repositories/product_type.repository");
 const providers_1 = require("../../Database/providers");
+const _ = require("lodash");
 const sequelize = providers_1.databaseProviders[0].useFactory();
 let ProductService = class ProductService {
     constructor(purchasedProduct, productRepository, productTypeRepository, productImageRepository, productSpecsRepository) {
@@ -29,7 +30,7 @@ let ProductService = class ProductService {
         this.productSpecsRepository = productSpecsRepository;
     }
     async find(query) {
-        const { count, rows: products } = await this.productRepository.find(query);
+        const { count, rows: products } = await this.productRepository.find(_.omit(query, ['category']));
         for (let product of products) {
             const images = await this.productImageRepository.find({
                 productId: product.id
