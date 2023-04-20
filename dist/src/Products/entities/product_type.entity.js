@@ -10,6 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const sequelize_typescript_1 = require("sequelize-typescript");
+const product_entity_1 = require("./product.entity");
 let ProductTypes = class ProductTypes extends sequelize_typescript_1.Model {
 };
 __decorate([
@@ -36,6 +37,21 @@ __decorate([
     }),
     __metadata("design:type", String)
 ], ProductTypes.prototype, "description", void 0);
+__decorate([
+    (0, sequelize_typescript_1.Column)({
+        type: sequelize_typescript_1.DataType.UUID,
+    }),
+    __metadata("design:type", String)
+], ProductTypes.prototype, "productId", void 0);
+__decorate([
+    (0, sequelize_typescript_1.ForeignKey)(() => product_entity_1.default),
+    (0, sequelize_typescript_1.BelongsTo)(() => product_entity_1.default, 'productId'),
+    __metadata("design:type", Array)
+], ProductTypes.prototype, "productTypes", void 0);
+__decorate([
+    (0, sequelize_typescript_1.HasMany)(() => product_entity_1.default),
+    __metadata("design:type", Array)
+], ProductTypes.prototype, "products", void 0);
 ProductTypes = __decorate([
     (0, sequelize_typescript_1.Table)({
         timestamps: true,

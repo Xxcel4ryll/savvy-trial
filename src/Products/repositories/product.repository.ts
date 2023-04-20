@@ -1,13 +1,21 @@
 import { Injectable, Inject, HttpException, HttpStatus } from '@nestjs/common';
 import { Op } from 'sequelize';
 import Products from '../entities/product.entity';
-import ProductPrice from '../entities/product_price.entity';
+import ProductType from '../entities/product_type.entity';
+import ProductImages from '../entities/product_images.entity';
+import ProductSpecs from '../entities/product_specification.entity';
 
 @Injectable()
 export default class ProductsRepository {
   constructor(
     @Inject('PRODUCT_ENTITY')
     private readonly productEntity: typeof Products,
+    @Inject('PRODUCT_IMAGE_ENTITY')
+    private readonly productImages: typeof ProductImages,
+    @Inject('PRODUCT_SPECS_ENTITY')
+    private readonly productSpecs: typeof ProductSpecs,
+    @Inject('PRODUCT_TYPE_ENTITY')
+    private productType: typeof ProductType,
   ) {}
   async create(payload): Promise<Products> {
     const productExist = await this.check({
@@ -30,6 +38,21 @@ export default class ProductsRepository {
   find({ limit, offset, ...criteria}): Promise<{ rows: Products[]; count: number }> {    
     return this.productEntity.findAndCountAll<Products>({
       where: criteria,
+      include: [
+        {
+          model: this.productImages,
+          attributes: ['productId', 'image']
+        }, 
+        {
+          model: this.productSpecs,
+          attributes: ['productId', 'specifications']
+        },
+        // {
+        //   model: this.productType,
+        //   as: 'productType'
+        // attributes: ['productId', 'specifications']
+        // }
+      ],
       order: [['createdAt', 'DESC']],
       limit: parseInt(limit) || 10,
       offset: parseInt(offset) || 0

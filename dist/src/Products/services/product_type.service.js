@@ -12,23 +12,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ProductTypeService = void 0;
 const common_1 = require("@nestjs/common");
 const product_type_repository_1 = require("../repositories/product_type.repository");
-const product_repository_1 = require("../repositories/product.repository");
 let ProductTypeService = class ProductTypeService {
-    constructor(products, productTypeRepository) {
-        this.products = products;
+    constructor(productTypeRepository) {
         this.productTypeRepository = productTypeRepository;
     }
-    async find(query) {
-        const { rows } = await this.productTypeRepository.find(query);
-        const productTypesWithProducts = await Promise.all(rows.map(async (productType) => {
-            const { rows: products } = await this.products.find({
-                limit: 30,
-                offset: 0,
-                productTypeId: productType.id
-            });
-            return Object.assign(Object.assign({}, productType.dataValues), { products });
-        }));
-        return productTypesWithProducts;
+    find(query) {
+        return this.productTypeRepository.find(query);
     }
     async create(payload) {
         const [productType, created] = await this.productTypeRepository.create(payload);
@@ -44,8 +33,7 @@ let ProductTypeService = class ProductTypeService {
 };
 ProductTypeService = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [product_repository_1.default,
-        product_type_repository_1.default])
+    __metadata("design:paramtypes", [product_type_repository_1.default])
 ], ProductTypeService);
 exports.ProductTypeService = ProductTypeService;
 //# sourceMappingURL=product_type.service.js.map

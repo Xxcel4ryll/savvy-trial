@@ -11,6 +11,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const sequelize_typescript_1 = require("sequelize-typescript");
 const product_type_entity_1 = require("./product_type.entity");
+const product_images_entity_1 = require("./product_images.entity");
+const product_specification_entity_1 = require("./product_specification.entity");
 let Product = class Product extends sequelize_typescript_1.Model {
 };
 __decorate([
@@ -61,7 +63,7 @@ __decorate([
     __metadata("design:type", String)
 ], Product.prototype, "salesOption", void 0);
 __decorate([
-    (0, sequelize_typescript_1.BelongsTo)(() => product_type_entity_1.default, 'productTypeId'),
+    (0, sequelize_typescript_1.BelongsTo)(() => product_type_entity_1.default),
     __metadata("design:type", product_type_entity_1.default)
 ], Product.prototype, "productTypes", void 0);
 __decorate([
@@ -71,6 +73,18 @@ __decorate([
     }),
     __metadata("design:type", String)
 ], Product.prototype, "productTypeId", void 0);
+__decorate([
+    (0, sequelize_typescript_1.HasMany)(() => product_images_entity_1.default),
+    __metadata("design:type", Array)
+], Product.prototype, "images", void 0);
+__decorate([
+    (0, sequelize_typescript_1.HasMany)(() => product_specification_entity_1.default),
+    __metadata("design:type", Array)
+], Product.prototype, "specifications", void 0);
+__decorate([
+    (0, sequelize_typescript_1.HasOne)(() => product_type_entity_1.default),
+    __metadata("design:type", product_type_entity_1.default)
+], Product.prototype, "productType", void 0);
 __decorate([
     (0, sequelize_typescript_1.Column)({
         type: sequelize_typescript_1.DataType.FLOAT,

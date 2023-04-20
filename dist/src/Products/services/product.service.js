@@ -30,23 +30,7 @@ let ProductService = class ProductService {
         this.productSpecsRepository = productSpecsRepository;
     }
     async find(query) {
-        const { count, rows: products } = await this.productRepository.find(_.omit(query, ['category']));
-        for (let product of products) {
-            const images = await this.productImageRepository.find({
-                productId: product.id
-            });
-            const specification = await this.productSpecsRepository.find({
-                productId: product.id
-            });
-            const category = await this.productTypeRepository.findOne({
-                id: product.productTypeId,
-            }, ['name']);
-            product.dataValues['images'] = images;
-            product.dataValues['price'] = Number(product.price).toLocaleString();
-            product.dataValues['specifications'] = specification;
-            product.dataValues['category'] = category;
-        }
-        return { count, products };
+        return this.productRepository.find(_.omit(query, ['category']));
     }
     async create(payload) {
         const transaction = (await sequelize).transaction();

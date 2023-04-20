@@ -2,34 +2,17 @@ import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import ProductTypeRepository from '../repositories/product_type.repository';
 import { ProductTypeDto } from '../dtos';
 import { databaseProviders } from 'src/Database/providers';
-import ProductsRepository from '../repositories/product.repository';
 
 // const sequelize = databaseProviders[0].useFactory();
 
 @Injectable()
 export class ProductTypeService {
   constructor(
-    private products: ProductsRepository,
     private productTypeRepository: ProductTypeRepository
   ) {}
 
-  async find(query) {
-    const { rows } = await this.productTypeRepository.find(query);
-
-    const productTypesWithProducts = await Promise.all(rows.map(async productType => {
-      const { rows: products } = await this.products.find({
-        limit: 30, 
-        offset: 0, 
-        productTypeId: productType.id
-      });
-      
-      return {
-        ...productType.dataValues,
-        products
-      }
-    }))
-
-    return productTypesWithProducts;
+  find(query) {
+    return this.productTypeRepository.find(query);
   }
 
   async create(payload) {

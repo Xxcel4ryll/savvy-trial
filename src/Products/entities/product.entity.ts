@@ -5,9 +5,13 @@ import {
   DataType,
   BelongsTo,
   ForeignKey,
+  HasMany,
+  HasOne,
 } from 'sequelize-typescript';
 import ProductTypes from './product_type.entity';
-import ProductPrice from './product_price.entity';
+// import ProductPrice from './product_price.entity';
+import ProductImages from './product_images.entity';
+import ProductSpecs from './product_specification.entity';
 
 @Table({
   timestamps: true,
@@ -56,7 +60,7 @@ export default class Product extends Model<Product> {
   })
   salesOption: string;
 
-  @BelongsTo(() => ProductTypes, 'productTypeId')
+  @BelongsTo(() => ProductTypes)
   productTypes: ProductTypes;
 
   @ForeignKey(() => ProductTypes)
@@ -65,10 +69,19 @@ export default class Product extends Model<Product> {
   })
   productTypeId: string;
 
-  // @BelongsTo(() => ProductPrice, 'price')
-  // productPrice: ProductPrice;
+  // Associations for Product Images
+  @HasMany(() => ProductImages)
+  images: ProductImages[];
 
-  // @ForeignKey(() => ProductPrice)
+
+  // Associations for Product Specification
+  @HasMany(() => ProductSpecs)
+  specifications: ProductSpecs[];
+
+  // Associations for Product Type
+  @HasOne(() => ProductTypes)
+  productType: ProductTypes;
+  
   @Column({
     type: DataType.FLOAT,
     allowNull: false,

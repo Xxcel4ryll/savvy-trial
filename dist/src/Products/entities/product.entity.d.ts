@@ -1,5 +1,7 @@
 import { Model } from 'sequelize-typescript';
 import ProductTypes from './product_type.entity';
+import ProductImages from './product_images.entity';
+import ProductSpecs from './product_specification.entity';
 export default class Product extends Model<Product> {
     id: string;
     name: string;
@@ -9,6 +11,9 @@ export default class Product extends Model<Product> {
     salesOption: string;
     productTypes: ProductTypes;
     productTypeId: string;
+    images: ProductImages[];
+    specifications: ProductSpecs[];
+    productType: ProductTypes;
     price: string;
     quantity: string;
     description: string;

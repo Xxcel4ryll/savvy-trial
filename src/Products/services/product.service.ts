@@ -6,7 +6,6 @@ import ProductTypeRepository from '../repositories/product_type.repository';
 import PurchasedProduct from 'src/Transactions/entities/purchased-product.entity';
 import { ProductDto } from '../dtos';
 import { databaseProviders } from 'src/Database/providers';
-
 import * as _ from 'lodash' 
 const sequelize = databaseProviders[0].useFactory();
 
@@ -22,30 +21,9 @@ export class ProductService {
   ) {}
 
   async find(query) {
-    const { count, rows: products } = await this.productRepository.find(
+    return this.productRepository.find(
       _.omit(query, ['category'])
     );
-    
-    for (let product of products) {
-      const images = await this.productImageRepository.find({
-        productId: product.id
-      });
-
-      const specification = await this.productSpecsRepository.find({
-        productId: product.id
-      });
-
-      const category = await this.productTypeRepository.findOne({
-        id: product.productTypeId,
-      }, ['name']);
-
-      product.dataValues['images'] = images;
-      product.dataValues['price'] = Number(product.price).toLocaleString();
-      product.dataValues['specifications'] = specification;
-      product.dataValues['category'] = category;
-    }
-
-    return { count, products };
   }
 
   async create(payload) {

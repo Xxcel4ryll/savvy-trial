@@ -1,7 +1,9 @@
+import Product from '../entities/product.entity';
 import ProductTypes from '../entities/product_type.entity';
 export default class ProductTypesRepository {
     private readonly productTypesEntity;
-    constructor(productTypesEntity: typeof ProductTypes);
+    private readonly productEntity;
+    constructor(productTypesEntity: typeof ProductTypes, productEntity: typeof Product);
     create(payload: any): Promise<[ProductTypes, boolean]>;
     modify(criteria: any, updates: any): Promise<[affectedCount: number]>;
     find(criteria: any): Promise<{

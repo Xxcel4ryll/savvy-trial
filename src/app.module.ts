@@ -5,6 +5,7 @@ import { DatabaseModule } from './Database/database.module';
 import { ProductModule } from './Products/product.module';
 import { FileModule } from './Files/file.module';
 import { SettingsModule } from './Settings/settings.module';
+import { WaitListModule } from './Waitlist/wailtlist.module';
 // import { UserModule } from './Users/user.module';
 // import { PaystackModule } from './Paystack/paystack.module';
 // import { TransactionModule } from './Transactions/transaction.module';
@@ -16,7 +17,8 @@ import { SettingsModule } from './Settings/settings.module';
     AuthModule,
     ProductModule,
     FileModule,
-    SettingsModule
+    SettingsModule,
+    WaitListModule
     // UserModule,
     // PaystackModule,
     // TransactionModule,

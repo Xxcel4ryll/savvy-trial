@@ -5,8 +5,8 @@ export declare class ProductController {
     private productService;
     constructor(productService: ProductService);
     getProducts(req: Request): Promise<{
+        rows: import("../entities/product.entity").default[];
         count: number;
-        products: import("../entities/product.entity").default[];
     }>;
     createProduct(req: Request, product: ProductDto): Promise<{
         images: import("../entities/product_images.entity").default[];
@@ -19,6 +19,7 @@ export declare class ProductController {
         salesOption: string;
         productTypes: import("../entities/product_type.entity").default;
         productTypeId: string;
+        productType: import("../entities/product_type.entity").default;
         price: string;
         quantity: string;
         description: string;

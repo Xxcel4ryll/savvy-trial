@@ -1,4 +1,5 @@
-import { Table, Column, Model, DataType } from 'sequelize-typescript';
+import { Table, Column, Model, DataType, HasOne, HasMany, BelongsTo, ForeignKey } from 'sequelize-typescript';
+import Products from './product.entity';
 
 @Table({
   timestamps: false,
@@ -14,6 +15,7 @@ export default class ProductImages extends Model<ProductImages> {
   })
   id: string;
 
+  @ForeignKey(() => Products)
   @Column({
     type: DataType.UUID,
     allowNull: false,
@@ -25,4 +27,7 @@ export default class ProductImages extends Model<ProductImages> {
     allowNull: false,
   })
   image: string;
+
+  @BelongsTo(() => Products)
+  products: Products;
 }

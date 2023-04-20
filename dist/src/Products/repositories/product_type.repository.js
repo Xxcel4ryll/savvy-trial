@@ -14,8 +14,9 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const common_1 = require("@nestjs/common");
 let ProductTypesRepository = class ProductTypesRepository {
-    constructor(productTypesEntity) {
+    constructor(productTypesEntity, productEntity) {
         this.productTypesEntity = productTypesEntity;
+        this.productEntity = productEntity;
     }
     create(payload) {
         return this.productTypesEntity.findOrCreate({
@@ -34,6 +35,9 @@ let ProductTypesRepository = class ProductTypesRepository {
     find(criteria) {
         return this.productTypesEntity.findAndCountAll({
             where: criteria,
+            include: {
+                model: this.productEntity
+            }
         });
     }
     findOne(criteria, attributes = []) {
@@ -46,7 +50,8 @@ let ProductTypesRepository = class ProductTypesRepository {
 ProductTypesRepository = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, common_1.Inject)('PRODUCT_TYPE_ENTITY')),
-    __metadata("design:paramtypes", [Object])
+    __param(1, (0, common_1.Inject)('PRODUCT_ENTITY')),
+    __metadata("design:paramtypes", [Object, Object])
 ], ProductTypesRepository);
 exports.default = ProductTypesRepository;
 //# sourceMappingURL=product_type.repository.js.map

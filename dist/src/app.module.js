@@ -14,6 +14,7 @@ const database_module_1 = require("./Database/database.module");
 const product_module_1 = require("./Products/product.module");
 const file_module_1 = require("./Files/file.module");
 const settings_module_1 = require("./Settings/settings.module");
+const wailtlist_module_1 = require("./Waitlist/wailtlist.module");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
@@ -24,7 +25,8 @@ AppModule = __decorate([
             auth_module_1.AuthModule,
             product_module_1.ProductModule,
             file_module_1.FileModule,
-            settings_module_1.SettingsModule
+            settings_module_1.SettingsModule,
+            wailtlist_module_1.WaitListModule
         ],
         exports: [],
     })

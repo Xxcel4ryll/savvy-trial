@@ -26,8 +26,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const common_1 = require("@nestjs/common");
 const sequelize_1 = require("sequelize");
 let ProductsRepository = class ProductsRepository {
-    constructor(productEntity) {
+    constructor(productEntity, productImages, productSpecs, productType) {
         this.productEntity = productEntity;
+        this.productImages = productImages;
+        this.productSpecs = productSpecs;
+        this.productType = productType;
     }
     async create(payload) {
         const productExist = await this.check({
@@ -47,6 +50,16 @@ let ProductsRepository = class ProductsRepository {
         var { limit, offset } = _a, criteria = __rest(_a, ["limit", "offset"]);
         return this.productEntity.findAndCountAll({
             where: criteria,
+            include: [
+                {
+                    model: this.productImages,
+                    attributes: ['productId', 'image']
+                },
+                {
+                    model: this.productSpecs,
+                    attributes: ['productId', 'specifications']
+                },
+            ],
             order: [['createdAt', 'DESC']],
             limit: parseInt(limit) || 10,
             offset: parseInt(offset) || 0
@@ -96,7 +109,10 @@ let ProductsRepository = class ProductsRepository {
 ProductsRepository = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, common_1.Inject)('PRODUCT_ENTITY')),
-    __metadata("design:paramtypes", [Object])
+    __param(1, (0, common_1.Inject)('PRODUCT_IMAGE_ENTITY')),
+    __param(2, (0, common_1.Inject)('PRODUCT_SPECS_ENTITY')),
+    __param(3, (0, common_1.Inject)('PRODUCT_TYPE_ENTITY')),
+    __metadata("design:paramtypes", [Object, Object, Object, Object])
 ], ProductsRepository);
 exports.default = ProductsRepository;
 //# sourceMappingURL=product.repository.js.map

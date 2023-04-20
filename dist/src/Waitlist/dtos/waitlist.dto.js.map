@@ -1,0 +1,1 @@
+{"version":3,"file":"waitlist.dto.js","sourceRoot":"","sources":["../../../../src/Waitlist/dtos/waitlist.dto.ts"],"names":[],"mappings":";;;AAAA,2BAA2B;AAE3B,MAAa,WAAW;CAEvB;AAFD,kCAEC;AAEY,QAAA,cAAc,GAAG,GAAG,CAAC,MAAM,EAAE,CAAC,IAAI,CAAC;IAC9C,KAAK,EAAE,GAAG,CAAC,MAAM,EAAE,CAAC,KAAK,EAAE,CAAC,QAAQ,EAAE;CACvC,CAAC,CAAC"}

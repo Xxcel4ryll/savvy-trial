@@ -11,8 +11,8 @@ export declare class ProductService {
     private productSpecsRepository;
     constructor(purchasedProduct: typeof PurchasedProduct, productRepository: ProductRepository, productTypeRepository: ProductTypeRepository, productImageRepository: ProductImageRepository, productSpecsRepository: ProductSpecsRepository);
     find(query: any): Promise<{
+        rows: import("../entities/product.entity").default[];
         count: number;
-        products: import("../entities/product.entity").default[];
     }>;
     create(payload: any): Promise<{
         images: import("../entities/product_images.entity").default[];
@@ -25,6 +25,7 @@ export declare class ProductService {
         salesOption: string;
         productTypes: import("../entities/product_type.entity").default;
         productTypeId: string;
+        productType: import("../entities/product_type.entity").default;
         price: string;
         quantity: string;
         description: string;
