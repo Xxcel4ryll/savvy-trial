@@ -9,7 +9,7 @@ import {
 } from '@nestjs/common';
 import { WaitlistService } from '../services/waitlist.service';
 import { WaitlistDto, waitlistSchema } from '../dtos/index';
-import { JoiValidationPipe } from 'src/globals/providers/validate/validate.pipe';
+import { JoiValidationPipe } from 'src/Globals/providers/validate/validate.pipe';
 import Roles from 'src/globals/role.enum';
 import RoleGuard from 'src/globals/Guards/role.guard';
 import { Request } from 'express';

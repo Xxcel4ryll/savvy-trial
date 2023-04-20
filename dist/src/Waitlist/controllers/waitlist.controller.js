@@ -16,7 +16,7 @@ exports.WaitlistController = void 0;
 const common_1 = require("@nestjs/common");
 const waitlist_service_1 = require("../services/waitlist.service");
 const index_1 = require("../dtos/index");
-const validate_pipe_1 = require("../../globals/providers/validate/validate.pipe");
+const validate_pipe_1 = require("../../Globals/providers/validate/validate.pipe");
 let WaitlistController = class WaitlistController {
     constructor(waitlistService) {
         this.waitlistService = waitlistService;
