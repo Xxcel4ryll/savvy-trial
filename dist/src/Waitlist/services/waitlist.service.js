@@ -12,28 +12,37 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.WaitlistService = void 0;
 const common_1 = require("@nestjs/common");
 const waitlist_repository_1 = require("../repositories/waitlist.repository");
+const email_1 = require("../../Globals/providers/email");
 let WaitlistService = class WaitlistService {
-    constructor(productTypeRepository) {
-        this.productTypeRepository = productTypeRepository;
+    constructor(waitlistRepository, Email) {
+        this.waitlistRepository = waitlistRepository;
+        this.Email = Email;
     }
     find(query) {
-        return this.productTypeRepository.find(query);
+        return this.waitlistRepository.find(query);
     }
     async create(payload) {
-        const [productType, created] = await this.productTypeRepository.create(payload);
+        const [waitlist, created] = await this.waitlistRepository.create(payload);
         if (created) {
-            return productType;
+            this.Email.send('waitlist', {
+                fromName: 'Savvy Gadget',
+                fromId: 'info@rockapostolate.org',
+                subject: 'Waitlist',
+                to: waitlist.email
+            });
+            return waitlist;
         }
         throw new common_1.HttpException({
             statusCode: common_1.HttpStatus.PRECONDITION_FAILED,
-            name: 'PRODUCT_TYPE',
-            error: 'Already Created',
+            name: 'WAITLIST',
+            error: 'You already joined',
         }, common_1.HttpStatus.PRECONDITION_FAILED);
     }
 };
 WaitlistService = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [waitlist_repository_1.default])
+    __metadata("design:paramtypes", [waitlist_repository_1.default,
+        email_1.Email])
 ], WaitlistService);
 exports.WaitlistService = WaitlistService;
 //# sourceMappingURL=waitlist.service.js.map
