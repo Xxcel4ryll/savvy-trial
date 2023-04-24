@@ -20,8 +20,9 @@ export class ProductService {
     private productSpecsRepository: ProductSpecsRepository
   ) {}
 
-  async find(query) {
+  async find(user, query) {
     return this.productRepository.find(
+      user,
       _.omit(query, ['category'])
     );
   }
@@ -29,6 +30,7 @@ export class ProductService {
   async create(payload) {
     const transaction = (await sequelize).transaction();
     try {
+      // Update this logic to use sequelize include
       const product = await this.productRepository.create(payload);
 
       const images = await this.productImageRepository.addImages(
@@ -41,7 +43,7 @@ export class ProductService {
         payload.specification
       );
 
-      return {...product.dataValues,images,specifications};
+      return {...product.toJSON(),images,specifications};
     } catch (error) {
       (await transaction).rollback();
       throw new HttpException(
@@ -93,10 +95,11 @@ export class ProductService {
     }
   }
 
-  async view(productId) {
-    const product = await this.productRepository.check({
-      id: productId
-    });
+  async view(user, productId) {
+    const product = await this.productRepository.check(
+      user,
+      {id: productId}
+    );
 
     const images = await this.productImageRepository.find({
       productId: product.id
@@ -106,14 +109,14 @@ export class ProductService {
       productId: product.id
     });
 
-    product['images'] = images;
-    product['specifications'] = specification;
+    product.dataValues['images'] = images;
+    product.dataValues['specifications'] = specification;
 
     return product;
   }
 
-  async search(query) {
-    const product = await this.productRepository.search(query);
+  async search(user, query) {
+    const product = await this.productRepository.search(user, query);
 
     if (!product) {
       throw new HttpException(
@@ -158,18 +161,19 @@ export class ProductService {
           );
         }
 
-        if (product.quantity >= isProduct.quantity) {
+        if (product.quantity >= isProduct.dataValues.quantity) {
           throw new HttpException(
             {
               statusCode: HttpStatus.PRECONDITION_FAILED,
               name: 'PRODUCT',
-              error: `${isProduct.name} has ${isProduct.quantity} units left`,
+              error: `${isProduct.dataValues.name} has 
+                ${isProduct.dataValues.quantity} units left`,
             },
             HttpStatus.PRECONDITION_FAILED,
           );
         }
 
-        return {...isProduct,paidQuantity:product.quantity};
+        return {...isProduct.dataValues,paidQuantity:product.quantity};
     }))
   }
 

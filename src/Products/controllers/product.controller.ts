@@ -23,7 +23,7 @@ export class ProductController {
   @UseGuards(RoleGuard([Roles.Admin, Roles.User]))
   @Get()
   getProducts(@Req() req: Request) {
-    return this.productService.find(req.query);
+    return this.productService.find(req.user, req.query);
   }
 
   @UseGuards(RoleGuard([Roles.Admin, Roles.User]))
@@ -43,12 +43,12 @@ export class ProductController {
   @UseGuards(RoleGuard([Roles.Admin, Roles.User]))
   @Get('search/')
   searchProduct(@Req() req: Request) {    
-    return this.productService.search(req.query.search);
+    return this.productService.search(req.user, req.query.search);
   }
 
-  // @UseGuards(RoleGuard([Roles.Admin, Roles.User]))
+  @UseGuards(RoleGuard([Roles.Admin, Roles.User]))
   @Get(':productId')
   viewProduct(@Req() req: Request, @Param() { productId }: ProductDto) {        
-    return this.productService.view(productId);
+    return this.productService.view(req.user, productId);
   }
 }

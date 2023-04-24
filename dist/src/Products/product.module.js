@@ -18,6 +18,7 @@ const product_images_repository_1 = require("./repositories/product_images.repos
 const product_specifications_repository_1 = require("./repositories/product_specifications.repository");
 const product_type_service_1 = require("./services/product_type.service");
 const transaction_module_1 = require("../Transactions/transaction.module");
+const user_module_1 = require("../Users/user.module");
 let ProductModule = class ProductModule {
 };
 ProductModule = __decorate([
@@ -38,7 +39,10 @@ ProductModule = __decorate([
             product_repository_1.default,
             ...product_provider_1.ProductProviders,
         ],
-        imports: [(0, common_1.forwardRef)(() => transaction_module_1.TransactionModule)]
+        imports: [
+            (0, common_1.forwardRef)(() => user_module_1.UserModule),
+            (0, common_1.forwardRef)(() => transaction_module_1.TransactionModule)
+        ]
     })
 ], ProductModule);
 exports.ProductModule = ProductModule;

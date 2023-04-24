@@ -28,15 +28,6 @@ export default class ProductTypes extends Model<ProductTypes> {
   })
   description: string;
 
-  @Column({
-    type: DataType.UUID,
-  })
-  productId: string;
-  @ForeignKey(() => Products)
-
-  @BelongsTo(() => Products, 'productId')
-  productTypes: Products[];
-
   @HasMany(() => Products)
   products: Products[];
 }

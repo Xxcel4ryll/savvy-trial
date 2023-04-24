@@ -16,8 +16,8 @@ let ProductTypeService = class ProductTypeService {
     constructor(productTypeRepository) {
         this.productTypeRepository = productTypeRepository;
     }
-    find(query) {
-        return this.productTypeRepository.find(query);
+    find(user, query) {
+        return this.productTypeRepository.find(user, query);
     }
     async create(payload) {
         const [productType, created] = await this.productTypeRepository.create(payload);

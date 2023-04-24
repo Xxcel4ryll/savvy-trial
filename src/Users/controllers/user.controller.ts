@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Post,
@@ -59,5 +60,11 @@ export class UserController {
   @Get('favourite')
   viewFavoriteProduct(@Req() { user }: Request) {    
     return this.userService.viewFavoriteProduct(user);
+  }
+
+  @UseGuards(RoleGuard([Roles.Admin, Roles.User]))
+  @Delete('favourite/:productId')
+  removeFavoriteProduct(@Req() { user }: Request, @Param() { productId }: ProductDto) {    
+    return this.userService.removeFavoriteProduct(user, productId);
   }
 }

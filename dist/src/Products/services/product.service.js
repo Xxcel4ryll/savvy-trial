@@ -29,8 +29,8 @@ let ProductService = class ProductService {
         this.productImageRepository = productImageRepository;
         this.productSpecsRepository = productSpecsRepository;
     }
-    async find(query) {
-        return this.productRepository.find(_.omit(query, ['category']));
+    async find(user, query) {
+        return this.productRepository.find(user, _.omit(query, ['category']));
     }
     async create(payload) {
         const transaction = (await sequelize).transaction();
@@ -38,7 +38,7 @@ let ProductService = class ProductService {
             const product = await this.productRepository.create(payload);
             const images = await this.productImageRepository.addImages(product.id, payload.images);
             const specifications = await this.productSpecsRepository.addSpecification(product.id, payload.specification);
-            return Object.assign(Object.assign({}, product.dataValues), { images, specifications });
+            return Object.assign(Object.assign({}, product.toJSON()), { images, specifications });
         }
         catch (error) {
             (await transaction).rollback();
@@ -77,22 +77,20 @@ let ProductService = class ProductService {
             }, common_1.HttpStatus.PRECONDITION_FAILED);
         }
     }
-    async view(productId) {
-        const product = await this.productRepository.check({
-            id: productId
-        });
+    async view(user, productId) {
+        const product = await this.productRepository.check(user, { id: productId });
         const images = await this.productImageRepository.find({
             productId: product.id
         });
         const specification = await this.productSpecsRepository.find({
             productId: product.id
         });
-        product['images'] = images;
-        product['specifications'] = specification;
+        product.dataValues['images'] = images;
+        product.dataValues['specifications'] = specification;
         return product;
     }
-    async search(query) {
-        const product = await this.productRepository.search(query);
+    async search(user, query) {
+        const product = await this.productRepository.search(user, query);
         if (!product) {
             throw new common_1.HttpException({
                 statusCode: common_1.HttpStatus.PRECONDITION_FAILED,
@@ -122,14 +120,15 @@ let ProductService = class ProductService {
                     error: 'Out of stock',
                 }, common_1.HttpStatus.PRECONDITION_FAILED);
             }
-            if (product.quantity >= isProduct.quantity) {
+            if (product.quantity >= isProduct.dataValues.quantity) {
                 throw new common_1.HttpException({
                     statusCode: common_1.HttpStatus.PRECONDITION_FAILED,
                     name: 'PRODUCT',
-                    error: `${isProduct.name} has ${isProduct.quantity} units left`,
+                    error: `${isProduct.dataValues.name} has 
+                ${isProduct.dataValues.quantity} units left`,
                 }, common_1.HttpStatus.PRECONDITION_FAILED);
             }
-            return Object.assign(Object.assign({}, isProduct), { paidQuantity: product.quantity });
+            return Object.assign(Object.assign({}, isProduct.dataValues), { paidQuantity: product.quantity });
         }));
     }
     recordPurchasedProduct(products) {

@@ -18,4 +18,5 @@ export declare class UserController {
         rows: import("../entities/user_favourite.entity").default[];
         count: number;
     }>;
+    removeFavoriteProduct({ user }: Request, { productId }: ProductDto): Promise<string>;
 }

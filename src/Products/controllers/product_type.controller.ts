@@ -21,7 +21,7 @@ export class ProductTypeController {
   @UseGuards(RoleGuard([Roles.Admin, Roles.User]))
   @Get()
   getProductTypes(@Req() req: Request) {
-    return this.productTypeService.find(req.query);
+    return this.productTypeService.find(req.user, req.query);
   }
 
   @UseGuards(RoleGuard([Roles.Admin, Roles.User]))

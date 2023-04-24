@@ -24,7 +24,7 @@ let ProductTypeController = class ProductTypeController {
         this.productTypeService = productTypeService;
     }
     getProductTypes(req) {
-        return this.productTypeService.find(req.query);
+        return this.productTypeService.find(req.user, req.query);
     }
     createProductType(productType) {
         return this.productTypeService.create(productType);

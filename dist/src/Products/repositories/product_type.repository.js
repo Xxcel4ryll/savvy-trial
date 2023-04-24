@@ -14,9 +14,10 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const common_1 = require("@nestjs/common");
 let ProductTypesRepository = class ProductTypesRepository {
-    constructor(productTypesEntity, productEntity) {
+    constructor(productTypesEntity, productEntity, favouriteEntity) {
         this.productTypesEntity = productTypesEntity;
         this.productEntity = productEntity;
+        this.favouriteEntity = favouriteEntity;
     }
     create(payload) {
         return this.productTypesEntity.findOrCreate({
@@ -32,11 +33,22 @@ let ProductTypesRepository = class ProductTypesRepository {
             where: criteria,
         });
     }
-    find(criteria) {
+    find(user, criteria) {
         return this.productTypesEntity.findAndCountAll({
             where: criteria,
             include: {
-                model: this.productEntity
+                model: this.productEntity,
+                attributes: {
+                    include: [
+                        [
+                            this.favouriteEntity.isUserFavouriteQuery({
+                                userId: user.id,
+                                column: `'${this.productEntity.name}.id'`
+                            }),
+                            'isFavorite'
+                        ],
+                    ],
+                },
             }
         });
     }
@@ -51,7 +63,8 @@ ProductTypesRepository = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, common_1.Inject)('PRODUCT_TYPE_ENTITY')),
     __param(1, (0, common_1.Inject)('PRODUCT_ENTITY')),
-    __metadata("design:paramtypes", [Object, Object])
+    __param(2, (0, common_1.Inject)('USER_FAVOURITES_ENTITY')),
+    __metadata("design:paramtypes", [Object, Object, Object])
 ], ProductTypesRepository);
 exports.default = ProductTypesRepository;
 //# sourceMappingURL=product_type.repository.js.map

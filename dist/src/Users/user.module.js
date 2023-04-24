@@ -16,6 +16,7 @@ const paystack_module_1 = require("../Paystack/paystack.module");
 const transaction_module_1 = require("../Transactions/transaction.module");
 const user_favorites_repository_1 = require("./repositories/user_favorites.repository");
 const file_module_1 = require("../Files/file.module");
+const product_module_1 = require("../Products/product.module");
 let UserModule = class UserModule {
 };
 UserModule = __decorate([
@@ -23,7 +24,7 @@ UserModule = __decorate([
         controllers: [user_controller_1.UserController],
         providers: [user_service_1.UserService, user_repository_1.default, user_favorites_repository_1.default, ...user_provider_1.UserProviders],
         exports: [user_service_1.UserService, user_repository_1.default, ...user_provider_1.UserProviders],
-        imports: [paystack_module_1.PaystackModule, transaction_module_1.TransactionModule, file_module_1.FileModule],
+        imports: [paystack_module_1.PaystackModule, transaction_module_1.TransactionModule, file_module_1.FileModule, product_module_1.ProductModule],
     })
 ], UserModule);
 exports.UserModule = UserModule;

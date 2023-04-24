@@ -100,6 +100,19 @@ let UserService = class UserService {
     viewFavoriteProduct(user) {
         return this.userFavouriteRepository.find(user.id);
     }
+    async removeFavoriteProduct(user, productId) {
+        const isRemoved = await this.userFavouriteRepository.remove({
+            userId: user.id,
+            productId
+        });
+        if (isRemoved)
+            return 'Favorite successfully removed';
+        throw new common_1.HttpException({
+            statusCode: common_1.HttpStatus.PRECONDITION_FAILED,
+            name: 'FAVORITE',
+            error: 'Favorite failed to delete',
+        }, common_1.HttpStatus.PRECONDITION_FAILED);
+    }
 };
 UserService = __decorate([
     (0, common_1.Injectable)(),

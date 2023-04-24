@@ -38,17 +38,6 @@ __decorate([
     __metadata("design:type", String)
 ], ProductTypes.prototype, "description", void 0);
 __decorate([
-    (0, sequelize_typescript_1.Column)({
-        type: sequelize_typescript_1.DataType.UUID,
-    }),
-    __metadata("design:type", String)
-], ProductTypes.prototype, "productId", void 0);
-__decorate([
-    (0, sequelize_typescript_1.ForeignKey)(() => product_entity_1.default),
-    (0, sequelize_typescript_1.BelongsTo)(() => product_entity_1.default, 'productId'),
-    __metadata("design:type", Array)
-], ProductTypes.prototype, "productTypes", void 0);
-__decorate([
     (0, sequelize_typescript_1.HasMany)(() => product_entity_1.default),
     __metadata("design:type", Array)
 ], ProductTypes.prototype, "products", void 0);

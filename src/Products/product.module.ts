@@ -9,6 +9,7 @@ import ProductImageRepository from './repositories/product_images.repository';
 import ProductSpecsRepository from './repositories/product_specifications.repository';
 import { ProductTypeService } from './services/product_type.service';
 import { TransactionModule } from 'src/Transactions/transaction.module';
+import { UserModule } from 'src/Users/user.module';
 
 @Module({
   controllers: [ProductController, ProductTypeController],
@@ -27,6 +28,9 @@ import { TransactionModule } from 'src/Transactions/transaction.module';
     ProductRepository,
     ...ProductProviders,
   ],
-  imports: [forwardRef(() => TransactionModule)]
+  imports: [
+    forwardRef(() => UserModule), 
+    forwardRef(() => TransactionModule)
+  ]
 })
 export class ProductModule {}

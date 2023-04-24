@@ -4,6 +4,7 @@ import Products from '../entities/product.entity';
 import ProductType from '../entities/product_type.entity';
 import ProductImages from '../entities/product_images.entity';
 import ProductSpecs from '../entities/product_specification.entity';
+import UserFavourite from 'src/Users/entities/user_favourite.entity';
 
 @Injectable()
 export default class ProductsRepository {
@@ -16,6 +17,8 @@ export default class ProductsRepository {
     private readonly productSpecs: typeof ProductSpecs,
     @Inject('PRODUCT_TYPE_ENTITY')
     private productType: typeof ProductType,
+    @Inject('USER_FAVOURITES_ENTITY')
+    private favouriteEntity: typeof UserFavourite,
   ) {}
   async create(payload): Promise<Products> {
     const productExist = await this.check({
@@ -35,10 +38,20 @@ export default class ProductsRepository {
     });
   }
 
-  find({ limit, offset, ...criteria}): Promise<{ rows: Products[]; count: number }> {    
+  find(user, { limit, offset, ...criteria}): Promise<{ rows: Products[]; count: number }> {    
     return this.productEntity.findAndCountAll<Products>({
       where: criteria,
-      include: [
+      attributes: {
+				include: [
+					[
+            this.favouriteEntity.isUserFavouriteQuery({
+            userId: user.id,
+            column: `${this.productEntity.name}.id`
+          }), 
+          'isFavorite'],
+				],
+			},
+      include: [  
         {
           model: this.productImages,
           attributes: ['productId', 'image']
@@ -47,11 +60,10 @@ export default class ProductsRepository {
           model: this.productSpecs,
           attributes: ['productId', 'specifications']
         },
-        // {
-        //   model: this.productType,
-        //   as: 'productType'
-        // attributes: ['productId', 'specifications']
-        // }
+        {
+          model: this.productType,
+          attributes: ['name']
+        }
       ],
       order: [['createdAt', 'DESC']],
       limit: parseInt(limit) || 10,
@@ -59,14 +71,23 @@ export default class ProductsRepository {
     });
   }
 
-  check(criteria): Promise<Products> {
+  check(user?, criteria?): Promise<Products> {
     return this.productEntity.findOne<Products>({
       where: criteria,
-      raw: true
+      attributes: {
+				include: [
+					[
+            this.favouriteEntity.isUserFavouriteQuery({
+            userId: user.id,
+            column: `${this.productEntity.name}.id`
+          }), 
+          'isFavorite'],
+				],
+			},
     });
   }
 
-  search(query): Promise<Products> {
+  search(user, query): Promise<Products> {
     return this.productEntity.findOne<Products>({
       where: {
         isVisible: true,
@@ -98,6 +119,16 @@ export default class ProductsRepository {
           },
         ]
       },
+      attributes: {
+				include: [
+					[
+            this.favouriteEntity.isUserFavouriteQuery({
+            userId: user.id,
+            column: `${this.productEntity.name}.id`
+          }), 
+          'isFavorite'],
+				],
+			},
     });
   }
 }

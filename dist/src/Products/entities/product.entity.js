@@ -13,7 +13,11 @@ const sequelize_typescript_1 = require("sequelize-typescript");
 const product_type_entity_1 = require("./product_type.entity");
 const product_images_entity_1 = require("./product_images.entity");
 const product_specification_entity_1 = require("./product_specification.entity");
+const user_favourite_entity_1 = require("../../Users/entities/user_favourite.entity");
 let Product = class Product extends sequelize_typescript_1.Model {
+    get price() {
+        return this.getDataValue('price').toLocaleString();
+    }
 };
 __decorate([
     (0, sequelize_typescript_1.Column)({
@@ -82,16 +86,17 @@ __decorate([
     __metadata("design:type", Array)
 ], Product.prototype, "specifications", void 0);
 __decorate([
-    (0, sequelize_typescript_1.HasOne)(() => product_type_entity_1.default),
-    __metadata("design:type", product_type_entity_1.default)
-], Product.prototype, "productType", void 0);
+    (0, sequelize_typescript_1.HasOne)(() => user_favourite_entity_1.default),
+    __metadata("design:type", user_favourite_entity_1.default)
+], Product.prototype, "userFavourite", void 0);
 __decorate([
     (0, sequelize_typescript_1.Column)({
         type: sequelize_typescript_1.DataType.FLOAT,
         allowNull: false,
     }),
-    __metadata("design:type", String)
-], Product.prototype, "price", void 0);
+    __metadata("design:type", String),
+    __metadata("design:paramtypes", [])
+], Product.prototype, "price", null);
 __decorate([
     (0, sequelize_typescript_1.Column)({
         type: sequelize_typescript_1.DataType.INTEGER,

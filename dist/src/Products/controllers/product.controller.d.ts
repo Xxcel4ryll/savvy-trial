@@ -19,8 +19,7 @@ export declare class ProductController {
         salesOption: string;
         productTypes: import("../entities/product_type.entity").default;
         productTypeId: string;
-        productType: import("../entities/product_type.entity").default;
-        price: string;
+        userFavourite: import("../../Users/entities/user_favourite.entity").default;
         quantity: string;
         description: string;
         createdAt?: any;

@@ -12,6 +12,7 @@ import ProductTypes from './product_type.entity';
 // import ProductPrice from './product_price.entity';
 import ProductImages from './product_images.entity';
 import ProductSpecs from './product_specification.entity';
+import UserFavourite from 'src/Users/entities/user_favourite.entity';
 
 @Table({
   timestamps: true,
@@ -60,6 +61,7 @@ export default class Product extends Model<Product> {
   })
   salesOption: string;
 
+  // Associations for Product Type
   @BelongsTo(() => ProductTypes)
   productTypes: ProductTypes;
 
@@ -78,15 +80,17 @@ export default class Product extends Model<Product> {
   @HasMany(() => ProductSpecs)
   specifications: ProductSpecs[];
 
-  // Associations for Product Type
-  @HasOne(() => ProductTypes)
-  productType: ProductTypes;
+  // Associations for Favourite Product
+  @HasOne(() => UserFavourite)
+  userFavourite: UserFavourite;
   
   @Column({
     type: DataType.FLOAT,
     allowNull: false,
   })
-  price: string
+  get price(): string{
+    return this.getDataValue('price').toLocaleString();
+  }
 
   @Column({
     type: DataType.INTEGER,

@@ -26,11 +26,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const common_1 = require("@nestjs/common");
 const sequelize_1 = require("sequelize");
 let ProductsRepository = class ProductsRepository {
-    constructor(productEntity, productImages, productSpecs, productType) {
+    constructor(productEntity, productImages, productSpecs, productType, favouriteEntity) {
         this.productEntity = productEntity;
         this.productImages = productImages;
         this.productSpecs = productSpecs;
         this.productType = productType;
+        this.favouriteEntity = favouriteEntity;
     }
     async create(payload) {
         const productExist = await this.check({
@@ -46,10 +47,21 @@ let ProductsRepository = class ProductsRepository {
             where: criteria,
         });
     }
-    find(_a) {
+    find(user, _a) {
         var { limit, offset } = _a, criteria = __rest(_a, ["limit", "offset"]);
         return this.productEntity.findAndCountAll({
             where: criteria,
+            attributes: {
+                include: [
+                    [
+                        this.favouriteEntity.isUserFavouriteQuery({
+                            userId: user.id,
+                            column: `${this.productEntity.name}.id`
+                        }),
+                        'isFavorite'
+                    ],
+                ],
+            },
             include: [
                 {
                     model: this.productImages,
@@ -59,19 +71,33 @@ let ProductsRepository = class ProductsRepository {
                     model: this.productSpecs,
                     attributes: ['productId', 'specifications']
                 },
+                {
+                    model: this.productType,
+                    attributes: ['name']
+                }
             ],
             order: [['createdAt', 'DESC']],
             limit: parseInt(limit) || 10,
             offset: parseInt(offset) || 0
         });
     }
-    check(criteria) {
+    check(user, criteria) {
         return this.productEntity.findOne({
             where: criteria,
-            raw: true
+            attributes: {
+                include: [
+                    [
+                        this.favouriteEntity.isUserFavouriteQuery({
+                            userId: user.id,
+                            column: `${this.productEntity.name}.id`
+                        }),
+                        'isFavorite'
+                    ],
+                ],
+            },
         });
     }
-    search(query) {
+    search(user, query) {
         return this.productEntity.findOne({
             where: {
                 isVisible: true,
@@ -103,6 +129,17 @@ let ProductsRepository = class ProductsRepository {
                     },
                 ]
             },
+            attributes: {
+                include: [
+                    [
+                        this.favouriteEntity.isUserFavouriteQuery({
+                            userId: user.id,
+                            column: `${this.productEntity.name}.id`
+                        }),
+                        'isFavorite'
+                    ],
+                ],
+            },
         });
     }
 };
@@ -112,7 +149,8 @@ ProductsRepository = __decorate([
     __param(1, (0, common_1.Inject)('PRODUCT_IMAGE_ENTITY')),
     __param(2, (0, common_1.Inject)('PRODUCT_SPECS_ENTITY')),
     __param(3, (0, common_1.Inject)('PRODUCT_TYPE_ENTITY')),
-    __metadata("design:paramtypes", [Object, Object, Object, Object])
+    __param(4, (0, common_1.Inject)('USER_FAVOURITES_ENTITY')),
+    __metadata("design:paramtypes", [Object, Object, Object, Object, Object])
 ], ProductsRepository);
 exports.default = ProductsRepository;
 //# sourceMappingURL=product.repository.js.map

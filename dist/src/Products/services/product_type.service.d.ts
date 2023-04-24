@@ -2,7 +2,7 @@ import ProductTypeRepository from '../repositories/product_type.repository';
 export declare class ProductTypeService {
     private productTypeRepository;
     constructor(productTypeRepository: ProductTypeRepository);
-    find(query: any): Promise<{
+    find(user: any, query: any): Promise<{
         rows: import("../entities/product_type.entity").default[];
         count: number;
     }>;

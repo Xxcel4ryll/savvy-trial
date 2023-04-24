@@ -10,7 +10,7 @@ export declare class ProductService {
     private productImageRepository;
     private productSpecsRepository;
     constructor(purchasedProduct: typeof PurchasedProduct, productRepository: ProductRepository, productTypeRepository: ProductTypeRepository, productImageRepository: ProductImageRepository, productSpecsRepository: ProductSpecsRepository);
-    find(query: any): Promise<{
+    find(user: any, query: any): Promise<{
         rows: import("../entities/product.entity").default[];
         count: number;
     }>;
@@ -25,8 +25,7 @@ export declare class ProductService {
         salesOption: string;
         productTypes: import("../entities/product_type.entity").default;
         productTypeId: string;
-        productType: import("../entities/product_type.entity").default;
-        price: string;
+        userFavourite: import("../../Users/entities/user_favourite.entity").default;
         quantity: string;
         description: string;
         createdAt?: any;
@@ -41,8 +40,8 @@ export declare class ProductService {
         _model: import("sequelize").Model<import("../entities/product.entity").default, import("../entities/product.entity").default>;
     }>;
     update(payload: any): Promise<"Product successfully updated!" | "Product failed to update">;
-    view(productId: any): Promise<import("../entities/product.entity").default>;
-    search(query: any): Promise<import("../entities/product.entity").default>;
+    view(user: any, productId: any): Promise<import("../entities/product.entity").default>;
+    search(user: any, query: any): Promise<import("../entities/product.entity").default>;
     productAvailability(products: any): Promise<any[]>;
     recordPurchasedProduct(products: any): void;
 }
