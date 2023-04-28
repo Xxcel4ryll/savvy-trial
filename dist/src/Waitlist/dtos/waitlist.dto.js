@@ -6,6 +6,7 @@ class WaitlistDto {
 }
 exports.WaitlistDto = WaitlistDto;
 exports.waitlistSchema = Joi.object().keys({
-    email: Joi.string().email().required()
+    email: Joi.string().email().required(),
+    name: Joi.string().required(),
 });
 //# sourceMappingURL=waitlist.dto.js.map

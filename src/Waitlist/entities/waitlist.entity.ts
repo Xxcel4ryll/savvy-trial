@@ -20,4 +20,10 @@ export default class Waitlist extends Model<Waitlist> {
     allowNull: false,
   })
   email: string;
+
+  @Column({
+    type: DataType.STRING,
+    allowNull: false,
+  })
+  name: string;
 }

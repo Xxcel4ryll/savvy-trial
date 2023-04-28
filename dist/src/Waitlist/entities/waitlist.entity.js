@@ -29,6 +29,13 @@ __decorate([
     }),
     __metadata("design:type", String)
 ], Waitlist.prototype, "email", void 0);
+__decorate([
+    (0, sequelize_typescript_1.Column)({
+        type: sequelize_typescript_1.DataType.STRING,
+        allowNull: false,
+    }),
+    __metadata("design:type", String)
+], Waitlist.prototype, "name", void 0);
 Waitlist = __decorate([
     (0, sequelize_typescript_1.Table)({
         timestamps: true,

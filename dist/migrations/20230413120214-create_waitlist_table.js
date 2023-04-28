@@ -14,6 +14,10 @@ module.exports = {
                 unique: true,
                 allowNull: false,
             },
+            name: {
+                type: Sequelize.STRING,
+                allowNull: false,
+            },
             created_at: {
                 type: 'TIMESTAMP',
                 defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
