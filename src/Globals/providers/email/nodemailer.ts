@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 import * as nodemailer from 'nodemailer';
+import { Logger } from '../log';
 
 const config = require('../../../../core/config');
 
@@ -7,11 +8,12 @@ export default class Nodemailer {
   host = config.email.host;
   port = config.email.port;
   user = config.email.user;
+  orgName = config.email.orgName;
   password = config.email.password;
   secure = config.email.secure;
   enableTestAccount: boolean;
 
-  constructor(enableTestAccount = false) {
+  constructor(enableTestAccount = false, private Log = Logger) {
     this.enableTestAccount = enableTestAccount;
   }
 
@@ -46,17 +48,29 @@ export default class Nodemailer {
 
     const emailData = {
       to,
-      from: fromName ? `${fromName} <${fromId}>` : fromId,
+      from: fromName
+        ? `${fromName} <${fromId}>`
+        : `${this.orgName} <${this.user}>`,
       subject: subject,
       html: message,
     };
 
-    console.log(`within message sender with data : ${emailData}`);
+    this.Log.logg({
+      type: 'success',
+      message: `within message sender with data : ${emailData}`,
+    });
     try {
       const info = await transporter.sendMail(emailData);
-      console.log(`Message sent: ${info.messageId}`);
+      this.Log.logg({
+        type: 'success',
+        message: `Message sent: ${info.messageId}`,
+      });
     } catch (error) {
-      throw error;
+      this.Log.logg({
+        type: 'danger',
+        message: `Message failed: ${error.message}`,
+      });
+      throw error.message;
     }
   }
 }

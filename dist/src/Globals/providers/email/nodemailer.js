@@ -1,12 +1,15 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const nodemailer = require("nodemailer");
+const log_1 = require("../log");
 const config = require('../../../../core/config');
 class Nodemailer {
-    constructor(enableTestAccount = false) {
+    constructor(enableTestAccount = false, Log = log_1.Logger) {
+        this.Log = Log;
         this.host = config.email.host;
         this.port = config.email.port;
         this.user = config.email.user;
+        this.orgName = config.email.orgName;
         this.password = config.email.password;
         this.secure = config.email.secure;
         this.enableTestAccount = enableTestAccount;
@@ -41,17 +44,29 @@ class Nodemailer {
         const { fromName, fromId, subject, to } = options || {};
         const emailData = {
             to,
-            from: fromName ? `${fromName} <${fromId}>` : fromId,
+            from: fromName
+                ? `${fromName} <${fromId}>`
+                : `${this.orgName} <${this.user}>`,
             subject: subject,
             html: message,
         };
-        console.log(`within message sender with data : ${emailData}`);
+        this.Log.logg({
+            type: 'success',
+            message: `within message sender with data : ${emailData}`,
+        });
         try {
             const info = await transporter.sendMail(emailData);
-            console.log(`Message sent: ${info.messageId}`);
+            this.Log.logg({
+                type: 'success',
+                message: `Message sent: ${info.messageId}`,
+            });
         }
         catch (error) {
-            throw error;
+            this.Log.logg({
+                type: 'danger',
+                message: `Message failed: ${error.message}`,
+            });
+            throw error.message;
         }
     }
 }
