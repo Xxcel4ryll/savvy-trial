@@ -13,6 +13,8 @@ exports.WaitlistService = void 0;
 const common_1 = require("@nestjs/common");
 const waitlist_repository_1 = require("../repositories/waitlist.repository");
 const email_1 = require("../../Globals/providers/email");
+const providers_1 = require("../../Database/providers");
+const DB = providers_1.databaseProviders[0].useFactory();
 let WaitlistService = class WaitlistService {
     constructor(waitlistRepository, Email) {
         this.waitlistRepository = waitlistRepository;
@@ -22,21 +24,32 @@ let WaitlistService = class WaitlistService {
         return this.waitlistRepository.find(query);
     }
     async create(payload) {
-        const [waitlist, created] = await this.waitlistRepository.create(payload);
-        if (created) {
+        const transaction = (await DB).transaction();
+        try {
+            const [waitlist, created] = await this.waitlistRepository.create(payload, transaction);
+            if (!created) {
+                throw 'You already joined';
+            }
             this.Email.send('waitlist', {
                 fromName: 'Savvy Gadget',
                 fromId: 'info@rockapostolate.org',
                 subject: 'Waitlist',
-                to: waitlist.email
+                to: waitlist.email,
+                context: {
+                    name: payload.name,
+                },
             });
+            (await transaction).commit();
             return waitlist;
         }
-        throw new common_1.HttpException({
-            statusCode: common_1.HttpStatus.PRECONDITION_FAILED,
-            name: 'WAITLIST',
-            error: 'You already joined',
-        }, common_1.HttpStatus.PRECONDITION_FAILED);
+        catch (err) {
+            (await transaction).rollback();
+            throw new common_1.HttpException({
+                statusCode: common_1.HttpStatus.PRECONDITION_FAILED,
+                name: 'WAITLIST',
+                error: err,
+            }, common_1.HttpStatus.PRECONDITION_FAILED);
+        }
     }
 };
 WaitlistService = __decorate([

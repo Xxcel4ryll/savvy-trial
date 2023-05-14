@@ -35,11 +35,12 @@ export class Email {
     }
   }
 
-  html(templateName, context) {
+  html(templateName, context) {    
     const pathToTemplate = Path.resolve(
       __dirname,
       `templates/${templateName}.html`,
     );
+    
     const content = fs.readFileSync(pathToTemplate).toString('utf-8');
     const compiled = Template7(content).compile();
     return compiled(context);

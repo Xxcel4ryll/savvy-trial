@@ -7,12 +7,13 @@ export default class WaitListRepository {
     @Inject('WAITLIST_ENTITY')
     private readonly waitListEntity: typeof WaitList,
   ) {}
-  create(payload): Promise<[WaitList, boolean]> {
+  async create(payload, transaction): Promise<[WaitList, boolean]> {
     return this.waitListEntity.findOrCreate<WaitList>({
       where: {
         email: payload.email,
       },
       defaults: payload,
+      transaction: await transaction,
       raw: true,
     });
   }

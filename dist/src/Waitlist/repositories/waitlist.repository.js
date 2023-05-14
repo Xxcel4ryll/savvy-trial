@@ -17,12 +17,13 @@ let WaitListRepository = class WaitListRepository {
     constructor(waitListEntity) {
         this.waitListEntity = waitListEntity;
     }
-    create(payload) {
+    async create(payload, transaction) {
         return this.waitListEntity.findOrCreate({
             where: {
                 email: payload.email,
             },
             defaults: payload,
+            transaction: await transaction,
             raw: true,
         });
     }

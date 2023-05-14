@@ -45,7 +45,7 @@ export default class Nodemailer {
   async send(message, options) {
     const transporter = await this.createTransport();
     const { fromName, fromId, subject, to } = options || {};
-
+    
     const emailData = {
       to,
       from: fromName
@@ -65,6 +65,7 @@ export default class Nodemailer {
         type: 'success',
         message: `Message sent: ${info.messageId}`,
       });
+
     } catch (error) {
       this.Log.logg({
         type: 'danger',
