@@ -1,5 +1,5 @@
 import { v2 } from 'cloudinary';
-const config = require('../../../../core/config');
+const config = require('../../../core/config');
 
 export const CloudinaryProvider = {
   provide: 'CLOUDINARY',

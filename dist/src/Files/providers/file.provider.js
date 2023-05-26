@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CloudinaryProvider = void 0;
 const cloudinary_1 = require("cloudinary");
-const config = require('../../../../core/config');
+const config = require('../../../core/config');
 exports.CloudinaryProvider = {
     provide: 'CLOUDINARY',
     useFactory: () => {
