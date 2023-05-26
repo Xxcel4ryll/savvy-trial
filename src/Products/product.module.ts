@@ -11,7 +11,7 @@ import { ProductTypeService } from './services/product_type.service';
 import { TransactionModule } from 'src/Transactions/transaction.module';
 import { UserModule } from 'src/Users/user.module';
 import { BrandController } from './controllers/brand.controller';
-import { BrandService } from './services/Brand.service';
+import { BrandService } from './services/brand.service';
 import BrandRepository from './repositories/brand.repository';
 
 @Module({

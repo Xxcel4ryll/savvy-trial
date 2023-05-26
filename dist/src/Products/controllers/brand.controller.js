@@ -14,7 +14,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.BrandController = void 0;
 const common_1 = require("@nestjs/common");
-const Brand_service_1 = require("../services/Brand.service");
+const brand_service_1 = require("../services/brand.service");
 const index_1 = require("../dtos/index");
 const validate_pipe_1 = require("../../Globals/providers/validate/validate.pipe");
 const role_enum_1 = require("../../Globals/role.enum");
@@ -49,7 +49,7 @@ __decorate([
 ], BrandController.prototype, "createBrand", null);
 BrandController = __decorate([
     (0, common_1.Controller)('brands'),
-    __metadata("design:paramtypes", [Brand_service_1.BrandService])
+    __metadata("design:paramtypes", [brand_service_1.BrandService])
 ], BrandController);
 exports.BrandController = BrandController;
 //# sourceMappingURL=brand.controller.js.map

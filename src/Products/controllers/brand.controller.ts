@@ -9,7 +9,7 @@ import {
   UseGuards,
   UsePipes,
 } from '@nestjs/common';
-import { BrandService } from '../services/Brand.service';
+import { BrandService } from '../services/brand.service';
 import { BrandDto, BrandSchema } from '../dtos/index';
 import { JoiValidationPipe } from 'src/Globals/providers/validate/validate.pipe';
 import Roles from 'src/Globals/role.enum';

@@ -1,4 +1,4 @@
-import { BrandService } from '../services/Brand.service';
+import { BrandService } from '../services/brand.service';
 import { BrandDto } from '../dtos/index';
 import { Request } from 'express';
 export declare class BrandController {
