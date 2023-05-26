@@ -33,8 +33,8 @@ let ProductsRepository = class ProductsRepository {
         this.productType = productType;
         this.favouriteEntity = favouriteEntity;
     }
-    async create(payload) {
-        const productExist = await this.check({
+    async create(user, payload) {
+        const productExist = await this.check(user, {
             name: payload.name,
         });
         if (productExist) {
@@ -82,6 +82,8 @@ let ProductsRepository = class ProductsRepository {
         });
     }
     check(user, criteria) {
+        console.log(user);
+        console.log(criteria);
         return this.productEntity.findOne({
             where: criteria,
             attributes: {

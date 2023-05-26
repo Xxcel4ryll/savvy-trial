@@ -19,15 +19,20 @@ const product_specifications_repository_1 = require("./repositories/product_spec
 const product_type_service_1 = require("./services/product_type.service");
 const transaction_module_1 = require("../Transactions/transaction.module");
 const user_module_1 = require("../Users/user.module");
+const brand_controller_1 = require("./controllers/brand.controller");
+const Brand_service_1 = require("./services/Brand.service");
+const brand_repository_1 = require("./repositories/brand.repository");
 let ProductModule = class ProductModule {
 };
 ProductModule = __decorate([
     (0, common_1.Module)({
-        controllers: [product_controller_1.ProductController, product_type_controller_1.ProductTypeController],
+        controllers: [product_controller_1.ProductController, brand_controller_1.BrandController, product_type_controller_1.ProductTypeController],
         providers: [
             product_service_1.ProductService,
+            Brand_service_1.BrandService,
             product_type_service_1.ProductTypeService,
             product_repository_1.default,
+            brand_repository_1.default,
             product_type_repository_1.default,
             product_images_repository_1.default,
             product_specifications_repository_1.default,

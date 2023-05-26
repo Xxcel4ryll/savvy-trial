@@ -32,10 +32,10 @@ let ProductService = class ProductService {
     async find(user, query) {
         return this.productRepository.find(user, _.omit(query, ['category']));
     }
-    async create(payload) {
+    async create(user, payload) {
         const transaction = (await sequelize).transaction();
         try {
-            const product = await this.productRepository.create(payload);
+            const product = await this.productRepository.create(user, payload);
             const images = await this.productImageRepository.addImages(product.id, payload.images);
             const specifications = await this.productSpecsRepository.addSpecification(product.id, payload.specification);
             return Object.assign(Object.assign({}, product.toJSON()), { images, specifications });
@@ -52,19 +52,23 @@ let ProductService = class ProductService {
     async update(payload) {
         const transaction = (await sequelize).transaction();
         try {
+            const updates = _.omit(payload, ['productId']);
             const [product] = await this.productRepository.modify({
                 id: payload.productId
-            }, payload);
+            }, updates);
             if (payload === null || payload === void 0 ? void 0 : payload.images) {
                 await this.productImageRepository.modify({
-                    id: payload.productId
-                }, payload.images);
+                    productId: payload.productId
+                }, {
+                    image: payload.images
+                });
             }
             if (payload === null || payload === void 0 ? void 0 : payload.specification) {
                 await this.productSpecsRepository.modify({
-                    id: payload.productId,
+                    productId: payload.productId,
                 }, payload.specification);
             }
+            (await transaction).commit();
             return !!product ? 'Product successfully updated!' :
                 'Product failed to update';
         }

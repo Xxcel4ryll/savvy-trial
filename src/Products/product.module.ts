@@ -10,13 +10,18 @@ import ProductSpecsRepository from './repositories/product_specifications.reposi
 import { ProductTypeService } from './services/product_type.service';
 import { TransactionModule } from 'src/Transactions/transaction.module';
 import { UserModule } from 'src/Users/user.module';
+import { BrandController } from './controllers/brand.controller';
+import { BrandService } from './services/Brand.service';
+import BrandRepository from './repositories/brand.repository';
 
 @Module({
-  controllers: [ProductController, ProductTypeController],
+  controllers: [ProductController, BrandController, ProductTypeController],
   providers: [
     ProductService,
+    BrandService,
     ProductTypeService,
     ProductRepository,
+    BrandRepository,
     ProductTypeRepository,
     ProductImageRepository,
     ProductSpecsRepository,

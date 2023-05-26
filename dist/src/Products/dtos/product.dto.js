@@ -1,10 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.productTypeSchema = exports.updateProductSchema = exports.productSchema = exports.ProductTypeDto = exports.ProductDto = void 0;
+exports.BrandSchema = exports.productTypeSchema = exports.updateProductSchema = exports.productSchema = exports.ProductTypeDto = exports.BrandDto = exports.ProductDto = void 0;
 const Joi = require("joi");
 class ProductDto {
 }
 exports.ProductDto = ProductDto;
+class BrandDto {
+}
+exports.BrandDto = BrandDto;
 class ProductTypeDto {
 }
 exports.ProductTypeDto = ProductTypeDto;
@@ -31,12 +34,17 @@ exports.updateProductSchema = Joi.object().keys({
     price: Joi.number(),
     quantity: Joi.number(),
     description: Joi.string(),
-    images: Joi.array().items(Joi.string()),
+    images: Joi.string(),
     specification: Joi.array().items(Joi.string()),
     salesOption: Joi.string().valid('RENT', 'BUY'),
 }).or('brand', 'price', 'title', 'quantity', 'description', 'salesOption', 'images', 'isVisible', 'productTypeId', 'name');
 exports.productTypeSchema = Joi.object().keys({
     name: Joi.string().required(),
     description: Joi.string().required(),
+});
+exports.BrandSchema = Joi.object().keys({
+    name: Joi.string().required(),
+    slug: Joi.string().required(),
+    image: Joi.string().required(),
 });
 //# sourceMappingURL=product.dto.js.map

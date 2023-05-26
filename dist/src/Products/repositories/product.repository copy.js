@@ -11,22 +11,34 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
+var __rest = (this && this.__rest) || function (s, e) {
+    var t = {};
+    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+        t[p] = s[p];
+    if (s != null && typeof Object.getOwnPropertySymbols === "function")
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
+    return t;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const common_1 = require("@nestjs/common");
+const sequelize_1 = require("sequelize");
 let ProductsRepository = class ProductsRepository {
-    constructor(productEntity) {
+    constructor(productEntity, productImages, productSpecs, productType, favouriteEntity) {
         this.productEntity = productEntity;
+        this.productImages = productImages;
+        this.productSpecs = productSpecs;
+        this.productType = productType;
+        this.favouriteEntity = favouriteEntity;
     }
-    async create(payload) {
-        const productExist = await this.check({
+    async create(user, payload) {
+        const productExist = await this.check(user, {
             name: payload.name,
         });
         if (productExist) {
-            throw new common_1.HttpException({
-                statusCode: common_1.HttpStatus.PRECONDITION_FAILED,
-                name: 'Product Exist',
-                error: 'Product already exist!',
-            }, common_1.HttpStatus.PRECONDITION_FAILED);
+            throw new Error('Product already exist!');
         }
         return this.productEntity.create(payload);
     }
@@ -35,21 +47,112 @@ let ProductsRepository = class ProductsRepository {
             where: criteria,
         });
     }
-    find(criteria) {
+    find(user, _a) {
+        var { limit, offset } = _a, criteria = __rest(_a, ["limit", "offset"]);
         return this.productEntity.findAndCountAll({
             where: criteria,
+            attributes: {
+                include: [
+                    [
+                        this.favouriteEntity.isUserFavouriteQuery({
+                            userId: user.id,
+                            column: `${this.productEntity.name}.id`
+                        }),
+                        'isFavorite'
+                    ],
+                ],
+            },
+            include: [
+                {
+                    model: this.productImages,
+                    attributes: ['productId', 'image']
+                },
+                {
+                    model: this.productSpecs,
+                    attributes: ['productId', 'specifications']
+                },
+                {
+                    model: this.productType,
+                    attributes: ['name']
+                }
+            ],
+            order: [['createdAt', 'DESC']],
+            limit: parseInt(limit) || 10,
+            offset: parseInt(offset) || 0
         });
     }
-    check(criteria) {
+    check(user, criteria) {
+        console.log(user);
+        console.log(criteria);
         return this.productEntity.findOne({
             where: criteria,
+            attributes: {
+                include: [
+                    [
+                        this.favouriteEntity.isUserFavouriteQuery({
+                            userId: user.id,
+                            column: `${this.productEntity.name}.id`
+                        }),
+                        'isFavorite'
+                    ],
+                ],
+            },
+        });
+    }
+    search(user, query) {
+        return this.productEntity.findOne({
+            where: {
+                isVisible: true,
+                [sequelize_1.Op.or]: [
+                    {
+                        title: {
+                            [sequelize_1.Op.like]: `%${query}%`,
+                        },
+                    },
+                    {
+                        name: {
+                            [sequelize_1.Op.like]: `%${query}%`,
+                        },
+                    },
+                    {
+                        brand: {
+                            [sequelize_1.Op.like]: `%${query}%`,
+                        },
+                    },
+                    {
+                        price: {
+                            [sequelize_1.Op.like]: `%${query}%`,
+                        },
+                    },
+                    {
+                        description: {
+                            [sequelize_1.Op.like]: `%${query}%`,
+                        },
+                    },
+                ]
+            },
+            attributes: {
+                include: [
+                    [
+                        this.favouriteEntity.isUserFavouriteQuery({
+                            userId: user.id,
+                            column: `${this.productEntity.name}.id`
+                        }),
+                        'isFavorite'
+                    ],
+                ],
+            },
         });
     }
 };
 ProductsRepository = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, common_1.Inject)('PRODUCT_ENTITY')),
-    __metadata("design:paramtypes", [Object])
+    __param(1, (0, common_1.Inject)('PRODUCT_IMAGE_ENTITY')),
+    __param(2, (0, common_1.Inject)('PRODUCT_SPECS_ENTITY')),
+    __param(3, (0, common_1.Inject)('PRODUCT_TYPE_ENTITY')),
+    __param(4, (0, common_1.Inject)('USER_FAVOURITES_ENTITY')),
+    __metadata("design:paramtypes", [Object, Object, Object, Object, Object])
 ], ProductsRepository);
 exports.default = ProductsRepository;
 //# sourceMappingURL=product.repository%20copy.js.map

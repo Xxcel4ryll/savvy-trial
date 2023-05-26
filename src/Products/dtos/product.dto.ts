@@ -9,6 +9,12 @@ export class ProductDto {
   productId?: string;
 }
 
+export class BrandDto {
+  name: string;
+  image: string;
+  slug: string;
+}
+
 export class ProductTypeDto {
   name: string;
   description: string;
@@ -38,7 +44,7 @@ export const updateProductSchema = Joi.object().keys({
   price: Joi.number(),
   quantity: Joi.number(),
   description: Joi.string(),
-  images: Joi.array().items(Joi.string()),
+  images: Joi.string(),
   specification: Joi.array().items(Joi.string()),
   salesOption: Joi.string().valid('RENT', 'BUY'),
 }).or(
@@ -57,4 +63,10 @@ export const updateProductSchema = Joi.object().keys({
 export const productTypeSchema = Joi.object().keys({
   name: Joi.string().required(),
   description: Joi.string().required(),
+});
+
+export const BrandSchema = Joi.object().keys({
+  name: Joi.string().required(),
+  slug: Joi.string().required(),
+  image: Joi.string().required(),
 });

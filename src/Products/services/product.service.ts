@@ -27,11 +27,11 @@ export class ProductService {
     );
   }
 
-  async create(payload) {
+  async create(user, payload) {
     const transaction = (await sequelize).transaction();
     try {
       // Update this logic to use sequelize include
-      const product = await this.productRepository.create(payload);
+      const product = await this.productRepository.create(user, payload);
 
       const images = await this.productImageRepository.addImages(
         product.id,
@@ -60,25 +60,30 @@ export class ProductService {
   async update(payload) {
     const transaction = (await sequelize).transaction();
     try {
+      const updates = _.omit(payload, ['productId'])
       const [product] = await this.productRepository.modify({
         id: payload.productId
-      }, payload);
+      }, updates);
 
       if (payload?.images) {
         await this.productImageRepository.modify({
-          id: payload.productId
+          productId: payload.productId
         },
-          payload.images
+        {
+          image: payload.images
+        }
         );
       }
 
       if (payload?.specification) {
         await this.productSpecsRepository.modify({
-          id: payload.productId,
+          productId: payload.productId,
         },
           payload.specification
         );
       }
+
+      (await transaction).commit();
 
       return !!product ? 'Product successfully updated!' :
       'Product failed to update'

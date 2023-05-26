@@ -1,7 +1,6 @@
-const tableName = 'wait_list';
 module.exports = {
     up: async (queryInterface, Sequelize) => {
-        await queryInterface.createTable(tableName, {
+        await queryInterface.createTable('wait_list', {
             id: {
                 type: Sequelize.INTEGER,
                 allowNull: false,
@@ -32,7 +31,7 @@ module.exports = {
         });
     },
     down: async (queryInterface) => {
-        await queryInterface.dropTable(tableName);
+        await queryInterface.dropTable('wait_list');
     },
 };
 //# sourceMappingURL=20230413120214-create_waitlist_table.js.map

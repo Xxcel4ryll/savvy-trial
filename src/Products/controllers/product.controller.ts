@@ -30,7 +30,7 @@ export class ProductController {
   @UsePipes(new JoiValidationPipe(productSchema))
   @Post()
   createProduct(@Req() req: Request, @Body() product: ProductDto) {
-    return this.productService.create(product);
+    return this.productService.create(req.user, product);
   }
 
   @UseGuards(RoleGuard([Roles.Admin, Roles.User]))

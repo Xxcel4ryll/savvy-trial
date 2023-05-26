@@ -10,7 +10,7 @@ export default class ProductsRepository {
     private productType;
     private favouriteEntity;
     constructor(productEntity: typeof Products, productImages: typeof ProductImages, productSpecs: typeof ProductSpecs, productType: typeof ProductType, favouriteEntity: typeof UserFavourite);
-    create(payload: any): Promise<Products>;
+    create(user: any, payload: any): Promise<Products>;
     modify(criteria: any, updates: any): Promise<[affectedCount: number]>;
     find(user: any, { limit, offset, ...criteria }: {
         [x: string]: any;

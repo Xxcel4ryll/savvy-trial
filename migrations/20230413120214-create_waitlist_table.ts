@@ -1,8 +1,7 @@
-const tableName = 'wait_list';
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable(tableName, {
+    await queryInterface.createTable('wait_list', {
       id: {
         type: Sequelize.INTEGER,
         allowNull: false,
@@ -39,6 +38,6 @@ module.exports = {
 
   // eslint-disable-next-line no-unused-vars
   down: async (queryInterface) => {
-    await queryInterface.dropTable(tableName);
+    await queryInterface.dropTable('wait_list');
   },
 };

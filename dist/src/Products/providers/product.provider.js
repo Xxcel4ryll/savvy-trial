@@ -6,6 +6,7 @@ const product_type_entity_1 = require("../entities/product_type.entity");
 const product_price_entity_1 = require("../entities/product_price.entity");
 const product_images_entity_1 = require("../entities/product_images.entity");
 const product_specification_entity_1 = require("../entities/product_specification.entity");
+const brand_entity_1 = require("../entities/brand.entity");
 exports.ProductProviders = [
     {
         provide: 'PRODUCT_ENTITY',
@@ -26,6 +27,10 @@ exports.ProductProviders = [
     {
         provide: 'PRODUCT_SPECS_ENTITY',
         useValue: product_specification_entity_1.default,
+    },
+    {
+        provide: 'BRAND_ENTITY',
+        useValue: brand_entity_1.default,
     },
 ];
 //# sourceMappingURL=product.provider.js.map

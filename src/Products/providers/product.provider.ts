@@ -3,6 +3,7 @@ import ProductType from '../entities/product_type.entity';
 import ProductPrice from '../entities/product_price.entity';
 import ProductImage from '../entities/product_images.entity';
 import ProductSpecification from '../entities/product_specification.entity';
+import Brand from '../entities/brand.entity';
 
 export const ProductProviders = [
   {
@@ -24,5 +25,9 @@ export const ProductProviders = [
   {
     provide: 'PRODUCT_SPECS_ENTITY',
     useValue: ProductSpecification,
+  },
+  {
+    provide: 'BRAND_ENTITY',
+    useValue: Brand,
   },
 ];

@@ -16,7 +16,8 @@ const product_specification_entity_1 = require("./product_specification.entity")
 const user_favourite_entity_1 = require("../../Users/entities/user_favourite.entity");
 let Product = class Product extends sequelize_typescript_1.Model {
     get price() {
-        return this.getDataValue('price').toLocaleString();
+        var _a;
+        return (_a = this.getDataValue('price')) === null || _a === void 0 ? void 0 : _a.toLocaleString();
     }
 };
 __decorate([

@@ -17,6 +17,7 @@ const user_favourite_entity_1 = require("../Users/entities/user_favourite.entity
 const purchased_product_entity_1 = require("../Transactions/entities/purchased-product.entity");
 const settings_entity_1 = require("../Settings/entities/settings.entity");
 const waitlist_entity_1 = require("../Waitlist/entities/waitlist.entity");
+const brand_entity_1 = require("../Products/entities/brand.entity");
 exports.databaseProviders = [
     {
         provide: 'SEQUELIZE',
@@ -44,6 +45,7 @@ exports.databaseProviders = [
                 user_favourite_entity_1.default,
                 purchased_product_entity_1.default,
                 settings_entity_1.Faqs,
+                brand_entity_1.default,
                 settings_entity_1.TermsAndCondition,
                 waitlist_entity_1.default
             ]);

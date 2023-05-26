@@ -20,8 +20,8 @@ export default class ProductsRepository {
     @Inject('USER_FAVOURITES_ENTITY')
     private favouriteEntity: typeof UserFavourite,
   ) {}
-  async create(payload): Promise<Products> {
-    const productExist = await this.check({
+  async create(user, payload): Promise<Products> {
+    const productExist = await this.check(user, {
       name: payload.name,
     });
 
@@ -72,6 +72,9 @@ export default class ProductsRepository {
   }
 
   check(user?, criteria?): Promise<Products> {
+    console.log(user); 
+    console.log(criteria); 
+    
     return this.productEntity.findOne<Products>({
       where: criteria,
       attributes: {

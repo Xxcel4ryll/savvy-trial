@@ -89,7 +89,7 @@ export default class Product extends Model<Product> {
     allowNull: false,
   })
   get price(): string{
-    return this.getDataValue('price').toLocaleString();
+    return this.getDataValue('price')?.toLocaleString();
   }
 
   @Column({
