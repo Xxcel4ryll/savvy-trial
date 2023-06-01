@@ -9,6 +9,7 @@ export declare class AuthController {
     };
     signIn(auth: LoginDto): Promise<any>;
     register(auth: RegisterDto): Promise<true | import("../../Users/entities/user.entity").default>;
+    createAdmin(auth: RegisterDto): Promise<true | import("../../Users/entities/user.entity").default>;
     forgot(auth: FindUserDto): Promise<{
         secretReference: string;
     }>;

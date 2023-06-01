@@ -9,6 +9,7 @@ import {
 @Table({
   timestamps: true,
   underscored: true,
+  paranoid: true,
   tableName: 'users',
 })
 export default class Users extends Model<Users> {
@@ -99,6 +100,14 @@ export default class Users extends Model<Users> {
     allowNull: true,
   })
   state: string;
+
+  @Column({
+    type: DataType.ENUM,
+    allowNull: false,
+    values: ['SUSPENDED', 'VERIFIED', 'PENDING'],
+    defaultValue: 'VERIFIED',
+  })
+  status: string;
 
   @Column({
     type: DataType.STRING,

@@ -13,6 +13,7 @@ export default class Users extends Model<Users> {
     userType: string;
     city: string;
     state: string;
+    status: string;
     validId: string;
     income: string;
     schoolName: string;

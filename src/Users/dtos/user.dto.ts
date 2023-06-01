@@ -50,7 +50,7 @@ export const completeProfileSchema = Joi.object().keys({
     .when('accountType', {
       is: 'INDIVIDUAL',
       then: Joi.object().keys({
-        bvn: Joi.string().required(),
+        bvn: Joi.string().length(11).required(),
         homeAddress: Joi.string().required(),
         validId: Joi.string().required(),
         income: Joi.string(),
@@ -63,7 +63,7 @@ export const completeProfileSchema = Joi.object().keys({
       Joi.object().when('accountType', {
         is: 'CORPORATION',
         then: Joi.object().keys({
-          bvn: Joi.string().required(),
+          bvn: Joi.string().length(11).required(),
           natureOfBusiness: Joi.string().required(),
           validId: Joi.string().required(),
           roleInCompany: Joi.string().required(),

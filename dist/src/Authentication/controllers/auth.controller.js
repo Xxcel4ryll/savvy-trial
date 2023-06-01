@@ -33,6 +33,9 @@ let AuthController = class AuthController {
     register(auth) {
         return this.authService.signUp(auth);
     }
+    createAdmin(auth) {
+        return this.authService.signUp(auth);
+    }
     forgot(auth) {
         return this.authService.forgotPassword(auth);
     }
@@ -62,6 +65,14 @@ __decorate([
     __metadata("design:paramtypes", [index_1.RegisterDto]),
     __metadata("design:returntype", void 0)
 ], AuthController.prototype, "register", null);
+__decorate([
+    (0, common_1.UsePipes)(new validate_pipe_1.JoiValidationPipe(index_1.registerSchema)),
+    (0, common_1.Post)('admin'),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [index_1.RegisterDto]),
+    __metadata("design:returntype", void 0)
+], AuthController.prototype, "createAdmin", null);
 __decorate([
     (0, common_1.UsePipes)(new validate_pipe_1.JoiValidationPipe(index_1.forgotPasswordSchema)),
     (0, common_1.Post)('forgot'),

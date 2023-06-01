@@ -108,6 +108,15 @@ __decorate([
 ], Users.prototype, "state", void 0);
 __decorate([
     (0, sequelize_typescript_1.Column)({
+        type: sequelize_typescript_1.DataType.ENUM,
+        allowNull: false,
+        values: ['SUSPENDED', 'VERIFIED', 'PENDING'],
+        defaultValue: 'VERIFIED',
+    }),
+    __metadata("design:type", String)
+], Users.prototype, "status", void 0);
+__decorate([
+    (0, sequelize_typescript_1.Column)({
         type: sequelize_typescript_1.DataType.STRING,
         allowNull: true,
     }),
@@ -179,6 +188,7 @@ Users = __decorate([
     (0, sequelize_typescript_1.Table)({
         timestamps: true,
         underscored: true,
+        paranoid: true,
         tableName: 'users',
     })
 ], Users);
