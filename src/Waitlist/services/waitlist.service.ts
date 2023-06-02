@@ -31,7 +31,7 @@ export class WaitlistService {
       }
 
       this.Email.send('waitlist', {
-        fromName: 'Savvy Gadget',
+        fromName: 'Savvy Africa',
         fromId: 'info@rockapostolate.org',
         subject: 'Waitlist',
         to: waitlist.email,
