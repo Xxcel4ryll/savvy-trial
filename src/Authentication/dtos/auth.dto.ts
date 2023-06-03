@@ -8,13 +8,13 @@ export class LoginDto {
 }
 
 export class RegisterDto {
-  public email: string;
-  public password: string;
-  public firstName: string;
-  public lastname: string;
-  public phoneNumber: string;
-  public countryCode: string;
-  public userType: string;
+  email: string;
+  password: string;
+  firstName: string;
+  lastname: string;
+  phoneNumber: string;
+  countryCode: string;
+  userType: string;
 }
 
 export class ResetPasswordDto {

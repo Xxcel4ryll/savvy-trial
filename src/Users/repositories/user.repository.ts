@@ -8,7 +8,7 @@ export default class UserRepository {
     private readonly userEntity: typeof Users,
   ) {}
 
-  findByEmail(email): Promise<Users> {
+  findByEmail(email): Promise<Users> {    
     return this.userEntity.findOne<Users>({
       where: {
         email,
