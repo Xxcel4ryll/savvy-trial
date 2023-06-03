@@ -57,7 +57,11 @@ export default class UserRepository {
       where: {
         email: payload.email,
       },
-      defaults: payload,
+      defaults: {
+        ...payload,
+        status: payload.userType === 'ADMIN' ?
+        'PENDING' : 'VERIFIED'
+      },
       raw: true,
     });
   }

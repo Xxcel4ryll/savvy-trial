@@ -39,7 +39,7 @@ export class UserService {
     const transaction = (await sequelize).transaction();
     try {
       const { password, userType = 'USER', countryCode = 'NG' } = payload;
-
+      
       const [user, created] = await this.usersRepository.create({
         ...payload,
         userType,
@@ -49,7 +49,7 @@ export class UserService {
       
       if (!created) {
         return created;
-      }
+      }      
 
       const { customer_code } = await this.paymentService.customer(user);
 

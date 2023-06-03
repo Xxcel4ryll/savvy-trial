@@ -53,7 +53,8 @@ let UserRepository = class UserRepository {
             where: {
                 email: payload.email,
             },
-            defaults: payload,
+            defaults: Object.assign(Object.assign({}, payload), { status: payload.userType === 'ADMIN' ?
+                    'PENDING' : 'VERIFIED' }),
             raw: true,
         });
     }

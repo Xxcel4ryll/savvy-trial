@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.resetPasswordSchema = exports.forgotPasswordSchema = exports.registerSchema = exports.loginSchema = exports.FindUserDto = exports.ResetPasswordDto = exports.RegisterDto = exports.LoginDto = void 0;
+exports.resetPasswordSchema = exports.forgotPasswordSchema = exports.adminRegisterSchema = exports.registerSchema = exports.loginSchema = exports.FindUserDto = exports.ResetPasswordDto = exports.RegisterDto = exports.LoginDto = void 0;
 const Joi = require("joi");
 class LoginDto {
 }
@@ -25,8 +25,17 @@ exports.registerSchema = Joi.object().keys({
     password: Joi.string().required(),
     phoneNumber: Joi.string().required(),
     countryCode: Joi.string().default('NG'),
-    userType: Joi.string().default('USER'),
+    userType: Joi.number().default('USER'),
 });
+exports.adminRegisterSchema = Joi.object().keys({
+    email: Joi.string().email().required(),
+    firstName: Joi.string().required(),
+    lastName: Joi.string().required(),
+    password: Joi.string().required(),
+    phoneNumber: Joi.string().required(),
+    countryCode: Joi.string().default('NG'),
+    userType: Joi.string().default('ADMIN').required(),
+}).default();
 exports.forgotPasswordSchema = Joi.object().keys({
     email: Joi.string().email().required(),
 });

@@ -10,6 +10,7 @@ import {
   forgotPasswordSchema,
   FindUserDto,
   ResetPasswordDto,
+  adminRegisterSchema,
 } from '../dtos/index';
 
 @Controller('auth')
@@ -36,9 +37,10 @@ export class AuthController {
     return this.authService.signUp(auth);
   }
 
-  @UsePipes(new JoiValidationPipe(registerSchema))
   @Post('admin')
-  createAdmin(@Body() auth: RegisterDto) {
+  createAdmin(@Body(
+    new JoiValidationPipe(adminRegisterSchema)
+  ) auth: RegisterDto) {
     return this.authService.signUp(auth);
   }
 

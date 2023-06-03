@@ -8,11 +8,13 @@ export class LoginDto {
 }
 
 export class RegisterDto {
-  email: string;
-  password: string;
-  firstName: string;
-  lastname: string;
-  phoneNumber: string;
+  public email: string;
+  public password: string;
+  public firstName: string;
+  public lastname: string;
+  public phoneNumber: string;
+  public countryCode: string;
+  public userType: string;
 }
 
 export class ResetPasswordDto {
@@ -42,8 +44,18 @@ export const registerSchema = Joi.object().keys({
   password: Joi.string().required(),
   phoneNumber: Joi.string().required(),
   countryCode: Joi.string().default('NG'),
-  userType: Joi.string().default('USER'),
+  userType: Joi.number().default('USER'),
 });
+
+export const adminRegisterSchema = Joi.object().keys({
+  email: Joi.string().email().required(),
+  firstName: Joi.string().required(),
+  lastName: Joi.string().required(),
+  password: Joi.string().required(),
+  phoneNumber: Joi.string().required(),
+  countryCode: Joi.string().default('NG'),
+  userType: Joi.string().default('ADMIN').required(),
+}).default();
 
 export const forgotPasswordSchema = Joi.object().keys({
   email: Joi.string().email().required(),

@@ -23,7 +23,7 @@ export class AuthService {
 
   async signIn(payload: LoginDto) {
     const user = await this.userService.find(payload);
-
+    
     if (!user) {
       throw new HttpException(
         {

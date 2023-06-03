@@ -6,9 +6,10 @@ import {
   BadRequestException,
 } from '@nestjs/common';
 import { ObjectSchema } from 'joi';
+import { RegisterDto } from 'src/Authentication/dtos';
 
 @Injectable()
-export class JoiValidationPipe implements PipeTransform {
+export class JoiValidationPipe implements PipeTransform<RegisterDto> {
   constructor(private schema: ObjectSchema) {}
 
   transform(value: any, metadata: ArgumentMetadata) {
@@ -16,6 +17,7 @@ export class JoiValidationPipe implements PipeTransform {
     if (error) {
       throw new BadRequestException(this.modifyErrors(error));
     }
+    
     return value;
   }
 

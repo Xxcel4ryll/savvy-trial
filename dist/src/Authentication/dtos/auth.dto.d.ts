@@ -11,6 +11,8 @@ export declare class RegisterDto {
     firstName: string;
     lastname: string;
     phoneNumber: string;
+    countryCode: string;
+    userType: string;
 }
 export declare class ResetPasswordDto {
     email: string;
@@ -27,5 +29,6 @@ export declare class FindUserDto {
 }
 export declare const loginSchema: Joi.ObjectSchema<any>;
 export declare const registerSchema: Joi.ObjectSchema<any>;
+export declare const adminRegisterSchema: Joi.ObjectSchema<any>;
 export declare const forgotPasswordSchema: Joi.ObjectSchema<any>;
 export declare const resetPasswordSchema: Joi.ObjectSchema<any>;
