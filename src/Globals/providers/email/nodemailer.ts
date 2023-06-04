@@ -55,12 +55,15 @@ export default class Nodemailer {
       html: message,
     };
 
+    console.log("emailData");
+    
     this.Log.logg({
       type: 'success',
       message: `within message sender with data : ${emailData}`,
     });
     try {
       const info = await transporter.sendMail(emailData);
+
       this.Log.logg({
         type: 'success',
         message: `Message sent: ${info.messageId}`,

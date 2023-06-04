@@ -26,8 +26,8 @@ export class UserOtpService {
     });
 
     this.Email.send('otp', {
-      fromName: 'Savvy Gadget',
-      fromId: 'info@rockapostolate.org',
+      fromName: 'Savvy Africa',
+      fromId: 'admin@savvy.africa',
       subject: 'Reset Pin OTP',
       to: user.email,
       context: {

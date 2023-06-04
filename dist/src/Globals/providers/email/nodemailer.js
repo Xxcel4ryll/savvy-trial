@@ -50,6 +50,7 @@ class Nodemailer {
             subject: subject,
             html: message,
         };
+        console.log("emailData");
         this.Log.logg({
             type: 'success',
             message: `within message sender with data : ${emailData}`,

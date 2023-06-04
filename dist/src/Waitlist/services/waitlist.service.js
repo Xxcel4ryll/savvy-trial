@@ -27,12 +27,9 @@ let WaitlistService = class WaitlistService {
         const transaction = (await DB).transaction();
         try {
             const [waitlist, created] = await this.waitlistRepository.create(payload, transaction);
-            if (!created) {
-                throw 'You already joined';
-            }
             this.Email.send('waitlist', {
                 fromName: 'Savvy Africa',
-                fromId: 'info@rockapostolate.org',
+                fromId: 'admin@savvy.africa',
                 subject: 'Waitlist',
                 to: waitlist.email,
                 context: {

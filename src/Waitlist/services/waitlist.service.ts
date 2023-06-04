@@ -26,13 +26,13 @@ export class WaitlistService {
         transaction
       );
 
-      if (!created) {
-        throw 'You already joined';
-      }
+      // if (!created) {
+      //   throw 'You already joined';
+      // }
 
       this.Email.send('waitlist', {
         fromName: 'Savvy Africa',
-        fromId: 'info@rockapostolate.org',
+        fromId: 'admin@savvy.africa',
         subject: 'Waitlist',
         to: waitlist.email,
         context: {
