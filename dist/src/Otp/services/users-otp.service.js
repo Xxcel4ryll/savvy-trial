@@ -33,7 +33,7 @@ let UserOtpService = class UserOtpService {
         });
         this.Email.send('otp', {
             fromName: 'Savvy Africa',
-            fromId: 'admin@savvy.africa',
+            fromId: 'info@rockapostolate.org',
             subject: 'Reset Pin OTP',
             to: user.email,
             context: {
