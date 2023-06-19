@@ -51,7 +51,7 @@ let UserOtpService = class UserOtpService {
             throw new common_1.HttpException({
                 statusCode: common_1.HttpStatus.FORBIDDEN,
                 name: 'InvalidReference',
-                error: 'the reference passed in is invalid',
+                error: 'the reference passed is invalid',
             }, common_1.HttpStatus.FORBIDDEN);
         }
         return otplib_1.authenticator.verify({ token, secret: found.secret });

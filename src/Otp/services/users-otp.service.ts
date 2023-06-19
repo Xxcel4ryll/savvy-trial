@@ -68,7 +68,7 @@ export class UserOtpService {
         {
           statusCode: HttpStatus.FORBIDDEN,
           name: 'InvalidReference',
-          error: 'the reference passed in is invalid',
+          error: 'the reference passed is invalid',
         },
         HttpStatus.FORBIDDEN,
       );

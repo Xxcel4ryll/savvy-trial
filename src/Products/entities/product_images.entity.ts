@@ -1,4 +1,5 @@
 import { Table, Column, Model, DataType, HasOne, HasMany, BelongsTo, ForeignKey } from 'sequelize-typescript';
+import UserFavourite from 'src/Users/entities/user_favourite.entity';
 import Products from './product.entity';
 
 @Table({

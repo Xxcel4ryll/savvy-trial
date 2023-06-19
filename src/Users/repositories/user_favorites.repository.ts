@@ -1,5 +1,6 @@
 import { Injectable, Inject } from '@nestjs/common';
 import Product from 'src/Products/entities/product.entity';
+import ProductImages from 'src/Products/entities/product_images.entity';
 import UserFavorites from '../entities/user_favourite.entity';
 
 @Injectable()
@@ -9,6 +10,8 @@ export default class UserFavoritesRepository {
     private readonly userFavouriteEntity: typeof UserFavorites,
     @Inject('PRODUCT_ENTITY')
     private readonly productEntity: typeof Product,
+    @Inject('PRODUCT_IMAGE_ENTITY')
+    private readonly productImageEntity: typeof ProductImages,
   ) {}
 
   findById(id): Promise<UserFavorites> {
@@ -26,7 +29,13 @@ export default class UserFavoritesRepository {
       },
       include: {
         model: this.productEntity,
-        attributes: ['name', 'title', 'price', 'brand', 'quantity']
+        attributes: ['name', 'title', 'price', 'brand', 'quantity'],
+        include: [
+          {
+            model: this.productImageEntity,
+            attributes: ['image', 'productId']
+          }
+        ]
       }
     });
   }

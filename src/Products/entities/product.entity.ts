@@ -71,16 +71,15 @@ export default class Product extends Model<Product> {
   })
   productTypeId: string;
 
-  // Associations for Product Images
+  // Associations with Product Images
   @HasMany(() => ProductImages)
   images: ProductImages[];
 
-
-  // Associations for Product Specification
+  // Associations with Product Specification
   @HasMany(() => ProductSpecs)
   specifications: ProductSpecs[];
 
-  // Associations for Favourite Product
+  // Associations with Favourite Product
   @HasOne(() => UserFavourite)
   userFavourite: UserFavourite;
   

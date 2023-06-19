@@ -6,7 +6,7 @@ export default class UserFavourite extends Model<UserFavourite> {
         column: any;
     }): import("sequelize/types/utils").Literal;
     id: string;
+    userId: string;
     productId: string;
     product: Products;
-    userId: string;
 }

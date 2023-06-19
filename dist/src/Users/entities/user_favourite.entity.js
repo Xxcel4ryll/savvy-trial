@@ -36,6 +36,13 @@ __decorate([
     __metadata("design:type", String)
 ], UserFavourite.prototype, "id", void 0);
 __decorate([
+    (0, sequelize_typescript_1.Column)({
+        type: sequelize_typescript_1.DataType.UUID,
+        allowNull: false,
+    }),
+    __metadata("design:type", String)
+], UserFavourite.prototype, "userId", void 0);
+__decorate([
     (0, sequelize_typescript_1.ForeignKey)(() => product_entity_1.default),
     (0, sequelize_typescript_1.Column)({
         type: sequelize_typescript_1.DataType.UUID,
@@ -47,13 +54,6 @@ __decorate([
     (0, sequelize_typescript_1.BelongsTo)(() => product_entity_1.default),
     __metadata("design:type", product_entity_1.default)
 ], UserFavourite.prototype, "product", void 0);
-__decorate([
-    (0, sequelize_typescript_1.Column)({
-        type: sequelize_typescript_1.DataType.UUID,
-        allowNull: false,
-    }),
-    __metadata("design:type", String)
-], UserFavourite.prototype, "userId", void 0);
 UserFavourite = __decorate([
     (0, sequelize_typescript_1.Table)({
         timestamps: true,

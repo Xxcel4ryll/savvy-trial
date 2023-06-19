@@ -37,6 +37,12 @@ export default class UserFavourite extends Model<UserFavourite> {
   })
   id: string;
 
+  @Column({
+    type: DataType.UUID,
+    allowNull: false,
+  })
+  userId: string;
+
   @ForeignKey(() => Products)
   @Column({
     type: DataType.UUID,
@@ -46,10 +52,6 @@ export default class UserFavourite extends Model<UserFavourite> {
 
   @BelongsTo(() => Products)
   product: Products;
-
-  @Column({
-    type: DataType.UUID,
-    allowNull: false,
-  })
-  userId: string;
+  
+  
 }
