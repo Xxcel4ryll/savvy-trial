@@ -7,4 +7,5 @@ export default class UserRepository {
     findById(id: any): Promise<Users>;
     create(payload: any): Promise<[Users, boolean]>;
     modify(criteriaObj: any, updates: any): Promise<[affectedCount: number]>;
+    delete(criteriaObj: any): Promise<number>;
 }

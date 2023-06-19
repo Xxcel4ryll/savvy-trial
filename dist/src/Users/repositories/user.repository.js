@@ -59,7 +59,14 @@ let UserRepository = class UserRepository {
         });
     }
     modify(criteriaObj, updates) {
+        console.log(criteriaObj);
+        console.log(updates);
         return this.userEntity.update(updates, {
+            where: criteriaObj,
+        });
+    }
+    delete(criteriaObj) {
+        return this.userEntity.destroy({
             where: criteriaObj,
         });
     }

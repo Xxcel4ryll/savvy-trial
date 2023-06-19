@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, UsePipes } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, UsePipes } from '@nestjs/common';
 import { AuthService } from '../services/auth.service';
 import { JoiValidationPipe } from '../../Globals/providers/validate/validate.pipe';
 import {

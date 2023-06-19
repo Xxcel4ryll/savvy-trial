@@ -18,6 +18,12 @@ export declare class UserService {
     find({ email, phoneNumber, id }: FindUserDto): Promise<import("../entities/user.entity").default>;
     create(payload: any): Promise<boolean | import("../entities/user.entity").default>;
     resetPassword(data: any): Promise<boolean>;
+    deleteAdmin(userId: any): Promise<{
+        message: string;
+    }>;
+    updateAdminStatus(userId: any, status: any): Promise<{
+        message: string;
+    }>;
     updateAccount(req: any, upload: any): Promise<{
         message: string;
     }>;

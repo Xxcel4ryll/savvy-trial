@@ -67,8 +67,13 @@ export default class UserRepository {
   }
 
   modify(criteriaObj, updates) {
-    
     return this.userEntity.update<Users>(updates, {
+      where: criteriaObj,
+    });
+  }
+
+  delete(criteriaObj) {
+    return this.userEntity.destroy<Users>({
       where: criteriaObj,
     });
   }

@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   Param,
+  Patch,
   Post,
   Put,
   Req,
@@ -66,5 +67,15 @@ export class UserController {
   @Delete('favourite/:productId')
   removeFavoriteProduct(@Req() { user }: Request, @Param() { productId }: ProductDto) {    
     return this.userService.removeFavoriteProduct(user, productId);
+  }
+
+  @Delete('admin/:userId')
+  deleteAdmin(@Param() { userId }) {
+    return this.userService.deleteAdmin(userId);
+  }
+
+  @Patch('admin/:userId/:status')
+  updateAdminStatus(@Param() { userId, status }) {
+    return this.userService.updateAdminStatus(userId, status);
   }
 }

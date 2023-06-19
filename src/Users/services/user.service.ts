@@ -93,6 +93,33 @@ export class UserService {
     return !!isReset;
   }
 
+  async deleteAdmin(userId) {
+    await this.usersRepository.delete({
+      id: userId
+    });
+
+    return {
+      message: "Admin user successfully deleted"
+    }
+  }
+
+  async updateAdminStatus(userId, status) {
+    const updateStatus = status === 'suspend' ? 
+        'SUSPENDED' 
+      : status === 'verify' ? 
+        'VERIFIED' : 'PENDING';
+   
+    await this.usersRepository.modify({
+      id: userId
+    }, {
+      status: updateStatus
+    });
+
+    return {
+      message: `Admin user successfully ${updateStatus.toLocaleLowerCase()}`
+    }
+  }
+
   async updateAccount(req, upload) {
     const [updated] = await this.usersRepository.modify(
       { email: req.user.email },

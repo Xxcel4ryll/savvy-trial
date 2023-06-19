@@ -43,6 +43,12 @@ let UserController = class UserController {
     removeFavoriteProduct({ user }, { productId }) {
         return this.userService.removeFavoriteProduct(user, productId);
     }
+    deleteAdmin({ userId }) {
+        return this.userService.deleteAdmin(userId);
+    }
+    updateAdminStatus({ userId, status }) {
+        return this.userService.updateAdminStatus(userId, status);
+    }
 };
 __decorate([
     (0, common_1.UseGuards)((0, role_guard_1.default)([role_enum_1.default.Admin, role_enum_1.default.User])),
@@ -98,6 +104,20 @@ __decorate([
     __metadata("design:paramtypes", [Object, dtos_1.ProductDto]),
     __metadata("design:returntype", void 0)
 ], UserController.prototype, "removeFavoriteProduct", null);
+__decorate([
+    (0, common_1.Delete)('admin/:userId'),
+    __param(0, (0, common_1.Param)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], UserController.prototype, "deleteAdmin", null);
+__decorate([
+    (0, common_1.Patch)('admin/:userId/:status'),
+    __param(0, (0, common_1.Param)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], UserController.prototype, "updateAdminStatus", null);
 UserController = __decorate([
     (0, common_1.Controller)('users'),
     __metadata("design:paramtypes", [user_service_1.UserService])

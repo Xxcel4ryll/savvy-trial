@@ -19,4 +19,15 @@ export declare class UserController {
         count: number;
     }>;
     removeFavoriteProduct({ user }: Request, { productId }: ProductDto): Promise<string>;
+    deleteAdmin({ userId }: {
+        userId: any;
+    }): Promise<{
+        message: string;
+    }>;
+    updateAdminStatus({ userId, status }: {
+        userId: any;
+        status: any;
+    }): Promise<{
+        message: string;
+    }>;
 }
