@@ -29,7 +29,7 @@ export default class UserFavoritesRepository {
       },
       include: {
         model: this.productEntity,
-        attributes: ['name', 'title', 'price', 'brand', 'quantity'],
+        attributes: ['name', 'title', 'salesOption', 'price', 'brand', 'quantity'],
         include: [
           {
             model: this.productImageEntity,

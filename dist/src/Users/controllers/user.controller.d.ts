@@ -25,6 +25,10 @@ export declare class UserController {
         count: number;
     }>;
     removeFavoriteProduct({ user }: Request, { productId }: ProductDto): Promise<string>;
+    getAdminUsers(): Promise<{
+        rows: import("../entities/user.entity").default[];
+        count: number;
+    }>;
     deleteAdmin({ userId }: {
         userId: any;
     }): Promise<{

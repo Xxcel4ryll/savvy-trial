@@ -49,6 +49,9 @@ let UserController = class UserController {
     removeFavoriteProduct({ user }, { productId }) {
         return this.userService.removeFavoriteProduct(user, productId);
     }
+    getAdminUsers() {
+        return this.userService.getAdminUsers();
+    }
     deleteAdmin({ userId }) {
         return this.userService.deleteAdmin(userId);
     }
@@ -130,6 +133,13 @@ __decorate([
     __metadata("design:paramtypes", [Object, dtos_1.ProductDto]),
     __metadata("design:returntype", void 0)
 ], UserController.prototype, "removeFavoriteProduct", null);
+__decorate([
+    (0, common_1.UseGuards)((0, role_guard_1.default)([role_enum_1.default.Admin])),
+    (0, common_1.Get)('admin'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
+], UserController.prototype, "getAdminUsers", null);
 __decorate([
     (0, common_1.UseGuards)((0, role_guard_1.default)([role_enum_1.default.Admin])),
     (0, common_1.Delete)('admin/:userId'),

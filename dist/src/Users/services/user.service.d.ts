@@ -41,5 +41,9 @@ export declare class UserService {
         rows: import("../entities/user_favourite.entity").default[];
         count: number;
     }>;
+    getAdminUsers(): Promise<{
+        rows: import("../entities/user.entity").default[];
+        count: number;
+    }>;
     removeFavoriteProduct(user: any, productId: any): Promise<string>;
 }

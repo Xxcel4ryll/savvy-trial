@@ -209,6 +209,10 @@ export class UserService {
     return this.userFavouriteRepository.find(user.id);
   }
 
+  getAdminUsers() {
+    return this.usersRepository.getAdminUsers();
+  }
+
   async removeFavoriteProduct(user, productId) {
     const isRemoved = await this.userFavouriteRepository.remove({
       userId: user.id,

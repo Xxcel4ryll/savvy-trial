@@ -72,6 +72,25 @@ export default class UserRepository {
     });
   }
 
+  getAdminUsers() {
+    return this.userEntity.findAndCountAll<Users>({
+      where: {
+        userType: 'ADMIN'
+      },
+      attributes: [
+      'id',
+      'email',
+      'firstName',
+      'lastName',
+      'phoneNumber',
+      'countryCode',
+      'profilePicture',
+      'userType',
+      'status'
+    ]
+    });
+  }
+
   delete(criteriaObj) {
     return this.userEntity.destroy<Users>({
       where: criteriaObj,
