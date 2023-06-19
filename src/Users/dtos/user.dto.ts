@@ -19,6 +19,13 @@ export const userSchema = Joi.object().keys({
   password: Joi.string().required(),
 });
 
+export const updatePasswordSchema = Joi.object().keys({
+    oldPassword: Joi.string().required(),
+    newPassword: Joi.string().invalid(Joi.ref('oldPassword')).required().messages({
+      'any.only': 'A new password is required',
+    }),
+});
+
 export const profileUpdateSchema = Joi.object()
   .keys({
     email: Joi.string().email(),
@@ -74,3 +81,5 @@ export const completeProfileSchema = Joi.object().keys({
     )
     .required(),
 });
+
+

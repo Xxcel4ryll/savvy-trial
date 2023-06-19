@@ -14,7 +14,12 @@ import {
   UsePipes,
 } from '@nestjs/common';
 import { UserService } from '../services/user.service';
-import { UserDto, completeProfileSchema, profileUpdateSchema } from '../dtos/index';
+import { 
+  UserDto, 
+  completeProfileSchema, 
+  profileUpdateSchema, 
+  updatePasswordSchema
+} from '../dtos/index';
 import { JoiValidationPipe } from 'src/Globals/providers/validate/validate.pipe';
 import Roles from 'src/Globals/role.enum';
 import RoleGuard from 'src/Globals/Guards/role.guard';
@@ -37,6 +42,20 @@ export class UserController {
   @Put('account')
   updateUser(@Req() req: Request, @Body() updateInfo: UserDto) {
     return this.userService.updateAccount(req, updateInfo);
+  }
+
+  @UseGuards(RoleGuard([Roles.Admin, Roles.User]))
+  @UsePipes(new JoiValidationPipe(profileUpdateSchema))
+  @Patch('profile')
+  updateUserProfile(@Req() req: Request, @Body() updateInfo: UserDto) {
+    return this.userService.updateUserProfile(req, updateInfo);
+  }
+
+  @UseGuards(RoleGuard([Roles.Admin, Roles.User]))
+  @UsePipes(new JoiValidationPipe(updatePasswordSchema))
+  @Put('password')
+  updatePassword(@Req() req: Request, @Body() passwordInfo: UserDto) {
+    return this.userService.updatePassword(req, passwordInfo);
   }
 
   @Put('image')
@@ -69,11 +88,13 @@ export class UserController {
     return this.userService.removeFavoriteProduct(user, productId);
   }
 
+  @UseGuards(RoleGuard([Roles.Admin]))
   @Delete('admin/:userId')
   deleteAdmin(@Param() { userId }) {
     return this.userService.deleteAdmin(userId);
   }
 
+  @UseGuards(RoleGuard([Roles.Admin]))
   @Patch('admin/:userId/:status')
   updateAdminStatus(@Param() { userId, status }) {
     return this.userService.updateAdminStatus(userId, status);

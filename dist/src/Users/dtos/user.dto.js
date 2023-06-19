@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.completeProfileSchema = exports.profileUpdateSchema = exports.userSchema = exports.UserDto = void 0;
+exports.completeProfileSchema = exports.profileUpdateSchema = exports.updatePasswordSchema = exports.userSchema = exports.UserDto = void 0;
 const Joi = require("joi");
 class UserDto {
 }
@@ -8,6 +8,12 @@ exports.UserDto = UserDto;
 exports.userSchema = Joi.object().keys({
     email: Joi.string().email().required(),
     password: Joi.string().required(),
+});
+exports.updatePasswordSchema = Joi.object().keys({
+    oldPassword: Joi.string().required(),
+    newPassword: Joi.string().invalid(Joi.ref('oldPassword')).required().messages({
+        'any.only': 'A new password is required',
+    }),
 });
 exports.profileUpdateSchema = Joi.object()
     .keys({

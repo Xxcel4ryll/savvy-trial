@@ -10,6 +10,12 @@ export declare class UserController {
     updateUser(req: Request, updateInfo: UserDto): Promise<{
         message: string;
     }>;
+    updateUserProfile(req: Request, updateInfo: UserDto): Promise<{
+        message: string;
+    }>;
+    updatePassword(req: Request, passwordInfo: UserDto): Promise<{
+        message: string;
+    }>;
     updateUserImage(req: Request, file: any): Promise<{
         message: string;
     }>;

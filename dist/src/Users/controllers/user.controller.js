@@ -31,6 +31,12 @@ let UserController = class UserController {
     updateUser(req, updateInfo) {
         return this.userService.updateAccount(req, updateInfo);
     }
+    updateUserProfile(req, updateInfo) {
+        return this.userService.updateUserProfile(req, updateInfo);
+    }
+    updatePassword(req, passwordInfo) {
+        return this.userService.updatePassword(req, passwordInfo);
+    }
     updateUserImage(req, file) {
         return this.userService.updateImage(req, file);
     }
@@ -69,6 +75,26 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], UserController.prototype, "updateUser", null);
 __decorate([
+    (0, common_1.UseGuards)((0, role_guard_1.default)([role_enum_1.default.Admin, role_enum_1.default.User])),
+    (0, common_1.UsePipes)(new validate_pipe_1.JoiValidationPipe(index_1.profileUpdateSchema)),
+    (0, common_1.Patch)('profile'),
+    __param(0, (0, common_1.Req)()),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, index_1.UserDto]),
+    __metadata("design:returntype", void 0)
+], UserController.prototype, "updateUserProfile", null);
+__decorate([
+    (0, common_1.UseGuards)((0, role_guard_1.default)([role_enum_1.default.Admin, role_enum_1.default.User])),
+    (0, common_1.UsePipes)(new validate_pipe_1.JoiValidationPipe(index_1.updatePasswordSchema)),
+    (0, common_1.Put)('password'),
+    __param(0, (0, common_1.Req)()),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, index_1.UserDto]),
+    __metadata("design:returntype", void 0)
+], UserController.prototype, "updatePassword", null);
+__decorate([
     (0, common_1.Put)('image'),
     (0, common_1.UseGuards)((0, role_guard_1.default)([role_enum_1.default.Admin, role_enum_1.default.User])),
     (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)("profilePicture")),
@@ -105,6 +131,7 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], UserController.prototype, "removeFavoriteProduct", null);
 __decorate([
+    (0, common_1.UseGuards)((0, role_guard_1.default)([role_enum_1.default.Admin])),
     (0, common_1.Delete)('admin/:userId'),
     __param(0, (0, common_1.Param)()),
     __metadata("design:type", Function),
@@ -112,6 +139,7 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], UserController.prototype, "deleteAdmin", null);
 __decorate([
+    (0, common_1.UseGuards)((0, role_guard_1.default)([role_enum_1.default.Admin])),
     (0, common_1.Patch)('admin/:userId/:status'),
     __param(0, (0, common_1.Param)()),
     __metadata("design:type", Function),

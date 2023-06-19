@@ -74,6 +74,21 @@ let UserService = class UserService {
         });
         return !!isReset;
     }
+    async updatePassword(data, passwordInfo) {
+        const [isReset] = await this.usersRepository.modify({ email: data.user.email }, {
+            password: this.cryptoEncrypt.hashPassword(passwordInfo.newPassword),
+        });
+        if (!isReset) {
+            throw new common_1.HttpException({
+                statusCode: common_1.HttpStatus.PRECONDITION_FAILED,
+                name: 'UNAUTHORIZED',
+                error: 'Password update failed',
+            }, common_1.HttpStatus.PRECONDITION_FAILED);
+        }
+        return {
+            message: 'Password successfully updated'
+        };
+    }
     async deleteAdmin(userId) {
         await this.usersRepository.delete({
             id: userId
@@ -109,6 +124,19 @@ let UserService = class UserService {
             message: `${(upload === null || upload === void 0 ? void 0 : upload.resource_type) ?
                 'Profile image successfully uploaded' :
                 'Account setup successfully completed'}`
+        };
+    }
+    async updateUserProfile(req, upload) {
+        const [updated] = await this.usersRepository.modify({ email: req.user.email }, upload);
+        if (!updated) {
+            throw new common_1.HttpException({
+                statusCode: common_1.HttpStatus.PRECONDITION_FAILED,
+                name: 'UNAUTHORIZED',
+                error: 'Profile update failed',
+            }, common_1.HttpStatus.PRECONDITION_FAILED);
+        }
+        return {
+            message: 'Profile successfully updated'
         };
     }
     async updateImage(req, file) {

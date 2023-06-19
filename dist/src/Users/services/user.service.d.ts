@@ -18,6 +18,9 @@ export declare class UserService {
     find({ email, phoneNumber, id }: FindUserDto): Promise<import("../entities/user.entity").default>;
     create(payload: any): Promise<boolean | import("../entities/user.entity").default>;
     resetPassword(data: any): Promise<boolean>;
+    updatePassword(data: any, passwordInfo: any): Promise<{
+        message: string;
+    }>;
     deleteAdmin(userId: any): Promise<{
         message: string;
     }>;
@@ -25,6 +28,9 @@ export declare class UserService {
         message: string;
     }>;
     updateAccount(req: any, upload: any): Promise<{
+        message: string;
+    }>;
+    updateUserProfile(req: any, upload: any): Promise<{
         message: string;
     }>;
     updateImage(req: any, file: any): Promise<{
