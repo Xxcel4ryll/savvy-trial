@@ -68,7 +68,7 @@ __decorate([
 __decorate([
     (0, sequelize_typescript_1.Column)({
         type: sequelize_typescript_1.DataType.STRING,
-        allowNull: false,
+        allowNull: true,
     }),
     __metadata("design:type", String)
 ], Users.prototype, "phoneNumber", void 0);
@@ -76,6 +76,7 @@ __decorate([
     (0, sequelize_typescript_1.Column)({
         type: sequelize_typescript_1.DataType.STRING,
         allowNull: false,
+        defaultValue: 'NG',
     }),
     __metadata("design:type", String)
 ], Users.prototype, "countryCode", void 0);

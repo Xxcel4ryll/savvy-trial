@@ -52,9 +52,6 @@ export const adminRegisterSchema = Joi.object().keys({
   firstName: Joi.string().required(),
   lastName: Joi.string().required(),
   password: Joi.string().required(),
-  phoneNumber: Joi.string().required(),
-  countryCode: Joi.string().default('NG'),
-  userType: Joi.string().default('ADMIN').required(),
 }).default();
 
 export const forgotPasswordSchema = Joi.object().keys({

@@ -28,6 +28,7 @@ module.exports = {
 
       country_code: {
         type: Sequelize.STRING,
+        defaultValue: 'NG',
         allowNull: false,
       },
 
@@ -96,7 +97,7 @@ module.exports = {
 
       phone_number: {
         type: Sequelize.STRING,
-        allowNull: false,
+        allowNull: true,
       },
 
       password: {

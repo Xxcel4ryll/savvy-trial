@@ -23,6 +23,7 @@ exports.profileUpdateSchema = Joi.object()
     lastName: Joi.string(),
     profilePicture: Joi.string(),
     countryCode: Joi.string(),
+    password: Joi.string().optional(),
     homeAddress: Joi.string(),
     userType: Joi.string(),
     city: Joi.string(),

@@ -24,6 +24,7 @@ module.exports = {
             },
             country_code: {
                 type: Sequelize.STRING,
+                defaultValue: 'NG',
                 allowNull: false,
             },
             profile_picture: {
@@ -79,7 +80,7 @@ module.exports = {
             },
             phone_number: {
                 type: Sequelize.STRING,
-                allowNull: false,
+                allowNull: true,
             },
             password: {
                 type: Sequelize.STRING,

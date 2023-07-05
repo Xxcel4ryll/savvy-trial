@@ -21,6 +21,7 @@ const role_enum_1 = require("../../Globals/role.enum");
 const role_guard_1 = require("../../Globals/Guards/role.guard");
 const dtos_1 = require("../../Products/dtos");
 const platform_express_1 = require("@nestjs/platform-express");
+const dtos_2 = require("../../Authentication/dtos");
 let UserController = class UserController {
     constructor(userService) {
         this.userService = userService;
@@ -146,7 +147,7 @@ __decorate([
 __decorate([
     (0, common_1.UseGuards)((0, role_guard_1.default)([role_enum_1.default.Admin])),
     (0, common_1.Post)('admin'),
-    __param(0, (0, common_1.Body)()),
+    __param(0, (0, common_1.Body)(new validate_pipe_1.JoiValidationPipe(dtos_2.adminRegisterSchema))),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [index_1.UserDto]),
     __metadata("design:returntype", void 0)

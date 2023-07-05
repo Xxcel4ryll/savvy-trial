@@ -171,8 +171,12 @@ export class UserService {
   }
 
   async updateUserProfile(req, upload) {
+    if (upload.password) {
+      upload.password = this.cryptoEncrypt.hashPassword(upload.password);
+    };
+
     const [updated] = await this.usersRepository.modify(
-      { email: req.user.email },
+      { email: req?.user?.email },
       upload,
     );
       
@@ -214,7 +218,11 @@ export class UserService {
   }
 
   async createAdminUser(admin) {
-    const [user, created] = await this.usersRepository.create(admin);
+    const [user, created] = await this.usersRepository.create({
+      ...admin,
+      userType: 'ADMIN',
+      password: this.cryptoEncrypt.hashPassword(admin.password),
+    });
 
     if (!created) {
       throw new HttpException(

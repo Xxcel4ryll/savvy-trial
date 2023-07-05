@@ -26,6 +26,7 @@ import RoleGuard from 'src/Globals/Guards/role.guard';
 import { Request } from 'express';
 import { ProductDto } from 'src/Products/dtos';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { adminRegisterSchema } from 'src/Authentication/dtos';
 
 @Controller('users')
 export class UserController {
@@ -96,7 +97,9 @@ export class UserController {
 
   @UseGuards(RoleGuard([Roles.Admin]))
   @Post('admin')
-  createAdminUser(@Body() admin: UserDto) {
+  createAdminUser(@Body(
+    new JoiValidationPipe(adminRegisterSchema)
+  ) admin: UserDto) {
     return this.userService.createAdminUser(admin);
   }
 

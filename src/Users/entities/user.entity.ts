@@ -68,13 +68,14 @@ export default class Users extends Model<Users> {
 
   @Column({
     type: DataType.STRING,
-    allowNull: false,
+    allowNull: true,
   })
   phoneNumber: string;
 
   @Column({
     type: DataType.STRING,
     allowNull: false,
+    defaultValue: 'NG',
   })
   countryCode: string;
 

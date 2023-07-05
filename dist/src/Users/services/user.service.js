@@ -127,7 +127,12 @@ let UserService = class UserService {
         };
     }
     async updateUserProfile(req, upload) {
-        const [updated] = await this.usersRepository.modify({ email: req.user.email }, upload);
+        var _a;
+        if (upload.password) {
+            upload.password = this.cryptoEncrypt.hashPassword(upload.password);
+        }
+        ;
+        const [updated] = await this.usersRepository.modify({ email: (_a = req === null || req === void 0 ? void 0 : req.user) === null || _a === void 0 ? void 0 : _a.email }, upload);
         if (!updated) {
             throw new common_1.HttpException({
                 statusCode: common_1.HttpStatus.PRECONDITION_FAILED,
@@ -154,7 +159,7 @@ let UserService = class UserService {
         return this.usersRepository.getAdminUsers();
     }
     async createAdminUser(admin) {
-        const [user, created] = await this.usersRepository.create(admin);
+        const [user, created] = await this.usersRepository.create(Object.assign(Object.assign({}, admin), { userType: 'ADMIN', password: this.cryptoEncrypt.hashPassword(admin.password) }));
         if (!created) {
             throw new common_1.HttpException({
                 statusCode: common_1.HttpStatus.PRECONDITION_FAILED,
