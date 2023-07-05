@@ -95,6 +95,12 @@ export class UserController {
   }
 
   @UseGuards(RoleGuard([Roles.Admin]))
+  @Post('admin')
+  createAdminUser(@Body() admin: UserDto) {
+    return this.userService.createAdminUser(admin);
+  }
+
+  @UseGuards(RoleGuard([Roles.Admin]))
   @Delete('admin/:userId')
   deleteAdmin(@Param() { userId }) {
     return this.userService.deleteAdmin(userId);

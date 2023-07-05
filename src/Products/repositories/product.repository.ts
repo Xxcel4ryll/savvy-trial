@@ -23,6 +23,7 @@ export default class ProductsRepository {
   async create(user, payload): Promise<Products> {
     const productExist = await this.check(user, {
       name: payload.name,
+      salesOption: payload.salesOption,
     });
 
     if (productExist) {
@@ -72,9 +73,6 @@ export default class ProductsRepository {
   }
 
   check(user?, criteria?): Promise<Products> {
-    console.log(user); 
-    console.log(criteria); 
-    
     return this.productEntity.findOne<Products>({
       where: criteria,
       attributes: {

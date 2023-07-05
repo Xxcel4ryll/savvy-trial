@@ -21,13 +21,21 @@ let Users = class Users extends sequelize_typescript_1.Model {
 };
 __decorate([
     (0, sequelize_typescript_1.Column)({
-        type: sequelize_typescript_1.DataType.UUID,
-        defaultValue: sequelize_typescript_1.DataType.UUIDV4,
+        type: sequelize_typescript_1.DataType.INTEGER,
         primaryKey: true,
+        autoIncrement: true,
         allowNull: false,
     }),
     __metadata("design:type", String)
 ], Users.prototype, "id", void 0);
+__decorate([
+    (0, sequelize_typescript_1.Column)({
+        type: sequelize_typescript_1.DataType.UUID,
+        defaultValue: sequelize_typescript_1.DataType.UUIDV4,
+        allowNull: false,
+    }),
+    __metadata("design:type", String)
+], Users.prototype, "userId", void 0);
 __decorate([
     (0, sequelize_typescript_1.Column)({
         type: sequelize_typescript_1.DataType.STRING,

@@ -153,6 +153,17 @@ let UserService = class UserService {
     getAdminUsers() {
         return this.usersRepository.getAdminUsers();
     }
+    async createAdminUser(admin) {
+        const [user, created] = await this.usersRepository.create(admin);
+        if (!created) {
+            throw new common_1.HttpException({
+                statusCode: common_1.HttpStatus.PRECONDITION_FAILED,
+                name: 'USER',
+                error: 'Admin user already exist',
+            }, common_1.HttpStatus.PRECONDITION_FAILED);
+        }
+        return user;
+    }
     async removeFavoriteProduct(user, productId) {
         const isRemoved = await this.userFavouriteRepository.remove({
             userId: user.id,

@@ -2,6 +2,7 @@ import { Model } from 'sequelize-typescript';
 export default class Users extends Model<Users> {
     toJSON(): Users;
     id: string;
+    userId: string;
     email: string;
     firstName: string;
     lastName: string;

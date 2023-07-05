@@ -52,6 +52,9 @@ let UserController = class UserController {
     getAdminUsers() {
         return this.userService.getAdminUsers();
     }
+    createAdminUser(admin) {
+        return this.userService.createAdminUser(admin);
+    }
     deleteAdmin({ userId }) {
         return this.userService.deleteAdmin(userId);
     }
@@ -140,6 +143,14 @@ __decorate([
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
 ], UserController.prototype, "getAdminUsers", null);
+__decorate([
+    (0, common_1.UseGuards)((0, role_guard_1.default)([role_enum_1.default.Admin])),
+    (0, common_1.Post)('admin'),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [index_1.UserDto]),
+    __metadata("design:returntype", void 0)
+], UserController.prototype, "createAdminUser", null);
 __decorate([
     (0, common_1.UseGuards)((0, role_guard_1.default)([role_enum_1.default.Admin])),
     (0, common_1.Delete)('admin/:userId'),

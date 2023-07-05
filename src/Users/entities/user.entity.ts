@@ -22,12 +22,19 @@ export default class Users extends Model<Users> {
   }
 
   @Column({
-    type: DataType.UUID,
-    defaultValue: DataType.UUIDV4,
+    type: DataType.INTEGER,
     primaryKey: true,
+    autoIncrement: true,
     allowNull: false,
   })
   id: string;
+
+  @Column({
+    type: DataType.UUID,
+    defaultValue: DataType.UUIDV4,
+    allowNull: false,
+  })
+  userId: string;
 
   @Column({
     type: DataType.STRING,

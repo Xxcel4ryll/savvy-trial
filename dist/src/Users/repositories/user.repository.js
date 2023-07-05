@@ -77,7 +77,8 @@ let UserRepository = class UserRepository {
                 'countryCode',
                 'profilePicture',
                 'userType',
-                'status'
+                'status',
+                'createdAt'
             ]
         });
     }

@@ -29,6 +29,7 @@ export declare class UserController {
         rows: import("../entities/user.entity").default[];
         count: number;
     }>;
+    createAdminUser(admin: UserDto): Promise<import("../entities/user.entity").default>;
     deleteAdmin({ userId }: {
         userId: any;
     }): Promise<{

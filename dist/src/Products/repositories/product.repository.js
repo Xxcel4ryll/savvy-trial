@@ -36,6 +36,7 @@ let ProductsRepository = class ProductsRepository {
     async create(user, payload) {
         const productExist = await this.check(user, {
             name: payload.name,
+            salesOption: payload.salesOption,
         });
         if (productExist) {
             throw new Error('Product already exist!');
@@ -82,8 +83,6 @@ let ProductsRepository = class ProductsRepository {
         });
     }
     check(user, criteria) {
-        console.log(user);
-        console.log(criteria);
         return this.productEntity.findOne({
             where: criteria,
             attributes: {

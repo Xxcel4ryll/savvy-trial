@@ -2,10 +2,17 @@ module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable('users', {
       id: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        autoIncrement: true,
+        primary: true,
+        unique: true,
+      },
+
+      user_id: {
         type: Sequelize.UUID,
         allowNull: false,
         defaultValue: Sequelize.UUIDV4,
-        primary: true,
         unique: true,
       },
 
@@ -37,6 +44,13 @@ module.exports = {
       valid_id: {
         type: Sequelize.STRING,
         allowNull: true,
+      },
+
+      status: {
+        type: Sequelize.ENUM,
+        allowNull: false,
+        values: ['SUSPENDED', 'VERIFIED', 'PENDING'],
+        defaultValue: 'VERIFIED',
       },
 
       income: {
@@ -118,6 +132,11 @@ module.exports = {
         defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
         onUpdate: true,
         allowNull: false,
+      },
+
+      deleted_at: {
+        type: Sequelize.DATE,
+        allowNull: true,
       },
     });
   },
