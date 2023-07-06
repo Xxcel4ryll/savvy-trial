@@ -155,8 +155,8 @@ let UserService = class UserService {
     viewFavoriteProduct(user) {
         return this.userFavouriteRepository.find(user.id);
     }
-    getAdminUsers() {
-        return this.usersRepository.getAdminUsers();
+    getUsers(type) {
+        return this.usersRepository.getUsers(type);
     }
     async createAdminUser(admin) {
         const [user, created] = await this.usersRepository.create(Object.assign(Object.assign({}, admin), { userType: 'ADMIN', password: this.cryptoEncrypt.hashPassword(admin.password) }));

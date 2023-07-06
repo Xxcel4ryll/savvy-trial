@@ -213,8 +213,8 @@ export class UserService {
     return this.userFavouriteRepository.find(user.id);
   }
 
-  getAdminUsers() {
-    return this.usersRepository.getAdminUsers();
+  getUsers(type) {
+    return this.usersRepository.getUsers(type);
   }
 
   async createAdminUser(admin) {

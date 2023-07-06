@@ -41,7 +41,7 @@ export declare class UserService {
         rows: import("../entities/user_favourite.entity").default[];
         count: number;
     }>;
-    getAdminUsers(): Promise<{
+    getUsers(type: any): Promise<{
         rows: import("../entities/user.entity").default[];
         count: number;
     }>;

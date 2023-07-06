@@ -90,9 +90,9 @@ export class UserController {
   }
 
   @UseGuards(RoleGuard([Roles.Admin]))
-  @Get('admin')
-  getAdminUsers() {
-    return this.userService.getAdminUsers();
+  @Get(':type')
+  getUsers(@Param() { type }) {
+    return this.userService.getUsers(type);
   }
 
   @UseGuards(RoleGuard([Roles.Admin]))

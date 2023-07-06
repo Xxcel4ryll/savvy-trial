@@ -72,10 +72,10 @@ export default class UserRepository {
     });
   }
 
-  getAdminUsers() {
+  getUsers(type) {
     return this.userEntity.findAndCountAll<Users>({
       where: {
-        userType: 'ADMIN'
+        userType: type
       },
       attributes: [
       'id',

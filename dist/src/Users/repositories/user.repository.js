@@ -63,10 +63,10 @@ let UserRepository = class UserRepository {
             where: criteriaObj,
         });
     }
-    getAdminUsers() {
+    getUsers(type) {
         return this.userEntity.findAndCountAll({
             where: {
-                userType: 'ADMIN'
+                userType: type
             },
             attributes: [
                 'id',

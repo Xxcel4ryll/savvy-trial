@@ -50,8 +50,8 @@ let UserController = class UserController {
     removeFavoriteProduct({ user }, { productId }) {
         return this.userService.removeFavoriteProduct(user, productId);
     }
-    getAdminUsers() {
-        return this.userService.getAdminUsers();
+    getUsers({ type }) {
+        return this.userService.getUsers(type);
     }
     createAdminUser(admin) {
         return this.userService.createAdminUser(admin);
@@ -139,11 +139,12 @@ __decorate([
 ], UserController.prototype, "removeFavoriteProduct", null);
 __decorate([
     (0, common_1.UseGuards)((0, role_guard_1.default)([role_enum_1.default.Admin])),
-    (0, common_1.Get)('admin'),
+    (0, common_1.Get)(':type'),
+    __param(0, (0, common_1.Param)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
+    __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)
-], UserController.prototype, "getAdminUsers", null);
+], UserController.prototype, "getUsers", null);
 __decorate([
     (0, common_1.UseGuards)((0, role_guard_1.default)([role_enum_1.default.Admin])),
     (0, common_1.Post)('admin'),
