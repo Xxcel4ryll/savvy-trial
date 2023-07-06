@@ -13,6 +13,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const common_1 = require("@nestjs/common");
+const sequelize_1 = require("sequelize");
 let UserRepository = class UserRepository {
     constructor(userEntity) {
         this.userEntity = userEntity;
@@ -65,9 +66,7 @@ let UserRepository = class UserRepository {
     }
     getUsers(type) {
         return this.userEntity.findAndCountAll({
-            where: {
-                userType: type
-            },
+            where: sequelize_1.Sequelize.literal(`LOWER(user_type) LIKE LOWER('%${type}%')`),
             attributes: [
                 'id',
                 'email',

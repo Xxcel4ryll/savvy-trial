@@ -1,4 +1,5 @@
 import { Injectable, Inject } from '@nestjs/common';
+import { Op, Sequelize } from 'sequelize';
 import Users from '../entities/user.entity';
 
 @Injectable()
@@ -73,10 +74,9 @@ export default class UserRepository {
   }
 
   getUsers(type) {
+
     return this.userEntity.findAndCountAll<Users>({
-      where: {
-        userType: type
-      },
+      where: Sequelize.literal(`LOWER(user_type) LIKE LOWER('%${type}%')`),
       attributes: [
       'id',
       'email',
