@@ -52,6 +52,4 @@ export default class UserFavourite extends Model<UserFavourite> {
 
   @BelongsTo(() => Products)
   product: Products;
-  
-  
 }
