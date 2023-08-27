@@ -22,6 +22,8 @@ const role_guard_1 = require("../../Globals/Guards/role.guard");
 const dtos_1 = require("../../Products/dtos");
 const platform_express_1 = require("@nestjs/platform-express");
 const dtos_2 = require("../../Authentication/dtos");
+const find_data_request_dto_1 = require("../../dto/request/find.data.request.dto");
+const helper_1 = require("../../utils/helper");
 let UserController = class UserController {
     constructor(userService) {
         this.userService = userService;
@@ -29,8 +31,8 @@ let UserController = class UserController {
     getUser(req) {
         return req.user;
     }
-    updateUser(req, updateInfo) {
-        return this.userService.updateAccount(req, updateInfo);
+    async updateUser(req, files, updateInfo) {
+        return this.userService.updateProfile(req, files, updateInfo);
     }
     updateUserProfile(req, updateInfo) {
         return this.userService.updateUserProfile(req, updateInfo);
@@ -62,6 +64,34 @@ let UserController = class UserController {
     updateAdminStatus({ userId, status }) {
         return this.userService.updateAdminStatus(userId, status);
     }
+    async getAllUsers(query) {
+        const calculatedQuery = (0, helper_1.calculate_query_params)(query);
+        const { current_page, total_items, data_response: data, total_pages, } = await this.userService.allUsers(calculatedQuery, query.type);
+        return {
+            status: common_1.HttpStatus.OK,
+            message: 'Users retrieved successfully',
+            data,
+            meta: {
+                total_items,
+                total_pages,
+                current_page,
+            },
+        };
+    }
+    async getAllKYCUsers(query) {
+        const calculatedQuery = (0, helper_1.calculate_query_params)(query);
+        const { current_page, total_items, data_response: data, total_pages, } = await this.userService.allKYCUSers(calculatedQuery, query.type);
+        return {
+            status: common_1.HttpStatus.OK,
+            message: 'KYC Users retrieved successfully',
+            data,
+            meta: {
+                total_items,
+                total_pages,
+                current_page,
+            },
+        };
+    }
 };
 __decorate([
     (0, common_1.UseGuards)((0, role_guard_1.default)([role_enum_1.default.Admin, role_enum_1.default.User])),
@@ -73,13 +103,17 @@ __decorate([
 ], UserController.prototype, "getUser", null);
 __decorate([
     (0, common_1.UseGuards)((0, role_guard_1.default)([role_enum_1.default.Admin, role_enum_1.default.User])),
-    (0, common_1.UsePipes)(new validate_pipe_1.JoiValidationPipe(index_1.completeProfileSchema)),
     (0, common_1.Put)('account'),
+    (0, common_1.UseInterceptors)((0, platform_express_1.FileFieldsInterceptor)([
+        { name: 'bvn', maxCount: 1 },
+        { name: 'id', maxCount: 1 },
+    ])),
     __param(0, (0, common_1.Req)()),
-    __param(1, (0, common_1.Body)()),
+    __param(1, (0, common_1.UploadedFiles)()),
+    __param(2, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, index_1.UserDto]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:paramtypes", [Object, Object, index_1.UserDto]),
+    __metadata("design:returntype", Promise)
 ], UserController.prototype, "updateUser", null);
 __decorate([
     (0, common_1.UseGuards)((0, role_guard_1.default)([role_enum_1.default.Admin, role_enum_1.default.User])),
@@ -169,6 +203,22 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)
 ], UserController.prototype, "updateAdminStatus", null);
+__decorate([
+    (0, common_1.UseGuards)((0, role_guard_1.default)([role_enum_1.default.Admin])),
+    (0, common_1.Get)('allUsers/fetch/byType'),
+    __param(0, (0, common_1.Query)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [find_data_request_dto_1.FindDataRequestDto]),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "getAllUsers", null);
+__decorate([
+    (0, common_1.UseGuards)((0, role_guard_1.default)([role_enum_1.default.Admin])),
+    (0, common_1.Get)('allUsers/fetch/byKyc'),
+    __param(0, (0, common_1.Query)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [find_data_request_dto_1.FindDataRequestDto]),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "getAllKYCUsers", null);
 UserController = __decorate([
     (0, common_1.Controller)('users'),
     __metadata("design:paramtypes", [user_service_1.UserService])

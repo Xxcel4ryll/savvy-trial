@@ -83,6 +83,7 @@ export default class UserRepository {
       'firstName',
       'lastName',
       'phoneNumber',
+      'profile_picture',
       'countryCode',
       'profilePicture',
       'userType',
@@ -91,6 +92,68 @@ export default class UserRepository {
     ]
     });
   }
+
+  fetchAlUsers(meta, type?:string): Promise<{ rows:Users[], count: number}> {    
+    let where;
+    type == null ? where = {
+      userType:{
+        [Op.like]: 'USER'
+      },
+      } : where = {
+        userType:{
+          [Op.like]: 'USER'
+        },
+        status: {
+          [Op.like]: type
+        }
+        }
+    return this.userEntity.findAndCountAll<Users>({
+      where: where,
+      attributes: [
+        'id',
+        'user_id',
+        'email',
+        'firstName',
+        'lastName',
+        'phoneNumber',
+        'countryCode',
+        'profilePicture',
+        'userType',
+        'status',
+        'createdAt',
+        'updated_at'
+      ],
+      ...meta,
+    });
+  }
+
+  fetchKycUsers(meta): Promise<{ rows:Users[], count: number}> { 
+    const excludedStatuses = ['VERIFIED', 'SUSPENDED'];   
+    return this.userEntity.findAndCountAll<Users>({
+      where: {
+        status: {
+          [Op.notIn]: excludedStatuses
+        },
+      },
+      attributes: [
+        'id',
+        'user_id',
+        'bvn',
+        'email',
+        'firstName',
+        'lastName',
+        'phoneNumber',
+        'countryCode',
+        'profilePicture',
+        'userType',
+        'status',
+        'createdAt',
+        'updated_at'
+      ],
+      ...meta,
+    });
+  }
+  
 
   delete(criteriaObj) {
     return this.userEntity.destroy<Users>({

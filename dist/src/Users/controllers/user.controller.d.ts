@@ -1,13 +1,19 @@
 /// <reference types="passport" />
+/// <reference types="multer" />
+import { HttpStatus } from '@nestjs/common';
 import { UserService } from '../services/user.service';
 import { UserDto } from '../dtos/index';
 import { Request } from 'express';
 import { ProductDto } from 'src/Products/dtos';
+import { FindDataRequestDto } from 'src/dto/request/find.data.request.dto';
 export declare class UserController {
     private userService;
     constructor(userService: UserService);
     getUser(req: Request): Express.User;
-    updateUser(req: Request, updateInfo: UserDto): Promise<{
+    updateUser(req: Request, files: {
+        bvn?: Express.Multer.File[];
+        id?: Express.Multer.File[];
+    }, updateInfo: UserDto): Promise<{
         message: string;
     }>;
     updateUserProfile(req: Request, updateInfo: UserDto): Promise<{
@@ -42,5 +48,25 @@ export declare class UserController {
         status: any;
     }): Promise<{
         message: string;
+    }>;
+    getAllUsers(query: FindDataRequestDto): Promise<{
+        status: HttpStatus;
+        message: string;
+        data: any;
+        meta: {
+            total_items: number;
+            total_pages: number;
+            current_page: number;
+        };
+    }>;
+    getAllKYCUsers(query: FindDataRequestDto): Promise<{
+        status: HttpStatus;
+        message: string;
+        data: any;
+        meta: {
+            total_items: number;
+            total_pages: number;
+            current_page: number;
+        };
     }>;
 }
