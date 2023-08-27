@@ -19,6 +19,7 @@ const providers_1 = require("../../Database/providers");
 const wallet_repository_1 = require("../../Transactions/repositories/wallet.repository");
 const user_favorites_repository_1 = require("../repositories/user_favorites.repository");
 const file_service_1 = require("../../Files/services/file.service");
+const helper_1 = require("../../utils/helper");
 const sequelize = providers_1.databaseProviders[0].useFactory();
 let UserService = class UserService {
     constructor(cryptoEncrypt, usersRepository, userFavouriteRepository, paymentService, paystackRepository, walletRepository, fileService) {
@@ -112,7 +113,8 @@ let UserService = class UserService {
         };
     }
     async updateAccount(req, upload) {
-        const [updated] = await this.usersRepository.modify({ email: req.user.email }, upload.setup || { profilePicture: upload.secure_url });
+        const [updated] = await this.usersRepository.modify({ email: req.user.email }, upload.setup ||
+            { profilePicture: upload.secure_url });
         if (!updated) {
             throw new common_1.HttpException({
                 statusCode: common_1.HttpStatus.PRECONDITION_FAILED,
@@ -124,6 +126,43 @@ let UserService = class UserService {
             message: `${(upload === null || upload === void 0 ? void 0 : upload.resource_type) ?
                 'Profile image successfully uploaded' :
                 'Account setup successfully completed'}`
+        };
+    }
+    async updateProfile(req, file, upload) {
+        if (file.bvn && file.id) {
+            let bvnFile = file.bvn[0];
+            let idFile = file.id[0];
+            var uploadedBvn = await this.fileService.handleUploadedFile(bvnFile);
+            var uploadedId = await this.fileService.handleUploadedFile(idFile);
+        }
+        else if (file.bvn) {
+            let bvnFile = file.bvn[0];
+            var uploadedBvn = await this.fileService.handleUploadedFile(bvnFile);
+        }
+        else if (file.id) {
+            let idFile = file.id[0];
+            var uploadedId = await this.fileService.handleUploadedFile(idFile);
+        }
+        if (uploadedBvn != null && uploadedId != null) {
+            upload.setup.validId = uploadedId.url;
+            upload.setup.bvn = uploadedBvn.url;
+        }
+        else if (uploadedBvn) {
+            upload.setup.bvn = uploadedBvn.url;
+        }
+        else if (uploadedId) {
+            upload.setup.validId = uploadedId.url;
+        }
+        const [update] = await this.usersRepository.modify({ email: req.user.email }, upload.setup);
+        if (!update) {
+            throw new common_1.HttpException({
+                statusCode: common_1.HttpStatus.PRECONDITION_FAILED,
+                name: 'UNAUTHORIZED',
+                error: 'Account setup failed',
+            }, common_1.HttpStatus.PRECONDITION_FAILED);
+        }
+        return {
+            message: "Account Profile completed succesfuly."
         };
     }
     async updateUserProfile(req, upload) {
@@ -181,6 +220,34 @@ let UserService = class UserService {
             name: 'FAVORITE',
             error: 'Favorite failed to delete',
         }, common_1.HttpStatus.PRECONDITION_FAILED);
+    }
+    async allUsers(calculatedQuery, type) {
+        const { limit_query, offset_query, query_page, condition, searchParam } = calculatedQuery;
+        const where = {};
+        const meta = {
+            limit: limit_query,
+            offset: offset_query,
+        };
+        if (Object.keys(condition).length) {
+            const key = Object.keys(condition)[0];
+            where[key] = searchParam;
+        }
+        const users = await this.usersRepository.fetchAlUsers(calculatedQuery, type);
+        return (0, helper_1.calculate_pagination_data)(users, query_page, meta.limit);
+    }
+    async allKYCUSers(calculatedQuery, type) {
+        const { limit_query, offset_query, query_page, condition, searchParam } = calculatedQuery;
+        const where = {};
+        const meta = {
+            limit: limit_query,
+            offset: offset_query,
+        };
+        if (Object.keys(condition).length) {
+            const key = Object.keys(condition)[0];
+            where[key] = searchParam;
+        }
+        const users = await this.usersRepository.fetchKycUsers(calculatedQuery);
+        return (0, helper_1.calculate_pagination_data)(users, query_page, meta.limit);
     }
 };
 UserService = __decorate([

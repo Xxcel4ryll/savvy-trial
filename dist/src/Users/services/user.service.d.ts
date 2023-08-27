@@ -30,6 +30,9 @@ export declare class UserService {
     updateAccount(req: any, upload: any): Promise<{
         message: string;
     }>;
+    updateProfile(req: any, file: any, upload: any): Promise<{
+        message: string;
+    }>;
     updateUserProfile(req: any, upload: any): Promise<{
         message: string;
     }>;
@@ -47,4 +50,6 @@ export declare class UserService {
     }>;
     createAdminUser(admin: any): Promise<import("../entities/user.entity").default>;
     removeFavoriteProduct(user: any, productId: any): Promise<string>;
+    allUsers(calculatedQuery: any, type?: string): Promise<import("../../dto/response/paginated.data.dto").PaginationData<any>>;
+    allKYCUSers(calculatedQuery: any, type?: string): Promise<import("../../dto/response/paginated.data.dto").PaginationData<any>>;
 }

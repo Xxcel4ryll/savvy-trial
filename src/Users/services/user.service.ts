@@ -8,6 +8,7 @@ import { databaseProviders } from 'src/Database/providers';
 import WalletRepository from 'src/Transactions/repositories/wallet.repository';
 import UserFavoritesRepository from '../repositories/user_favorites.repository';
 import { FileService } from 'src/Files/services/file.service';
+import { calculate_pagination_data } from 'src/utils/helper';
 
 const sequelize = databaseProviders[0].useFactory();
 
@@ -21,6 +22,7 @@ export class UserService {
     private paystackRepository: PaystackRepository,
     private walletRepository: WalletRepository,
     private fileService: FileService,
+
   ) {}
 
   find({ email, phoneNumber, id }: FindUserDto) {
@@ -147,7 +149,8 @@ export class UserService {
   async updateAccount(req, upload) {
     const [updated] = await this.usersRepository.modify(
       { email: req.user.email },
-      upload.setup || { profilePicture: upload.secure_url },
+      upload.setup || 
+      { profilePicture: upload.secure_url },
     );
       
     if (!updated) {
@@ -168,6 +171,51 @@ export class UserService {
         'Account setup successfully completed'
       }` 
     };
+  }
+
+  async updateProfile(req,file, upload) { 
+
+            
+      if (file.bvn && file.id) {
+        let bvnFile = file.bvn[0];
+        let idFile = file.id[0];
+        var uploadedBvn = await this.fileService.handleUploadedFile(bvnFile);
+        var uploadedId = await this.fileService.handleUploadedFile(idFile);
+      }else if (file.bvn) {
+        let bvnFile = file.bvn[0];  
+        var uploadedBvn = await this.fileService.handleUploadedFile(bvnFile);
+      }else if (file.id) {
+        let idFile = file.id[0];
+        var uploadedId = await this.fileService.handleUploadedFile(idFile);
+      }
+      if (uploadedBvn != null && uploadedId != null) {
+        upload.setup.validId = uploadedId.url;
+      upload.setup.bvn = uploadedBvn.url;
+      }else if (uploadedBvn) {
+        upload.setup.bvn = uploadedBvn.url;
+      }else if (uploadedId) {
+        upload.setup.validId = uploadedId.url;
+      }
+
+    const [ update ] = await this.usersRepository.modify(
+      { email: req.user.email },
+      upload.setup
+    );
+
+    if (!update
+      ) {
+      throw new HttpException(
+        {
+          statusCode: HttpStatus.PRECONDITION_FAILED,
+          name: 'UNAUTHORIZED',
+          error: 'Account setup failed',
+        },
+        HttpStatus.PRECONDITION_FAILED,
+      );
+    }
+    return {
+      message: "Account Profile completed succesfuly."
+    }
   }
 
   async updateUserProfile(req, upload) {
@@ -197,6 +245,7 @@ export class UserService {
   }
 
   async updateImage(req, file) {
+    
     const uploadedImage = await this.fileService.handleUploadedFile(file);
 
     return this.updateAccount(req, uploadedImage);
@@ -254,5 +303,41 @@ export class UserService {
       },
       HttpStatus.PRECONDITION_FAILED,
     );
+  }
+
+  async allUsers(calculatedQuery,type?: string) {
+    const { limit_query, offset_query, query_page, condition, searchParam } =
+    calculatedQuery;
+  const where: { type?: string } = {};
+
+  const meta = {
+    limit: limit_query,
+    offset: offset_query,
+  };
+
+  if (Object.keys(condition).length) {
+    const key = Object.keys(condition)[0];
+    where[key] = searchParam;
+  }
+  const users = await this.usersRepository.fetchAlUsers(calculatedQuery,type)
+    return calculate_pagination_data(users, query_page, meta.limit)
+  }
+
+  async allKYCUSers(calculatedQuery,type?: string) {
+    const { limit_query, offset_query, query_page, condition, searchParam } =
+    calculatedQuery;
+  const where: { type?: string } = {};
+
+  const meta = {
+    limit: limit_query,
+    offset: offset_query,
+  };
+
+  if (Object.keys(condition).length) {
+    const key = Object.keys(condition)[0];
+    where[key] = searchParam;
+  }
+  const users = await this.usersRepository.fetchKycUsers(calculatedQuery)
+    return calculate_pagination_data(users, query_page, meta.limit)
   }
 }

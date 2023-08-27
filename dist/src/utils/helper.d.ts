@@ -1,0 +1,21 @@
+import { FindDataRequestDto } from 'src/dto/request/find.data.request.dto';
+import { CalcPaginationType, PaginationData } from 'src/dto/response/paginated.data.dto';
+export declare const calculate_query_params: (query: FindDataRequestDto, query_condition?: any) => {
+    searchBy: string;
+    searchParam: string;
+    year?: string;
+    month?: number;
+    date1?: any;
+    date2?: any;
+    type: string;
+    from: string;
+    to: string;
+    page: string;
+    size: string;
+    limit_query: number;
+    offset_query: number;
+    query_page: number;
+    condition: any;
+};
+export declare const calculate_pagination: (page: number, size: number) => CalcPaginationType;
+export declare const calculate_pagination_data: (data: any, page: number, limit: number) => PaginationData<any>;

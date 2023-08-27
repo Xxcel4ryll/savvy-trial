@@ -73,6 +73,7 @@ let UserRepository = class UserRepository {
                 'firstName',
                 'lastName',
                 'phoneNumber',
+                'profile_picture',
                 'countryCode',
                 'profilePicture',
                 'userType',
@@ -80,6 +81,57 @@ let UserRepository = class UserRepository {
                 'createdAt'
             ]
         });
+    }
+    fetchAlUsers(meta, type) {
+        let where;
+        type == null ? where = {
+            userType: {
+                [sequelize_1.Op.like]: 'USER'
+            },
+        } : where = {
+            userType: {
+                [sequelize_1.Op.like]: 'USER'
+            },
+            status: {
+                [sequelize_1.Op.like]: type
+            }
+        };
+        return this.userEntity.findAndCountAll(Object.assign({ where: where, attributes: [
+                'id',
+                'user_id',
+                'email',
+                'firstName',
+                'lastName',
+                'phoneNumber',
+                'countryCode',
+                'profilePicture',
+                'userType',
+                'status',
+                'createdAt',
+                'updated_at'
+            ] }, meta));
+    }
+    fetchKycUsers(meta) {
+        const excludedStatuses = ['VERIFIED', 'SUSPENDED'];
+        return this.userEntity.findAndCountAll(Object.assign({ where: {
+                status: {
+                    [sequelize_1.Op.notIn]: excludedStatuses
+                },
+            }, attributes: [
+                'id',
+                'user_id',
+                'bvn',
+                'email',
+                'firstName',
+                'lastName',
+                'phoneNumber',
+                'countryCode',
+                'profilePicture',
+                'userType',
+                'status',
+                'createdAt',
+                'updated_at'
+            ] }, meta));
     }
     delete(criteriaObj) {
         return this.userEntity.destroy({

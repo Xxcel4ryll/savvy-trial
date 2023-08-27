@@ -11,5 +11,13 @@ export default class UserRepository {
         rows: Users[];
         count: number;
     }>;
+    fetchAlUsers(meta: any, type?: string): Promise<{
+        rows: Users[];
+        count: number;
+    }>;
+    fetchKycUsers(meta: any): Promise<{
+        rows: Users[];
+        count: number;
+    }>;
     delete(criteriaObj: any): Promise<number>;
 }
