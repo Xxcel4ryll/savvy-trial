@@ -143,9 +143,15 @@ let UserService = class UserService {
             let idFile = file.id[0];
             var uploadedId = await this.fileService.handleUploadedFile(idFile);
         }
-        if (uploadedBvn != null || uploadedId != null) {
+        if (uploadedBvn != null && uploadedId != null) {
             upload.setup.validId = uploadedId.url;
             upload.setup.bvn = uploadedBvn.url;
+        }
+        else if (uploadedBvn) {
+            upload.setup.bvn = uploadedBvn.url;
+        }
+        else if (uploadedId) {
+            upload.setup.validId = uploadedId.url;
         }
         const [update] = await this.usersRepository.modify({ email: req.user.email }, upload.setup);
         if (!update) {
