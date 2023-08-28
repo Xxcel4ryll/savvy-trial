@@ -98,7 +98,7 @@ let UserRepository = class UserRepository {
         };
         return this.userEntity.findAndCountAll(Object.assign({ where: where, attributes: [
                 'id',
-                'user_id',
+                'userId',
                 'email',
                 'firstName',
                 'lastName',
