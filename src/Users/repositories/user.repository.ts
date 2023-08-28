@@ -111,7 +111,7 @@ export default class UserRepository {
       where: where,
       attributes: [
         'id',
-        'user_id',
+        'userId',
         'email',
         'firstName',
         'lastName',
