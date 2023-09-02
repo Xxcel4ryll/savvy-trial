@@ -172,4 +172,10 @@ export class UserController {
       },
     };
   }
+
+  @UseGuards(RoleGuard([Roles.Admin]))
+  @Get('admin/user/:id')
+  async getUserDetails(@Param() { id }) { 
+    return await this.userService.find({id: id})
+  }
 }
