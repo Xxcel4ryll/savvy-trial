@@ -93,7 +93,6 @@ let UserController = class UserController {
         };
     }
     async getUserDetails({ id }) {
-        console.log('id', id);
         return await this.userService.find({ id: id });
     }
 };
