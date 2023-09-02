@@ -14,6 +14,7 @@ const product_type_entity_1 = require("./product_type.entity");
 const product_images_entity_1 = require("./product_images.entity");
 const product_specification_entity_1 = require("./product_specification.entity");
 const user_favourite_entity_1 = require("../../Users/entities/user_favourite.entity");
+const product_accessories_entity_1 = require("./product_accessories.entity");
 let Product = class Product extends sequelize_typescript_1.Model {
     get price() {
         var _a;
@@ -91,6 +92,10 @@ __decorate([
     __metadata("design:type", user_favourite_entity_1.default)
 ], Product.prototype, "userFavourite", void 0);
 __decorate([
+    (0, sequelize_typescript_1.HasMany)(() => product_accessories_entity_1.default),
+    __metadata("design:type", Array)
+], Product.prototype, "accessories", void 0);
+__decorate([
     (0, sequelize_typescript_1.Column)({
         type: sequelize_typescript_1.DataType.FLOAT,
         allowNull: false,
@@ -112,6 +117,13 @@ __decorate([
     }),
     __metadata("design:type", String)
 ], Product.prototype, "description", void 0);
+__decorate([
+    (0, sequelize_typescript_1.Column)({
+        type: sequelize_typescript_1.DataType.TEXT,
+        allowNull: true,
+    }),
+    __metadata("design:type", String)
+], Product.prototype, "overview", void 0);
 Product = __decorate([
     (0, sequelize_typescript_1.Table)({
         timestamps: true,

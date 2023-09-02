@@ -3,6 +3,7 @@ import ProductTypes from './product_type.entity';
 import ProductImages from './product_images.entity';
 import ProductSpecs from './product_specification.entity';
 import UserFavourite from 'src/Users/entities/user_favourite.entity';
+import ProductAccessory from './product_accessories.entity';
 export default class Product extends Model<Product> {
     id: string;
     name: string;
@@ -15,7 +16,9 @@ export default class Product extends Model<Product> {
     images: ProductImages[];
     specifications: ProductSpecs[];
     userFavourite: UserFavourite;
+    accessories: ProductAccessory[];
     get price(): string;
     quantity: string;
     description: string;
+    overview: string;
 }

@@ -6,6 +6,7 @@ export declare class ProductDto {
     isVisible?: string;
     salesOption?: string;
     productId?: string;
+    overview?: string;
 }
 export declare class BrandDto {
     name: string;

@@ -17,6 +17,7 @@ import PurchasedProduct from 'src/Transactions/entities/purchased-product.entity
 import { Faqs, TermsAndCondition } from 'src/Settings/entities/settings.entity';
 import Waitlist from 'src/Waitlist/entities/waitlist.entity';
 import Brand from 'src/Products/entities/brand.entity';
+import ProductAccessory from 'src/Products/entities/product_accessories.entity';
 
 // /home/idunyelc/backend.idunu.co
 export const databaseProviders = [
@@ -51,7 +52,8 @@ export const databaseProviders = [
         Faqs,
         Brand,
         TermsAndCondition,
-        Waitlist
+        Waitlist,
+        ProductAccessory
       ]);
       return sequelize;
     },

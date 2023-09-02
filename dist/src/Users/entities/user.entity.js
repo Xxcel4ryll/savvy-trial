@@ -84,6 +84,7 @@ __decorate([
     (0, sequelize_typescript_1.Column)({
         type: sequelize_typescript_1.DataType.STRING,
         allowNull: true,
+        defaultValue: "https://res.cloudinary.com/da5cevdwz/image/upload/v1693672306/profile-circle_ny1epi.png",
     }),
     __metadata("design:type", String)
 ], Users.prototype, "profilePicture", void 0);

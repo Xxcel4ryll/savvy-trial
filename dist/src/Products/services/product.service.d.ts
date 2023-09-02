@@ -3,13 +3,15 @@ import ProductImageRepository from '../repositories/product_images.repository';
 import ProductSpecsRepository from '../repositories/product_specifications.repository';
 import ProductTypeRepository from '../repositories/product_type.repository';
 import PurchasedProduct from 'src/Transactions/entities/purchased-product.entity';
+import ProductAccessoriesRepository from '../repositories/product_accessories.repository';
 export declare class ProductService {
     private purchasedProduct;
     private productRepository;
     private productTypeRepository;
     private productImageRepository;
     private productSpecsRepository;
-    constructor(purchasedProduct: typeof PurchasedProduct, productRepository: ProductRepository, productTypeRepository: ProductTypeRepository, productImageRepository: ProductImageRepository, productSpecsRepository: ProductSpecsRepository);
+    private productAcessoryRepository;
+    constructor(purchasedProduct: typeof PurchasedProduct, productRepository: ProductRepository, productTypeRepository: ProductTypeRepository, productImageRepository: ProductImageRepository, productSpecsRepository: ProductSpecsRepository, productAcessoryRepository: ProductAccessoriesRepository);
     find(user: any, query: any): Promise<{
         rows: import("../entities/product.entity").default[];
         count: number;
@@ -17,6 +19,7 @@ export declare class ProductService {
     create(user: any, payload: any): Promise<{
         images: import("../entities/product_images.entity").default[];
         specifications: import("../entities/product_specification.entity").default[];
+        accessories: import("../entities/product_accessories.entity").default[];
         id: string;
         name: string;
         title: string;
@@ -28,6 +31,7 @@ export declare class ProductService {
         userFavourite: import("../../Users/entities/user_favourite.entity").default;
         quantity: string;
         description: string;
+        overview: string;
         createdAt?: any;
         updatedAt?: any;
         deletedAt?: any;

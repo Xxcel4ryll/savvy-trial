@@ -22,6 +22,7 @@ const user_module_1 = require("../Users/user.module");
 const brand_controller_1 = require("./controllers/brand.controller");
 const brand_service_1 = require("./services/brand.service");
 const brand_repository_1 = require("./repositories/brand.repository");
+const product_accessories_repository_1 = require("./repositories/product_accessories.repository");
 let ProductModule = class ProductModule {
 };
 ProductModule = __decorate([
@@ -36,12 +37,14 @@ ProductModule = __decorate([
             product_type_repository_1.default,
             product_images_repository_1.default,
             product_specifications_repository_1.default,
+            product_accessories_repository_1.default,
             ...product_provider_1.ProductProviders,
         ],
         exports: [
             product_service_1.ProductService,
             product_type_service_1.ProductTypeService,
             product_repository_1.default,
+            product_accessories_repository_1.default,
             ...product_provider_1.ProductProviders,
         ],
         imports: [
