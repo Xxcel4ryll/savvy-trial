@@ -13,6 +13,7 @@ import { UserModule } from 'src/Users/user.module';
 import { BrandController } from './controllers/brand.controller';
 import { BrandService } from './services/brand.service';
 import BrandRepository from './repositories/brand.repository';
+import ProductAccessoriesRepository from './repositories/product_accessories.repository';
 
 @Module({
   controllers: [ProductController, BrandController, ProductTypeController],
@@ -25,12 +26,14 @@ import BrandRepository from './repositories/brand.repository';
     ProductTypeRepository,
     ProductImageRepository,
     ProductSpecsRepository,
+    ProductAccessoriesRepository,
     ...ProductProviders,
   ],
   exports: [
     ProductService,
     ProductTypeService,
     ProductRepository,
+    ProductAccessoriesRepository,
     ...ProductProviders,
   ],
   imports: [

@@ -13,6 +13,7 @@ import ProductTypes from './product_type.entity';
 import ProductImages from './product_images.entity';
 import ProductSpecs from './product_specification.entity';
 import UserFavourite from 'src/Users/entities/user_favourite.entity';
+import ProductAccessory from './product_accessories.entity';
 
 @Table({
   timestamps: true,
@@ -82,6 +83,9 @@ export default class Product extends Model<Product> {
   // Associations with Favourite Product
   @HasOne(() => UserFavourite)
   userFavourite: UserFavourite;
+
+  @HasMany(() => ProductAccessory)
+  accessories: ProductAccessory[];
   
   @Column({
     type: DataType.FLOAT,
@@ -102,4 +106,10 @@ export default class Product extends Model<Product> {
     allowNull: true,
   })
   description: string
+
+  @Column({
+    type: DataType.TEXT,
+    allowNull: true,
+  })
+  overview: string
 }

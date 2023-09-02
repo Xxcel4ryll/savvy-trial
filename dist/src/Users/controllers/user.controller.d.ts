@@ -69,4 +69,7 @@ export declare class UserController {
             current_page: number;
         };
     }>;
+    getUserDetails({ id }: {
+        id: any;
+    }): Promise<import("../entities/user.entity").default>;
 }

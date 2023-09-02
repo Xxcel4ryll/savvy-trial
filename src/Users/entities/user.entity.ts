@@ -82,6 +82,7 @@ export default class Users extends Model<Users> {
   @Column({
     type: DataType.STRING,
     allowNull: true,
+    defaultValue: "https://res.cloudinary.com/da5cevdwz/image/upload/v1693672306/profile-circle_ny1epi.png",
   })
   profilePicture: string;
 

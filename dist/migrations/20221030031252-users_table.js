@@ -30,6 +30,7 @@ module.exports = {
             profile_picture: {
                 type: Sequelize.STRING,
                 allowNull: true,
+                defaultValue: "https://res.cloudinary.com/da5cevdwz/image/upload/v1693672306/profile-circle_ny1epi.png",
             },
             matric_no: {
                 type: Sequelize.STRING,

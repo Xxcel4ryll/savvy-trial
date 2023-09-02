@@ -7,6 +7,7 @@ export class ProductDto {
   isVisible?: string;
   salesOption?: string;
   productId?: string;
+  overview?: string;
 }
 
 export class BrandDto {
@@ -32,6 +33,8 @@ export const productSchema = Joi.object().keys({
   images: Joi.array().items(Joi.string()).required(),
   specification: Joi.array().items(Joi.string()).required(),
   salesOption: Joi.string().valid('RENT', 'BUY').required(),
+  overview: Joi.string(),
+  accessory: Joi.array().items(Joi.string()).optional(),
 });
 
 export const updateProductSchema = Joi.object().keys({

@@ -7,6 +7,7 @@ import PurchasedProduct from 'src/Transactions/entities/purchased-product.entity
 import { ProductDto } from '../dtos';
 import { databaseProviders } from 'src/Database/providers';
 import * as _ from 'lodash' 
+import ProductAccessoriesRepository from '../repositories/product_accessories.repository';
 const sequelize = databaseProviders[0].useFactory();
 
 @Injectable()
@@ -17,7 +18,8 @@ export class ProductService {
     private productRepository: ProductRepository,
     private productTypeRepository: ProductTypeRepository,
     private productImageRepository: ProductImageRepository,
-    private productSpecsRepository: ProductSpecsRepository
+    private productSpecsRepository: ProductSpecsRepository,
+    private productAcessoryRepository: ProductAccessoriesRepository,
   ) {}
 
   async find(user, query) {
@@ -43,7 +45,12 @@ export class ProductService {
         payload.specification
       );
 
-      return {...product.toJSON(),images,specifications};
+      const accessories = await this.productAcessoryRepository.addAccessory(
+        product.id,
+        payload.accessory
+      );
+
+      return {...product.toJSON(),images,specifications, accessories};
     } catch (error) {
       (await transaction).rollback();
       throw new HttpException(
@@ -114,8 +121,13 @@ export class ProductService {
       productId: product.id
     });
 
+    const accessories = await this.productAcessoryRepository.find({
+      productId: product.id
+    })
+
     product.dataValues['images'] = images;
     product.dataValues['specifications'] = specification;
+    product.dataValues['accessories'] = accessories;
 
     return product;
   }

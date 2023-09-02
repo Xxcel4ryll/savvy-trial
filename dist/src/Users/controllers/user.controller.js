@@ -92,6 +92,9 @@ let UserController = class UserController {
             },
         };
     }
+    async getUserDetails({ id }) {
+        return await this.userService.find({ id: id });
+    }
 };
 __decorate([
     (0, common_1.UseGuards)((0, role_guard_1.default)([role_enum_1.default.Admin, role_enum_1.default.User])),
@@ -219,6 +222,14 @@ __decorate([
     __metadata("design:paramtypes", [find_data_request_dto_1.FindDataRequestDto]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "getAllKYCUsers", null);
+__decorate([
+    (0, common_1.UseGuards)((0, role_guard_1.default)([role_enum_1.default.Admin])),
+    (0, common_1.Get)('admin/user/:id'),
+    __param(0, (0, common_1.Param)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "getUserDetails", null);
 UserController = __decorate([
     (0, common_1.Controller)('users'),
     __metadata("design:paramtypes", [user_service_1.UserService])

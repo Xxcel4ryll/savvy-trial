@@ -20,14 +20,16 @@ const product_specifications_repository_1 = require("../repositories/product_spe
 const product_type_repository_1 = require("../repositories/product_type.repository");
 const providers_1 = require("../../Database/providers");
 const _ = require("lodash");
+const product_accessories_repository_1 = require("../repositories/product_accessories.repository");
 const sequelize = providers_1.databaseProviders[0].useFactory();
 let ProductService = class ProductService {
-    constructor(purchasedProduct, productRepository, productTypeRepository, productImageRepository, productSpecsRepository) {
+    constructor(purchasedProduct, productRepository, productTypeRepository, productImageRepository, productSpecsRepository, productAcessoryRepository) {
         this.purchasedProduct = purchasedProduct;
         this.productRepository = productRepository;
         this.productTypeRepository = productTypeRepository;
         this.productImageRepository = productImageRepository;
         this.productSpecsRepository = productSpecsRepository;
+        this.productAcessoryRepository = productAcessoryRepository;
     }
     async find(user, query) {
         return this.productRepository.find(user, _.omit(query, ['category']));
@@ -38,7 +40,8 @@ let ProductService = class ProductService {
             const product = await this.productRepository.create(user, payload);
             const images = await this.productImageRepository.addImages(product.id, payload.images);
             const specifications = await this.productSpecsRepository.addSpecification(product.id, payload.specification);
-            return Object.assign(Object.assign({}, product.toJSON()), { images, specifications });
+            const accessories = await this.productAcessoryRepository.addAccessory(product.id, payload.accessory);
+            return Object.assign(Object.assign({}, product.toJSON()), { images, specifications, accessories });
         }
         catch (error) {
             (await transaction).rollback();
@@ -89,8 +92,12 @@ let ProductService = class ProductService {
         const specification = await this.productSpecsRepository.find({
             productId: product.id
         });
+        const accessories = await this.productAcessoryRepository.find({
+            productId: product.id
+        });
         product.dataValues['images'] = images;
         product.dataValues['specifications'] = specification;
+        product.dataValues['accessories'] = accessories;
         return product;
     }
     async search(user, query) {
@@ -158,7 +165,8 @@ ProductService = __decorate([
     __metadata("design:paramtypes", [Object, product_repository_1.default,
         product_type_repository_1.default,
         product_images_repository_1.default,
-        product_specifications_repository_1.default])
+        product_specifications_repository_1.default,
+        product_accessories_repository_1.default])
 ], ProductService);
 exports.ProductService = ProductService;
 //# sourceMappingURL=product.service.js.map

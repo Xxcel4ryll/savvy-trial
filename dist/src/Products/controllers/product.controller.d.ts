@@ -11,6 +11,7 @@ export declare class ProductController {
     createProduct(req: Request, product: ProductDto): Promise<{
         images: import("../entities/product_images.entity").default[];
         specifications: import("../entities/product_specification.entity").default[];
+        accessories: import("../entities/product_accessories.entity").default[];
         id: string;
         name: string;
         title: string;
@@ -22,6 +23,7 @@ export declare class ProductController {
         userFavourite: import("../../Users/entities/user_favourite.entity").default;
         quantity: string;
         description: string;
+        overview: string;
         createdAt?: any;
         updatedAt?: any;
         deletedAt?: any;
