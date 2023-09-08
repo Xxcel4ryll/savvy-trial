@@ -37,28 +37,32 @@ let ProductService = class ProductService {
         return this.productRepository.find(user, _.omit(query, ['category']));
     }
     async create(user, file, payload) {
+        if (file.mainImage && file.productImages) {
+            let mainImageFile = file.mainImage[0];
+            let productImages = file.productImages;
+            var uploadMainImage = await this.fileService.handleUploadedFile(mainImageFile);
+            var uploadProductImage = await this.fileService.handleMultipleFiles(productImages);
+            payload.mainImage = uploadMainImage.url;
+            var selectedProductImages;
+            selectedProductImages = uploadProductImage.map((e) => e.url);
+        }
+        else if (file.mainImage) {
+            let mainImageFile = file.mainImage[0];
+            var uploadMainImage = await this.fileService.handleUploadedFile(mainImageFile);
+            payload.mainImage = uploadMainImage.url;
+        }
+        else if (file.productImages) {
+            let productImages = file.productImages;
+            var uploadProductImage = await this.fileService.handleMultipleFiles(productImages);
+            var selectedProductImages;
+            selectedProductImages = uploadProductImage.map((e) => e.url);
+        }
         const transaction = (await sequelize).transaction();
         try {
-            if (file.mainImage && file.productImages) {
-                let mainImageFile = file.mainImage[0];
-                let productImages = file.productImages;
-                var uploadMainImage = await this.fileService.handleUploadedFile(mainImageFile);
-                var uploadProductImage = await this.fileService.handleMultipleFiles(productImages);
-                payload.mainImage = uploadMainImage.url;
-                var selectedProductImages;
-                selectedProductImages = uploadProductImage.map((e) => e.url);
-            }
-            else if (file.mainImage) {
-                let mainImageFile = file.mainImage[0];
-                var uploadMainImage = await this.fileService.handleUploadedFile(mainImageFile);
-                payload.mainImage = uploadMainImage.url;
-            }
-            else if (file.productImages) {
-                let productImages = file.productImages;
-                var uploadProductImage = await this.fileService.handleMultipleFiles(productImages);
-            }
             const product = await this.productRepository.create(user, Object.assign({}, payload));
-            const images = await this.productImageRepository.addImages(product.id, selectedProductImages);
+            if (selectedProductImages != null) {
+                var images = await this.productImageRepository.addImages(product.id, selectedProductImages);
+            }
             const specifications = await this.productSpecsRepository.addSpecification(product.id, payload.specification);
             const accessories = await this.productAcessoryRepository.addAccessory(product.id, payload.accessory);
             return Object.assign(Object.assign({}, product.toJSON()), { images, specifications, accessories });

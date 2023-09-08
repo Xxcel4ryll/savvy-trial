@@ -33,35 +33,39 @@ export class ProductService {
   }
 
   async create(user, file, payload) {
+    if (file.mainImage && file.productImages) {
+      let mainImageFile = file.mainImage[0];
+      let productImages = file.productImages;
+      var uploadMainImage = await this.fileService.handleUploadedFile(mainImageFile);
+      var uploadProductImage = await this.fileService.handleMultipleFiles(productImages)
+      payload.mainImage = uploadMainImage.url;
+      var selectedProductImages: any[];
+        selectedProductImages = uploadProductImage!.map((e) => e.url);
+    }else if(file.mainImage){
+      let mainImageFile = file.mainImage[0];
+      var uploadMainImage = await this.fileService.handleUploadedFile(mainImageFile);
+      payload.mainImage = uploadMainImage.url;
+    }else if(file.productImages) {
+      let productImages = file.productImages;
+      var uploadProductImage = await this.fileService.handleMultipleFiles(productImages);
+      var selectedProductImages: any[];
+        selectedProductImages = uploadProductImage!.map((e) => e.url);
+    }
     
     const transaction = (await sequelize).transaction();
     try {
-      if (file.mainImage && file.productImages) {
-        let mainImageFile = file.mainImage[0];
-        let productImages = file.productImages;
-        var uploadMainImage = await this.fileService.handleUploadedFile(mainImageFile);
-        var uploadProductImage = await this.fileService.handleMultipleFiles(productImages)
-        payload.mainImage = uploadMainImage.url;
-        var selectedProductImages: any[];
-        selectedProductImages = uploadProductImage.map((e) => e.url);
-      }else if(file.mainImage){
-        let mainImageFile = file.mainImage[0];
-        var uploadMainImage = await this.fileService.handleUploadedFile(mainImageFile);
-        payload.mainImage = uploadMainImage.url;
-      }else if(file.productImages) {
-        let productImages = file.productImages;
-        var uploadProductImage = await this.fileService.handleMultipleFiles(productImages)
-      }
+   
 
       const product = await this.productRepository.create(user, {
         ...payload
       });
 
-      const images = await this.productImageRepository.addImages(
-        product.id,
-        selectedProductImages,
-      );
-
+      if (selectedProductImages != null) {
+        var images = await this.productImageRepository.addImages(
+          product.id,
+          selectedProductImages,
+        );
+      }
       const specifications = await this.productSpecsRepository.addSpecification(
         product.id,
         payload.specification
@@ -72,7 +76,7 @@ export class ProductService {
         payload.accessory
       );
 
-      return {...product.toJSON(),images,specifications, accessories};
+      return {...product.toJSON(),images, specifications, accessories};
     } catch (error) {
       (await transaction).rollback();
       throw new HttpException(
