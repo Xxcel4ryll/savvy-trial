@@ -36,7 +36,7 @@ exports.completeProfileSchema = Joi.object().keys({
         .when('accountType', {
         is: 'INDIVIDUAL',
         then: Joi.object().keys({
-            bvn: Joi.string().length(11).required(),
+            bvn: Joi.string().length(11).optional(),
             homeAddress: Joi.string().required(),
             validId: Joi.string().required(),
             income: Joi.string(),
@@ -48,9 +48,9 @@ exports.completeProfileSchema = Joi.object().keys({
         .concat(Joi.object().when('accountType', {
         is: 'CORPORATION',
         then: Joi.object().keys({
-            bvn: Joi.string().length(11).required(),
+            bvn: Joi.string().length(11).optional(),
             natureOfBusiness: Joi.string().required(),
-            validId: Joi.string().required(),
+            validId: Joi.string().optional(),
             roleInCompany: Joi.string().required(),
             registrationNo: Joi.string().required(),
             companyLocation: Joi.string().required(),

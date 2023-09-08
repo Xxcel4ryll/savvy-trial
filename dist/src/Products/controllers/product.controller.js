@@ -28,7 +28,6 @@ let ProductController = class ProductController {
         return this.productService.find(req.user, req.query);
     }
     createProduct(req, files, product) {
-        console.log(product);
         return this.productService.create(req.user, files, product);
     }
     updateProduct(req, product) {
@@ -64,7 +63,7 @@ __decorate([
     ])),
     __param(0, (0, common_1.Req)()),
     __param(1, (0, common_1.UploadedFiles)()),
-    __param(2, (0, common_1.Body)()),
+    __param(2, (0, common_1.Body)(new validate_pipe_1.JoiValidationPipe(index_1.productSchema))),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, Object, index_1.ProductDto]),
     __metadata("design:returntype", void 0)
