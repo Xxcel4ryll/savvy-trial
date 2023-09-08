@@ -14,6 +14,7 @@ import { BrandController } from './controllers/brand.controller';
 import { BrandService } from './services/brand.service';
 import BrandRepository from './repositories/brand.repository';
 import ProductAccessoriesRepository from './repositories/product_accessories.repository';
+import { FileModule } from '../Files/file.module';
 
 @Module({
   controllers: [ProductController, BrandController, ProductTypeController],
@@ -37,8 +38,11 @@ import ProductAccessoriesRepository from './repositories/product_accessories.rep
     ...ProductProviders,
   ],
   imports: [
+    FileModule,
     forwardRef(() => UserModule), 
-    forwardRef(() => TransactionModule)
+    forwardRef(() => TransactionModule,
+    
+    )
   ]
 })
 export class ProductModule {}

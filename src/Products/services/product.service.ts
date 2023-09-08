@@ -8,6 +8,8 @@ import { ProductDto } from '../dtos';
 import { databaseProviders } from 'src/Database/providers';
 import * as _ from 'lodash' 
 import ProductAccessoriesRepository from '../repositories/product_accessories.repository';
+import { FileService } from 'src/Files/services/file.service';
+import { map } from 'rxjs';
 const sequelize = databaseProviders[0].useFactory();
 
 @Injectable()
@@ -20,6 +22,7 @@ export class ProductService {
     private productImageRepository: ProductImageRepository,
     private productSpecsRepository: ProductSpecsRepository,
     private productAcessoryRepository: ProductAccessoriesRepository,
+    private fileService: FileService,
   ) {}
 
   async find(user, query) {
@@ -29,15 +32,45 @@ export class ProductService {
     );
   }
 
-  async create(user, payload) {
+  async create(user, file, payload) {
+    
     const transaction = (await sequelize).transaction();
     try {
-      // Update this logic to use sequelize include
-      const product = await this.productRepository.create(user, payload);
+      if (file.mainImage && file.productImages) {
+        let mainImageFile = file.mainImage[0];
+        let productImages = file.productImages;
+        var uploadMainImage = await this.fileService.handleUploadedFile(mainImageFile);
+        var uploadProductImage = await this.fileService.handleMultipleFiles(productImages)
+      }else if(file.mainImage){
+        let mainImageFile = file.mainImage[0];
+        var uploadMainImage = await this.fileService.handleUploadedFile(mainImageFile);
+      }else if(file.productImages) {
+        let productImages = file.productImages;
+        var uploadProductImage = await this.fileService.handleMultipleFiles(productImages)
+      }
+
+      if (uploadMainImage!= null && uploadProductImage.length > 0) {
+        console.log('both images uploaed');
+        
+        payload.mainImage = uploadMainImage.url;
+        var selectedProductImages: any[];
+        selectedProductImages = uploadProductImage.map((e) => e.url);
+      }else if (uploadMainImage) {
+        console.log('only main');
+        
+        payload.mainImage = uploadMainImage.url;
+      }else{
+        console.log(false);
+        
+      }
+
+      const product = await this.productRepository.create(user, {
+        ...payload
+      });
 
       const images = await this.productImageRepository.addImages(
         product.id,
-        payload.images
+        selectedProductImages,
       );
 
       const specifications = await this.productSpecsRepository.addSpecification(
@@ -211,5 +244,8 @@ export class ProductService {
       });
 
     })
+  }
+  async deleteProduct(productId) {
+    return this.productRepository.delete(productId)
   }
 }

@@ -4,6 +4,7 @@ import ProductSpecsRepository from '../repositories/product_specifications.repos
 import ProductTypeRepository from '../repositories/product_type.repository';
 import PurchasedProduct from 'src/Transactions/entities/purchased-product.entity';
 import ProductAccessoriesRepository from '../repositories/product_accessories.repository';
+import { FileService } from 'src/Files/services/file.service';
 export declare class ProductService {
     private purchasedProduct;
     private productRepository;
@@ -11,12 +12,13 @@ export declare class ProductService {
     private productImageRepository;
     private productSpecsRepository;
     private productAcessoryRepository;
-    constructor(purchasedProduct: typeof PurchasedProduct, productRepository: ProductRepository, productTypeRepository: ProductTypeRepository, productImageRepository: ProductImageRepository, productSpecsRepository: ProductSpecsRepository, productAcessoryRepository: ProductAccessoriesRepository);
+    private fileService;
+    constructor(purchasedProduct: typeof PurchasedProduct, productRepository: ProductRepository, productTypeRepository: ProductTypeRepository, productImageRepository: ProductImageRepository, productSpecsRepository: ProductSpecsRepository, productAcessoryRepository: ProductAccessoriesRepository, fileService: FileService);
     find(user: any, query: any): Promise<{
         rows: import("../entities/product.entity").default[];
         count: number;
     }>;
-    create(user: any, payload: any): Promise<{
+    create(user: any, file: any, payload: any): Promise<{
         images: import("../entities/product_images.entity").default[];
         specifications: import("../entities/product_specification.entity").default[];
         accessories: import("../entities/product_accessories.entity").default[];
@@ -32,6 +34,8 @@ export declare class ProductService {
         quantity: string;
         description: string;
         overview: string;
+        label: string;
+        mainImage: string;
         createdAt?: any;
         updatedAt?: any;
         deletedAt?: any;
@@ -48,4 +52,5 @@ export declare class ProductService {
     search(user: any, query: any): Promise<import("../entities/product.entity").default>;
     productAvailability(products: any): Promise<any[]>;
     recordPurchasedProduct(products: any): void;
+    deleteProduct(productId: any): Promise<number[]>;
 }

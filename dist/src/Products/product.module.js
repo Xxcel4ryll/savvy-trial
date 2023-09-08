@@ -23,6 +23,7 @@ const brand_controller_1 = require("./controllers/brand.controller");
 const brand_service_1 = require("./services/brand.service");
 const brand_repository_1 = require("./repositories/brand.repository");
 const product_accessories_repository_1 = require("./repositories/product_accessories.repository");
+const file_module_1 = require("../Files/file.module");
 let ProductModule = class ProductModule {
 };
 ProductModule = __decorate([
@@ -48,6 +49,7 @@ ProductModule = __decorate([
             ...product_provider_1.ProductProviders,
         ],
         imports: [
+            file_module_1.FileModule,
             (0, common_1.forwardRef)(() => user_module_1.UserModule),
             (0, common_1.forwardRef)(() => transaction_module_1.TransactionModule)
         ]

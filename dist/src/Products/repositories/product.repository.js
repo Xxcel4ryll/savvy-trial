@@ -143,6 +143,26 @@ let ProductsRepository = class ProductsRepository {
             },
         });
     }
+    async delete(productId) {
+        const deleteProductAccessories = await this.productImages.destroy({
+            where: {
+                id: productId
+            },
+        });
+        const deleteProductSpecs = await this.productSpecs.destroy({
+            where: {
+                id: productId
+            },
+        });
+        if (deleteProductSpecs && deleteProductAccessories) {
+            const deleteProduct = this.productEntity.destroy({
+                where: {
+                    id: productId
+                },
+            });
+        }
+        return [deleteProductAccessories, deleteProductAccessories];
+    }
 };
 ProductsRepository = __decorate([
     (0, common_1.Injectable)(),

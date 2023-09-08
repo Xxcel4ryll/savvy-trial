@@ -38,7 +38,10 @@ __decorate([
     __metadata("design:type", String)
 ], ProductAccessory.prototype, "accessories", void 0);
 __decorate([
-    (0, sequelize_typescript_1.BelongsTo)(() => product_entity_1.default),
+    (0, sequelize_typescript_1.BelongsTo)(() => product_entity_1.default, {
+        onDelete: 'SET NULL',
+        onUpdate: 'CASCADE'
+    }),
     __metadata("design:type", product_entity_1.default)
 ], ProductAccessory.prototype, "products", void 0);
 ProductAccessory = __decorate([

@@ -63,7 +63,10 @@ export default class Product extends Model<Product> {
   salesOption: string;
 
   // Associations for Product Type
-  @BelongsTo(() => ProductTypes)
+  @BelongsTo(() => ProductTypes, {
+    onDelete: 'SET NULL', 
+    onUpdate: 'CASCADE'
+  })
   productTypes: ProductTypes;
 
   @ForeignKey(() => ProductTypes)
@@ -73,18 +76,30 @@ export default class Product extends Model<Product> {
   productTypeId: string;
 
   // Associations with Product Images
-  @HasMany(() => ProductImages)
+  @HasMany(() => ProductImages, {
+    onDelete: 'SET NULL', 
+    onUpdate: 'CASCADE'
+  })
   images: ProductImages[];
 
   // Associations with Product Specification
-  @HasMany(() => ProductSpecs)
+  @HasMany(() => ProductSpecs, {
+    onDelete: 'SET NULL', 
+    onUpdate: 'CASCADE'
+  })
   specifications: ProductSpecs[];
 
   // Associations with Favourite Product
-  @HasOne(() => UserFavourite)
+  @HasOne(() => UserFavourite, {
+    onDelete: 'SET NULL', 
+    onUpdate: 'CASCADE'
+  })
   userFavourite: UserFavourite;
 
-  @HasMany(() => ProductAccessory)
+  @HasMany(() => ProductAccessory, {
+    onDelete: 'SET NULL', 
+    onUpdate: 'CASCADE'
+  })
   accessories: ProductAccessory[];
   
   @Column({
@@ -97,6 +112,7 @@ export default class Product extends Model<Product> {
 
   @Column({
     type: DataType.INTEGER,
+    defaultValue: 1,
     allowNull: false,
   })
   quantity: string
@@ -112,4 +128,17 @@ export default class Product extends Model<Product> {
     allowNull: true,
   })
   overview: string
+
+  @Column({
+    type: DataType.ENUM,
+    allowNull: false,
+    values: ['NEW', 'USED'],
+  })
+  label: string
+
+  @Column({
+    type: DataType.TEXT,
+    allowNull: false,
+  })
+  mainImage: string
 }

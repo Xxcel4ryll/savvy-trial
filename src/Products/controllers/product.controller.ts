@@ -1,12 +1,15 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Post,
   Put,
   Req,
+  UploadedFiles,
   UseGuards,
+  UseInterceptors,
   UsePipes,
 } from '@nestjs/common';
 import { ProductService } from '../services/product.service';
@@ -15,6 +18,7 @@ import { JoiValidationPipe } from 'src/Globals/providers/validate/validate.pipe'
 import Roles from 'src/Globals/role.enum';
 import RoleGuard from 'src/Globals/Guards/role.guard';
 import { Request } from 'express';
+import { FileFieldsInterceptor, FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('products')
 export class ProductController {
@@ -27,10 +31,23 @@ export class ProductController {
   }
 
   @UseGuards(RoleGuard([Roles.Admin, Roles.User]))
-  @UsePipes(new JoiValidationPipe(productSchema))
+  // @UsePipes(new JoiValidationPipe(productSchema))
   @Post()
-  createProduct(@Req() req: Request, @Body() product: ProductDto) {
-    return this.productService.create(req.user, product);
+  @UseInterceptors(
+    FileFieldsInterceptor([
+      { name: 'mainImage', maxCount:1},
+      { name: 'productImages', maxCount: 4},
+    ])
+  )
+  createProduct(@Req() req: Request, 
+  @UploadedFiles() files:{ 
+    mainImage: Express.Multer.File[], 
+    productImages: Express.Multer.File[]
+  },
+  @Body() product: ProductDto) {
+    console.log(product);
+    
+    return this.productService.create(req.user, files, product);
   }
 
   @UseGuards(RoleGuard([Roles.Admin, Roles.User]))
@@ -50,5 +67,14 @@ export class ProductController {
   @Get(':productId')
   viewProduct(@Req() req: Request, @Param() { productId }: ProductDto) {        
     return this.productService.view(req.user, productId);
+  }
+
+  @UseGuards(RoleGuard([Roles.Admin, Roles.User]))
+  @Delete(':productId')
+  async deleteProduct(@Param() { productId }) {
+    const data =  await this.productService.deleteProduct(productId);
+    return {
+      message: `Product: ${productId} deleted succesfully`
+    }
   }
 }

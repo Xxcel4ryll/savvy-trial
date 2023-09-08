@@ -132,4 +132,27 @@ export default class ProductsRepository {
 			},
     });
   }
+
+  async delete(productId)  {
+    const deleteProductAccessories = await this.productImages.destroy<ProductImages>({
+      where: {
+        id:productId
+      },
+    });
+    const deleteProductSpecs = await this.productSpecs.destroy<ProductSpecs>({
+      where: {
+        id:productId
+      },
+    });
+    if (deleteProductSpecs && deleteProductAccessories) {
+      const deleteProduct =  this.productEntity.destroy<Products>({
+        where: {
+          id:productId
+        },
+      });
+    }
+    
+
+    return [ deleteProductAccessories, deleteProductAccessories]
+  }
 }

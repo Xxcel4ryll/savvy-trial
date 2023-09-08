@@ -21,24 +21,53 @@ const product_type_repository_1 = require("../repositories/product_type.reposito
 const providers_1 = require("../../Database/providers");
 const _ = require("lodash");
 const product_accessories_repository_1 = require("../repositories/product_accessories.repository");
+const file_service_1 = require("../../Files/services/file.service");
 const sequelize = providers_1.databaseProviders[0].useFactory();
 let ProductService = class ProductService {
-    constructor(purchasedProduct, productRepository, productTypeRepository, productImageRepository, productSpecsRepository, productAcessoryRepository) {
+    constructor(purchasedProduct, productRepository, productTypeRepository, productImageRepository, productSpecsRepository, productAcessoryRepository, fileService) {
         this.purchasedProduct = purchasedProduct;
         this.productRepository = productRepository;
         this.productTypeRepository = productTypeRepository;
         this.productImageRepository = productImageRepository;
         this.productSpecsRepository = productSpecsRepository;
         this.productAcessoryRepository = productAcessoryRepository;
+        this.fileService = fileService;
     }
     async find(user, query) {
         return this.productRepository.find(user, _.omit(query, ['category']));
     }
-    async create(user, payload) {
+    async create(user, file, payload) {
         const transaction = (await sequelize).transaction();
         try {
-            const product = await this.productRepository.create(user, payload);
-            const images = await this.productImageRepository.addImages(product.id, payload.images);
+            if (file.mainImage && file.productImages) {
+                let mainImageFile = file.mainImage[0];
+                let productImages = file.productImages;
+                var uploadMainImage = await this.fileService.handleUploadedFile(mainImageFile);
+                var uploadProductImage = await this.fileService.handleMultipleFiles(productImages);
+            }
+            else if (file.mainImage) {
+                let mainImageFile = file.mainImage[0];
+                var uploadMainImage = await this.fileService.handleUploadedFile(mainImageFile);
+            }
+            else if (file.productImages) {
+                let productImages = file.productImages;
+                var uploadProductImage = await this.fileService.handleMultipleFiles(productImages);
+            }
+            if (uploadMainImage != null && uploadProductImage.length > 0) {
+                console.log('both images uploaed');
+                payload.mainImage = uploadMainImage.url;
+                var selectedProductImages;
+                selectedProductImages = uploadProductImage.map((e) => e.url);
+            }
+            else if (uploadMainImage) {
+                console.log('only main');
+                payload.mainImage = uploadMainImage.url;
+            }
+            else {
+                console.log(false);
+            }
+            const product = await this.productRepository.create(user, Object.assign({}, payload));
+            const images = await this.productImageRepository.addImages(product.id, selectedProductImages);
             const specifications = await this.productSpecsRepository.addSpecification(product.id, payload.specification);
             const accessories = await this.productAcessoryRepository.addAccessory(product.id, payload.accessory);
             return Object.assign(Object.assign({}, product.toJSON()), { images, specifications, accessories });
@@ -158,6 +187,9 @@ let ProductService = class ProductService {
             });
         });
     }
+    async deleteProduct(productId) {
+        return this.productRepository.delete(productId);
+    }
 };
 ProductService = __decorate([
     (0, common_1.Injectable)(),
@@ -166,7 +198,8 @@ ProductService = __decorate([
         product_type_repository_1.default,
         product_images_repository_1.default,
         product_specifications_repository_1.default,
-        product_accessories_repository_1.default])
+        product_accessories_repository_1.default,
+        file_service_1.FileService])
 ], ProductService);
 exports.ProductService = ProductService;
 //# sourceMappingURL=product.service.js.map
