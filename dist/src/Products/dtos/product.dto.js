@@ -23,6 +23,8 @@ exports.productSchema = Joi.object().keys({
     salesOption: Joi.string().valid('RENT', 'BUY').required(),
     overview: Joi.string(),
     accessory: Joi.array().items(Joi.string()).optional(),
+    mainImage: Joi.object().unknown(true),
+    productImages: Joi.array().items(Joi.object().unknown(true)),
     label: Joi.string().valid('NEW', 'USED').required(),
 });
 exports.updateProductSchema = Joi.object().keys({
