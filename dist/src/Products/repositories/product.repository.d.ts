@@ -22,4 +22,5 @@ export default class ProductsRepository {
     }>;
     check(user?: any, criteria?: any): Promise<Products>;
     search(user: any, query: any): Promise<Products>;
+    delete(productId: any): Promise<number[]>;
 }

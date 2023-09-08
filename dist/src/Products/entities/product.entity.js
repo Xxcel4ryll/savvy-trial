@@ -69,7 +69,10 @@ __decorate([
     __metadata("design:type", String)
 ], Product.prototype, "salesOption", void 0);
 __decorate([
-    (0, sequelize_typescript_1.BelongsTo)(() => product_type_entity_1.default),
+    (0, sequelize_typescript_1.BelongsTo)(() => product_type_entity_1.default, {
+        onDelete: 'SET NULL',
+        onUpdate: 'CASCADE'
+    }),
     __metadata("design:type", product_type_entity_1.default)
 ], Product.prototype, "productTypes", void 0);
 __decorate([
@@ -80,19 +83,31 @@ __decorate([
     __metadata("design:type", String)
 ], Product.prototype, "productTypeId", void 0);
 __decorate([
-    (0, sequelize_typescript_1.HasMany)(() => product_images_entity_1.default),
+    (0, sequelize_typescript_1.HasMany)(() => product_images_entity_1.default, {
+        onDelete: 'SET NULL',
+        onUpdate: 'CASCADE'
+    }),
     __metadata("design:type", Array)
 ], Product.prototype, "images", void 0);
 __decorate([
-    (0, sequelize_typescript_1.HasMany)(() => product_specification_entity_1.default),
+    (0, sequelize_typescript_1.HasMany)(() => product_specification_entity_1.default, {
+        onDelete: 'SET NULL',
+        onUpdate: 'CASCADE'
+    }),
     __metadata("design:type", Array)
 ], Product.prototype, "specifications", void 0);
 __decorate([
-    (0, sequelize_typescript_1.HasOne)(() => user_favourite_entity_1.default),
+    (0, sequelize_typescript_1.HasOne)(() => user_favourite_entity_1.default, {
+        onDelete: 'SET NULL',
+        onUpdate: 'CASCADE'
+    }),
     __metadata("design:type", user_favourite_entity_1.default)
 ], Product.prototype, "userFavourite", void 0);
 __decorate([
-    (0, sequelize_typescript_1.HasMany)(() => product_accessories_entity_1.default),
+    (0, sequelize_typescript_1.HasMany)(() => product_accessories_entity_1.default, {
+        onDelete: 'SET NULL',
+        onUpdate: 'CASCADE'
+    }),
     __metadata("design:type", Array)
 ], Product.prototype, "accessories", void 0);
 __decorate([
@@ -106,6 +121,7 @@ __decorate([
 __decorate([
     (0, sequelize_typescript_1.Column)({
         type: sequelize_typescript_1.DataType.INTEGER,
+        defaultValue: 1,
         allowNull: false,
     }),
     __metadata("design:type", String)
@@ -124,6 +140,21 @@ __decorate([
     }),
     __metadata("design:type", String)
 ], Product.prototype, "overview", void 0);
+__decorate([
+    (0, sequelize_typescript_1.Column)({
+        type: sequelize_typescript_1.DataType.ENUM,
+        allowNull: false,
+        values: ['NEW', 'USED'],
+    }),
+    __metadata("design:type", String)
+], Product.prototype, "label", void 0);
+__decorate([
+    (0, sequelize_typescript_1.Column)({
+        type: sequelize_typescript_1.DataType.TEXT,
+        allowNull: false,
+    }),
+    __metadata("design:type", String)
+], Product.prototype, "mainImage", void 0);
 Product = __decorate([
     (0, sequelize_typescript_1.Table)({
         timestamps: true,

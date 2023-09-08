@@ -18,13 +18,14 @@ exports.productSchema = Joi.object().keys({
     brand: Joi.string().required(),
     isVisible: Joi.string(),
     price: Joi.number().required(),
-    quantity: Joi.number().required(),
     description: Joi.string(),
-    images: Joi.array().items(Joi.string()).required(),
     specification: Joi.array().items(Joi.string()).required(),
     salesOption: Joi.string().valid('RENT', 'BUY').required(),
     overview: Joi.string(),
     accessory: Joi.array().items(Joi.string()).optional(),
+    mainImage: Joi.object().unknown(true),
+    productImages: Joi.array().items(Joi.object().unknown(true)),
+    label: Joi.string().valid('NEW', 'USED').required(),
 });
 exports.updateProductSchema = Joi.object().keys({
     productTypeId: Joi.string().uuid(),

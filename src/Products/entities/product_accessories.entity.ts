@@ -28,6 +28,9 @@ export default class ProductAccessory extends Model<ProductAccessory> {
   })
   accessories: string;
 
-  @BelongsTo(() => Products)
+  @BelongsTo(() => Products, {
+    onDelete: 'SET NULL', 
+    onUpdate: 'CASCADE'
+  })
   products: Products;
 }

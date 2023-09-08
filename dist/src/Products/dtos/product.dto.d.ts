@@ -7,6 +7,8 @@ export declare class ProductDto {
     salesOption?: string;
     productId?: string;
     overview?: string;
+    mainImage: string;
+    productImage: string[];
 }
 export declare class BrandDto {
     name: string;

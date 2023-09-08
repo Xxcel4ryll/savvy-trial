@@ -32,6 +32,7 @@ let UserController = class UserController {
         return req.user;
     }
     async updateUser(req, files, updateInfo) {
+        console.log(updateInfo);
         return this.userService.updateProfile(req, files, updateInfo);
     }
     updateUserProfile(req, updateInfo) {

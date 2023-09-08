@@ -55,6 +55,8 @@ export class UserController {
   async updateUser(@Req() req: Request, 
   @UploadedFiles() files: { bvn?: Express.Multer.File[], id?: Express.Multer.File[] }, 
   @Body() updateInfo: UserDto) {
+    console.log(updateInfo);
+    
     return this.userService.updateProfile(req, files, updateInfo);
   }
 

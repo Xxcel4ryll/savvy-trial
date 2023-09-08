@@ -21,4 +21,6 @@ export default class Product extends Model<Product> {
     quantity: string;
     description: string;
     overview: string;
+    label: string;
+    mainImage: string;
 }

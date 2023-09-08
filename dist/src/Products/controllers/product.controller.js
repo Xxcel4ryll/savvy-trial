@@ -19,6 +19,7 @@ const index_1 = require("../dtos/index");
 const validate_pipe_1 = require("../../Globals/providers/validate/validate.pipe");
 const role_enum_1 = require("../../Globals/role.enum");
 const role_guard_1 = require("../../Globals/Guards/role.guard");
+const platform_express_1 = require("@nestjs/platform-express");
 let ProductController = class ProductController {
     constructor(productService) {
         this.productService = productService;
@@ -26,8 +27,9 @@ let ProductController = class ProductController {
     getProducts(req) {
         return this.productService.find(req.user, req.query);
     }
-    createProduct(req, product) {
-        return this.productService.create(req.user, product);
+    createProduct(req, files, product) {
+        console.log(product);
+        return this.productService.create(req.user, files, product);
     }
     updateProduct(req, product) {
         return this.productService.update(product);
@@ -37,6 +39,12 @@ let ProductController = class ProductController {
     }
     viewProduct(req, { productId }) {
         return this.productService.view(req.user, productId);
+    }
+    async deleteProduct({ productId }) {
+        const data = await this.productService.deleteProduct(productId);
+        return {
+            message: `Product: ${productId} deleted succesfully`
+        };
     }
 };
 __decorate([
@@ -49,12 +57,16 @@ __decorate([
 ], ProductController.prototype, "getProducts", null);
 __decorate([
     (0, common_1.UseGuards)((0, role_guard_1.default)([role_enum_1.default.Admin, role_enum_1.default.User])),
-    (0, common_1.UsePipes)(new validate_pipe_1.JoiValidationPipe(index_1.productSchema)),
     (0, common_1.Post)(),
+    (0, common_1.UseInterceptors)((0, platform_express_1.FileFieldsInterceptor)([
+        { name: 'mainImage', maxCount: 1 },
+        { name: 'productImages', maxCount: 4 },
+    ])),
     __param(0, (0, common_1.Req)()),
-    __param(1, (0, common_1.Body)()),
+    __param(1, (0, common_1.UploadedFiles)()),
+    __param(2, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, index_1.ProductDto]),
+    __metadata("design:paramtypes", [Object, Object, index_1.ProductDto]),
     __metadata("design:returntype", void 0)
 ], ProductController.prototype, "createProduct", null);
 __decorate([
@@ -84,6 +96,14 @@ __decorate([
     __metadata("design:paramtypes", [Object, index_1.ProductDto]),
     __metadata("design:returntype", void 0)
 ], ProductController.prototype, "viewProduct", null);
+__decorate([
+    (0, common_1.UseGuards)((0, role_guard_1.default)([role_enum_1.default.Admin, role_enum_1.default.User])),
+    (0, common_1.Delete)(':productId'),
+    __param(0, (0, common_1.Param)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], ProductController.prototype, "deleteProduct", null);
 ProductController = __decorate([
     (0, common_1.Controller)('products'),
     __metadata("design:paramtypes", [product_service_1.ProductService])
