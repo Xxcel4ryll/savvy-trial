@@ -44,27 +44,18 @@ let ProductService = class ProductService {
                 let productImages = file.productImages;
                 var uploadMainImage = await this.fileService.handleUploadedFile(mainImageFile);
                 var uploadProductImage = await this.fileService.handleMultipleFiles(productImages);
-            }
-            else if (file.mainImage) {
-                let mainImageFile = file.mainImage[0];
-                var uploadMainImage = await this.fileService.handleUploadedFile(mainImageFile);
-            }
-            else if (file.productImages) {
-                let productImages = file.productImages;
-                var uploadProductImage = await this.fileService.handleMultipleFiles(productImages);
-            }
-            if (uploadMainImage != null && uploadProductImage.length > 0) {
-                console.log('both images uploaed');
                 payload.mainImage = uploadMainImage.url;
                 var selectedProductImages;
                 selectedProductImages = uploadProductImage.map((e) => e.url);
             }
-            else if (uploadMainImage) {
-                console.log('only main');
+            else if (file.mainImage) {
+                let mainImageFile = file.mainImage[0];
+                var uploadMainImage = await this.fileService.handleUploadedFile(mainImageFile);
                 payload.mainImage = uploadMainImage.url;
             }
-            else {
-                console.log(false);
+            else if (file.productImages) {
+                let productImages = file.productImages;
+                var uploadProductImage = await this.fileService.handleMultipleFiles(productImages);
             }
             const product = await this.productRepository.create(user, Object.assign({}, payload));
             const images = await this.productImageRepository.addImages(product.id, selectedProductImages);
