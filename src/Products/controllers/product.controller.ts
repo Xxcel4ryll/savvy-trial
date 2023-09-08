@@ -31,7 +31,6 @@ export class ProductController {
   }
 
   @UseGuards(RoleGuard([Roles.Admin, Roles.User]))
-  // @UsePipes(new JoiValidationPipe(productSchema))
   @Post()
   @UseInterceptors(
     FileFieldsInterceptor([
@@ -44,8 +43,9 @@ export class ProductController {
     mainImage: Express.Multer.File[], 
     productImages: Express.Multer.File[]
   },
-  @Body() product: ProductDto) {
-    console.log(product);
+  @Body(
+    new JoiValidationPipe(productSchema)
+  ) product: ProductDto) {
     
     return this.productService.create(req.user, files, product);
   }
