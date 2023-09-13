@@ -54,8 +54,6 @@ export class ProductService {
     
     const transaction = (await sequelize).transaction();
     try {
-   
-
       const product = await this.productRepository.create(user, {
         ...payload
       });

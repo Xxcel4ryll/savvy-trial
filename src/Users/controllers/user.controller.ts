@@ -44,7 +44,6 @@ export class UserController {
   }
 
   @UseGuards(RoleGuard([Roles.Admin, Roles.User]))
-  // @UsePipes(new JoiValidationPipe(completeProfileSchema))
   @Put('account')
   @UseInterceptors(
     FileFieldsInterceptor([
@@ -54,7 +53,7 @@ export class UserController {
   )
   async updateUser(@Req() req: Request, 
   @UploadedFiles() files: { bvn?: Express.Multer.File[], id?: Express.Multer.File[] }, 
-  @Body() updateInfo: UserDto) {
+  @Body(new JoiValidationPipe(completeProfileSchema)) updateInfo: UserDto) {
     console.log(updateInfo);
     
     return this.userService.updateProfile(req, files, updateInfo);
