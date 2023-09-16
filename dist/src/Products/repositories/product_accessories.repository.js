@@ -17,12 +17,18 @@ let ProductAccessoriesRepository = class ProductAccessoriesRepository {
     constructor(productsAccessoryEntity) {
         this.productsAccessoryEntity = productsAccessoryEntity;
     }
-    addAccessory(productId, accessory) {
+    async addAccessory(productId, accessory) {
+        console.log(accessory);
         try {
-            return this.productsAccessoryEntity.bulkCreate(accessory.map((spec) => ({
-                productId,
-                accessories: spec
-            })));
+            let savedAccessories = [];
+            for (const item of accessory) {
+                const savedAccessory = await this.productsAccessoryEntity.create({
+                    productId,
+                    accessories: item
+                });
+                savedAccessories.push(savedAccessory);
+            }
+            return savedAccessories;
         }
         catch (error) {
             throw error;

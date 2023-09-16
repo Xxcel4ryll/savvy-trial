@@ -10,7 +10,7 @@ export default class Product extends Model<Product> {
     title: string;
     brand: string;
     isVisible: boolean;
-    salesOption: string;
+    productType: string;
     productTypes: ProductTypes;
     productTypeId: string;
     images: ProductImages[];

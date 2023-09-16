@@ -18,16 +18,16 @@ export declare class ProductService {
         rows: import("../entities/product.entity").default[];
         count: number;
     }>;
-    create(user: any, file: any, payload: any): Promise<{
+    create(user: any, payload: any, file?: any): Promise<{
         images: import("../entities/product_images.entity").default[];
-        specifications: import("../entities/product_specification.entity").default[];
-        accessories: import("../entities/product_accessories.entity").default[];
+        specifications: any;
+        accessories: any;
         id: string;
         name: string;
         title: string;
         brand: string;
         isVisible: boolean;
-        salesOption: string;
+        productType: string;
         productTypes: import("../entities/product_type.entity").default;
         productTypeId: string;
         userFavourite: import("../../Users/entities/user_favourite.entity").default;

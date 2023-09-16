@@ -14,14 +14,14 @@ export declare class ProductController {
         productImages: Express.Multer.File[];
     }, product: ProductDto): Promise<{
         images: import("../entities/product_images.entity").default[];
-        specifications: import("../entities/product_specification.entity").default[];
-        accessories: import("../entities/product_accessories.entity").default[];
+        specifications: any;
+        accessories: any;
         id: string;
         name: string;
         title: string;
         brand: string;
         isVisible: boolean;
-        salesOption: string;
+        productType: string;
         productTypes: import("../entities/product_type.entity").default;
         productTypeId: string;
         userFavourite: import("../../Users/entities/user_favourite.entity").default;

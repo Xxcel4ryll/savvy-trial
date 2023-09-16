@@ -33,7 +33,7 @@ let UserFavoritesRepository = class UserFavoritesRepository {
             },
             include: {
                 model: this.productEntity,
-                attributes: ['name', 'title', 'salesOption', 'price', 'brand', 'quantity'],
+                attributes: ['name', 'title', 'productType', 'price', 'brand', 'quantity'],
                 include: [
                     {
                         model: this.productImageEntity,

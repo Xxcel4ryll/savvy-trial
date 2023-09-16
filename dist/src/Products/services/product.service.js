@@ -36,7 +36,8 @@ let ProductService = class ProductService {
     async find(user, query) {
         return this.productRepository.find(user, _.omit(query, ['category']));
     }
-    async create(user, file, payload) {
+    async create(user, payload, file) {
+        console.log('running all image');
         if (file.mainImage && file.productImages) {
             let mainImageFile = file.mainImage[0];
             let productImages = file.productImages;
@@ -44,27 +45,43 @@ let ProductService = class ProductService {
             var uploadProductImage = await this.fileService.handleMultipleFiles(productImages);
             payload.mainImage = uploadMainImage.url;
             var selectedProductImages;
-            selectedProductImages = uploadProductImage.map((e) => e.url);
+            selectedProductImages = uploadProductImage === null || uploadProductImage === void 0 ? void 0 : uploadProductImage.map((e) => e.url);
         }
-        else if (file.mainImage) {
+        else if (file.mainImage && file.productImages == null) {
+            console.log('running only main image');
             let mainImageFile = file.mainImage[0];
             var uploadMainImage = await this.fileService.handleUploadedFile(mainImageFile);
             payload.mainImage = uploadMainImage.url;
         }
-        else if (file.productImages) {
+        else if (file.productImages && file.mainImage == null) {
+            console.log('running only product image');
             let productImages = file.productImages;
             var uploadProductImage = await this.fileService.handleMultipleFiles(productImages);
             var selectedProductImages;
-            selectedProductImages = uploadProductImage.map((e) => e.url);
+            selectedProductImages = uploadProductImage === null || uploadProductImage === void 0 ? void 0 : uploadProductImage.map((e) => e.url);
         }
+        else {
+            payload.mainImage == null,
+                selectedProductImages = [];
+        }
+        payload.name = payload.title;
         const transaction = (await sequelize).transaction();
         try {
+            let accessories;
+            let specifications;
             const product = await this.productRepository.create(user, Object.assign({}, payload));
             if (selectedProductImages != null) {
+                console.log(selectedProductImages);
                 var images = await this.productImageRepository.addImages(product.id, selectedProductImages);
             }
-            const specifications = await this.productSpecsRepository.addSpecification(product.id, payload.specification);
-            const accessories = await this.productAcessoryRepository.addAccessory(product.id, payload.accessory);
+            if (payload.specifications) {
+                const savedspecifications = await this.productSpecsRepository.addSpecification(product.id, payload.specifications);
+                specifications = savedspecifications;
+            }
+            if (payload.accessories) {
+                const savedAccessories = await this.productAcessoryRepository.addAccessory(product.id, payload.accessories);
+                accessories = savedAccessories;
+            }
             return Object.assign(Object.assign({}, product.toJSON()), { images, specifications, accessories });
         }
         catch (error) {

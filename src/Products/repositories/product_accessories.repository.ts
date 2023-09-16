@@ -7,14 +7,19 @@ export default class ProductAccessoriesRepository {
     @Inject('PRODUCT_ACCESSORY_ENTITY')
     private readonly productsAccessoryEntity: typeof ProductAccessory,
   ) {}
-  addAccessory(productId, accessory): Promise<ProductAccessory[]> {
+  async addAccessory(productId, accessory:string[]): Promise<ProductAccessory[]> {
+    console.log(accessory);
+    
     try {
-      return this.productsAccessoryEntity.bulkCreate<ProductAccessory>(
-        accessory.map((spec) => ({
+      let savedAccessories = []
+      for (const item of accessory) {
+        const savedAccessory = await this.productsAccessoryEntity.create<ProductAccessory>({
           productId,
-          accessories: spec
-        })),
-      );
+          accessories: item
+        })
+        savedAccessories.push(savedAccessory)
+      }
+      return savedAccessories;
     } catch (error) {
       throw error;
     }

@@ -7,14 +7,17 @@ export default class ProductSpecsRepository {
     @Inject('PRODUCT_SPECS_ENTITY')
     private readonly productsSpecificationEntity: typeof ProductsSpecification,
   ) {}
-  addSpecification(productId, specs): Promise<ProductsSpecification[]> {
+  async addSpecification(productId, specs:string[]): Promise<ProductsSpecification[]> {
     try {
-      return this.productsSpecificationEntity.bulkCreate<ProductsSpecification>(
-        specs.map((spec) => ({
+      const savedSpecs = [];
+      for (const spec of specs) {
+        const savedSpec = await this.productsSpecificationEntity.create<ProductsSpecification>({
           productId,
-          specifications: spec,
-        })),
-      );
+          specifications: spec
+        })
+        savedSpecs.push(savedSpec);
+      }
+      return savedSpecs;
     } catch (error) {
       throw error;
     }

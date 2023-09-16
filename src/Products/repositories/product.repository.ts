@@ -23,7 +23,7 @@ export default class ProductsRepository {
   async create(user, payload): Promise<Products> {
     const productExist = await this.check(user, {
       name: payload.name,
-      salesOption: payload.salesOption,
+      productType: payload.productType
     });
 
     if (productExist) {

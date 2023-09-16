@@ -60,7 +60,7 @@ export default class Product extends Model<Product> {
     allowNull: false,
     values: ['RENT', 'BUY'],
   })
-  salesOption: string;
+  productType: string;
 
   // Associations for Product Type
   @BelongsTo(() => ProductTypes, {

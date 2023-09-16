@@ -1,14 +1,17 @@
 import * as Joi from 'joi';
 
 export class ProductDto {
+  productTypeId : string;
   name?: string;
   title?: string;
   brand?: string;
   isVisible?: string;
-  salesOption?: string;
+  productType?: string;
   productId?: string;
   overview?: string;
   mainImage: string;
+  accessories?: string[];
+  specifications?: string[];
   productImage: string[];
 }
 
@@ -25,16 +28,16 @@ export class ProductTypeDto {
 
 export const productSchema = Joi.object().keys({
   productTypeId: Joi.string().uuid().required(),
-  name: Joi.string().required(),
+  name: Joi.string().optional(),
   title: Joi.string().required(),
   brand: Joi.string().required(),
   isVisible: Joi.string().optional(),
   price: Joi.number().required(),
   description: Joi.string().optional(),
-  specification: Joi.array().items(Joi.string()).required(),
-  salesOption: Joi.string().valid('RENT', 'BUY').required(),
+  specifications: Joi.array().items(Joi.string()).required(),
+  productType: Joi.string().valid('RENT', 'BUY').required(),
   overview: Joi.string().optional(),
-  accessory: Joi.array().items(Joi.string()).optional(),
+  accessories: Joi.array().items(Joi.string()).optional(),
   mainImage: Joi.object().unknown(true).optional(),
   productImages: Joi.array().items(Joi.object().unknown(true)).optional(),
   label: Joi.string().valid('NEW', 'USED').required(),
@@ -52,14 +55,14 @@ export const updateProductSchema = Joi.object().keys({
   description: Joi.string(),
   images: Joi.string(),
   specification: Joi.array().items(Joi.string()),
-  salesOption: Joi.string().valid('RENT', 'BUY'),
+  productType: Joi.string().valid('RENT', 'BUY'),
 }).or(
   'brand', 
   'price', 
   'title',
   'quantity',
   'description',
-  'salesOption',
+  'productType',
   'images',
   'isVisible',
   'productTypeId',
