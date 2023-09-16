@@ -36,7 +36,7 @@ let ProductsRepository = class ProductsRepository {
     async create(user, payload) {
         const productExist = await this.check(user, {
             name: payload.name,
-            salesOption: payload.salesOption,
+            productType: payload.productType
         });
         if (productExist) {
             throw new Error('Product already exist!');

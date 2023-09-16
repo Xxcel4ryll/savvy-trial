@@ -17,12 +17,18 @@ let ProductImageRepository = class ProductImageRepository {
     constructor(productImageEntity) {
         this.productImageEntity = productImageEntity;
     }
-    addImages(productId, images) {
+    async addImages(productId, images) {
+        console.log();
         try {
-            return this.productImageEntity.bulkCreate(images.map((image) => ({
-                productId,
-                image,
-            })));
+            let savedImages = [];
+            for (const image of images) {
+                const savedImage = await this.productImageEntity.create({
+                    productId,
+                    image
+                });
+                savedImages.push(savedImage);
+            }
+            return savedImages;
         }
         catch (error) {
             throw error;

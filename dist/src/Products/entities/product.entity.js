@@ -67,7 +67,7 @@ __decorate([
         values: ['RENT', 'BUY'],
     }),
     __metadata("design:type", String)
-], Product.prototype, "salesOption", void 0);
+], Product.prototype, "productType", void 0);
 __decorate([
     (0, sequelize_typescript_1.BelongsTo)(() => product_type_entity_1.default, {
         onDelete: 'SET NULL',

@@ -17,12 +17,17 @@ let ProductSpecsRepository = class ProductSpecsRepository {
     constructor(productsSpecificationEntity) {
         this.productsSpecificationEntity = productsSpecificationEntity;
     }
-    addSpecification(productId, specs) {
+    async addSpecification(productId, specs) {
         try {
-            return this.productsSpecificationEntity.bulkCreate(specs.map((spec) => ({
-                productId,
-                specifications: spec,
-            })));
+            const savedSpecs = [];
+            for (const spec of specs) {
+                const savedSpec = await this.productsSpecificationEntity.create({
+                    productId,
+                    specifications: spec
+                });
+                savedSpecs.push(savedSpec);
+            }
+            return savedSpecs;
         }
         catch (error) {
             throw error;

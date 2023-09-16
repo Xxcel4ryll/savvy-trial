@@ -7,14 +7,20 @@ export default class ProductImageRepository {
     @Inject('PRODUCT_IMAGE_ENTITY')
     private readonly productImageEntity: typeof ProductImage,
   ) {}
-  addImages(productId, images): Promise<ProductImage[]> {
+  async addImages(productId, images): Promise<ProductImage[]> {
+    console.log();
+    
     try {
-      return this.productImageEntity.bulkCreate<ProductImage>(
-        images.map((image) => ({
+     let  savedImages = []
+      for (const image of images) {
+        const savedImage = await this.productImageEntity.create<ProductImage>({
           productId,
-          image,
-        })),
-      );
+          image
+        })
+        savedImages.push(savedImage);
+      }
+      return savedImages;
+      
     } catch (error) {
       throw error;
     }

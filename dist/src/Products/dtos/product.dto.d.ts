@@ -1,13 +1,16 @@
 import * as Joi from 'joi';
 export declare class ProductDto {
+    productTypeId: string;
     name?: string;
     title?: string;
     brand?: string;
     isVisible?: string;
-    salesOption?: string;
+    productType?: string;
     productId?: string;
     overview?: string;
     mainImage: string;
+    accessories?: string[];
+    specifications?: string[];
     productImage: string[];
 }
 export declare class BrandDto {

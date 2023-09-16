@@ -32,7 +32,8 @@ export class ProductService {
     );
   }
 
-  async create(user, file, payload) {
+  async create(user,payload, file?) {
+    console.log('running all image');
     if (file.mainImage && file.productImages) {
       let mainImageFile = file.mainImage[0];
       let productImages = file.productImages;
@@ -40,39 +41,55 @@ export class ProductService {
       var uploadProductImage = await this.fileService.handleMultipleFiles(productImages)
       payload.mainImage = uploadMainImage.url;
       var selectedProductImages: any[];
-        selectedProductImages = uploadProductImage!.map((e) => e.url);
-    }else if(file.mainImage){
+        selectedProductImages = uploadProductImage?.map((e) => e.url);
+    }else if(file.mainImage && file.productImages == null){
+      console.log('running only main image');
       let mainImageFile = file.mainImage[0];
       var uploadMainImage = await this.fileService.handleUploadedFile(mainImageFile);
       payload.mainImage = uploadMainImage.url;
-    }else if(file.productImages) {
+    }else if(file.productImages && file.mainImage == null) {
+      console.log('running only product image');
+      
       let productImages = file.productImages;
       var uploadProductImage = await this.fileService.handleMultipleFiles(productImages);
       var selectedProductImages: any[];
-        selectedProductImages = uploadProductImage!.map((e) => e.url);
+        selectedProductImages = uploadProductImage?.map((e) => e.url);
+    }else{
+      payload.mainImage == null,
+      selectedProductImages = []
     }
+    payload.name = payload.title
     
     const transaction = (await sequelize).transaction();
     try {
+      let accessories;
+      let specifications;
       const product = await this.productRepository.create(user, {
-        ...payload
+        ...payload,
       });
 
       if (selectedProductImages != null) {
+        
         var images = await this.productImageRepository.addImages(
           product.id,
           selectedProductImages,
         );
       }
-      const specifications = await this.productSpecsRepository.addSpecification(
-        product.id,
-        payload.specification
-      );
-
-      const accessories = await this.productAcessoryRepository.addAccessory(
-        product.id,
-        payload.accessory
-      );
+      if (payload.specifications) {
+        const savedspecifications = await this.productSpecsRepository.addSpecification(
+          product.id,
+          payload.specifications
+        );
+        specifications = savedspecifications;
+      }
+      if (payload.accessories) {
+        const savedAccessories = await this.productAcessoryRepository.addAccessory(
+          product.id,
+          payload.accessories
+        );
+        accessories = savedAccessories;
+      }
+      
 
       return {...product.toJSON(),images, specifications, accessories};
     } catch (error) {

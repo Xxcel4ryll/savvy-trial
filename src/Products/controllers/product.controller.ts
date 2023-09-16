@@ -47,7 +47,7 @@ export class ProductController {
     new JoiValidationPipe(productSchema)
   ) product: ProductDto) {
     
-    return this.productService.create(req.user, files, product);
+    return this.productService.create(req.user,product, files);
   }
 
   @UseGuards(RoleGuard([Roles.Admin, Roles.User]))

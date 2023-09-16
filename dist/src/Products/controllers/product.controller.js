@@ -28,7 +28,7 @@ let ProductController = class ProductController {
         return this.productService.find(req.user, req.query);
     }
     createProduct(req, files, product) {
-        return this.productService.create(req.user, files, product);
+        return this.productService.create(req.user, product, files);
     }
     updateProduct(req, product) {
         return this.productService.update(product);
