@@ -71,7 +71,6 @@ let ProductService = class ProductService {
             let specifications;
             const product = await this.productRepository.create(user, Object.assign({}, payload));
             if (selectedProductImages != null) {
-                console.log(selectedProductImages);
                 var images = await this.productImageRepository.addImages(product.id, selectedProductImages);
             }
             if (payload.specifications) {
