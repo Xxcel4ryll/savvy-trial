@@ -72,6 +72,29 @@ export default class ProductsRepository {
     });
   }
 
+  findAll({ limit, offset, ...criteria}): Promise<{ rows: Products[]; count: number }> {    
+    return this.productEntity.findAndCountAll<Products>({
+      where: criteria,
+      include: [  
+        {
+          model: this.productImages,
+          attributes: ['productId', 'image']
+        }, 
+        {
+          model: this.productSpecs,
+          attributes: ['productId', 'specifications']
+        },
+        {
+          model: this.productType,
+          attributes: ['name']
+        }
+      ],
+      order: [['createdAt', 'DESC']],
+      limit: parseInt(limit) || 10,
+      offset: parseInt(offset) || 0
+    });
+  }
+
   check(user?, criteria?): Promise<Products> {
     return this.productEntity.findOne<Products>({
       where: criteria,

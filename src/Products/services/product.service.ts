@@ -32,6 +32,10 @@ export class ProductService {
     );
   }
 
+  async findAll(query) {
+    return this.productRepository.findAll(query);
+  }
+
   async create(user,payload, file?) {
     console.log('running all image');
     if (file.mainImage && file.productImages) {

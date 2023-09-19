@@ -9,6 +9,10 @@ export declare class ProductController {
         rows: import("../entities/product.entity").default[];
         count: number;
     }>;
+    getAllProducts(req: Request): Promise<{
+        rows: import("../entities/product.entity").default[];
+        count: number;
+    }>;
     createProduct(req: Request, files: {
         mainImage: Express.Multer.File[];
         productImages: Express.Multer.File[];
