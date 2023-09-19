@@ -82,6 +82,29 @@ let ProductsRepository = class ProductsRepository {
             offset: parseInt(offset) || 0
         });
     }
+    findAll(_a) {
+        var { limit, offset } = _a, criteria = __rest(_a, ["limit", "offset"]);
+        return this.productEntity.findAndCountAll({
+            where: criteria,
+            include: [
+                {
+                    model: this.productImages,
+                    attributes: ['productId', 'image']
+                },
+                {
+                    model: this.productSpecs,
+                    attributes: ['productId', 'specifications']
+                },
+                {
+                    model: this.productType,
+                    attributes: ['name']
+                }
+            ],
+            order: [['createdAt', 'DESC']],
+            limit: parseInt(limit) || 10,
+            offset: parseInt(offset) || 0
+        });
+    }
     check(user, criteria) {
         return this.productEntity.findOne({
             where: criteria,

@@ -18,6 +18,10 @@ export declare class ProductService {
         rows: import("../entities/product.entity").default[];
         count: number;
     }>;
+    findAll(query: any): Promise<{
+        rows: import("../entities/product.entity").default[];
+        count: number;
+    }>;
     create(user: any, payload: any, file?: any): Promise<{
         images: import("../entities/product_images.entity").default[];
         specifications: any;

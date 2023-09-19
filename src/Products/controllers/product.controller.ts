@@ -30,6 +30,12 @@ export class ProductController {
     return this.productService.find(req.user, req.query);
   }
 
+  @UseGuards(RoleGuard([Roles.Admin]))
+  @Get('admin')
+  getAllProducts(@Req() req: Request) {
+    return this.productService.findAll(req.query);
+  }
+
   @UseGuards(RoleGuard([Roles.Admin, Roles.User]))
   @Post()
   @UseInterceptors(

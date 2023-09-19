@@ -27,6 +27,9 @@ let ProductController = class ProductController {
     getProducts(req) {
         return this.productService.find(req.user, req.query);
     }
+    getAllProducts(req) {
+        return this.productService.findAll(req.query);
+    }
     createProduct(req, files, product) {
         return this.productService.create(req.user, product, files);
     }
@@ -54,6 +57,14 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)
 ], ProductController.prototype, "getProducts", null);
+__decorate([
+    (0, common_1.UseGuards)((0, role_guard_1.default)([role_enum_1.default.Admin])),
+    (0, common_1.Get)('admin'),
+    __param(0, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], ProductController.prototype, "getAllProducts", null);
 __decorate([
     (0, common_1.UseGuards)((0, role_guard_1.default)([role_enum_1.default.Admin, role_enum_1.default.User])),
     (0, common_1.Post)(),

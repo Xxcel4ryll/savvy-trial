@@ -20,6 +20,14 @@ export default class ProductsRepository {
         rows: Products[];
         count: number;
     }>;
+    findAll({ limit, offset, ...criteria }: {
+        [x: string]: any;
+        limit: any;
+        offset: any;
+    }): Promise<{
+        rows: Products[];
+        count: number;
+    }>;
     check(user?: any, criteria?: any): Promise<Products>;
     search(user: any, query: any): Promise<Products>;
     delete(productId: any): Promise<number[]>;
