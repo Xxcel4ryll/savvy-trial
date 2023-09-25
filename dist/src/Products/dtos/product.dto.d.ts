@@ -22,7 +22,12 @@ export declare class ProductTypeDto {
     name: string;
     description: string;
 }
+export declare class UpdateRentStart {
+    rentStart: Date;
+}
 export declare const productSchema: Joi.ObjectSchema<any>;
 export declare const updateProductSchema: Joi.ObjectSchema<any>;
 export declare const productTypeSchema: Joi.ObjectSchema<any>;
 export declare const BrandSchema: Joi.ObjectSchema<any>;
+export declare const startRentSchema: Joi.ObjectSchema<any>;
+export declare const updateQuantity: Joi.ObjectSchema<any>;

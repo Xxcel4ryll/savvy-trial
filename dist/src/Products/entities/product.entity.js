@@ -155,6 +155,20 @@ __decorate([
     }),
     __metadata("design:type", String)
 ], Product.prototype, "mainImage", void 0);
+__decorate([
+    (0, sequelize_typescript_1.Column)({
+        type: sequelize_typescript_1.DataType.DATE,
+        allowNull: true,
+    }),
+    __metadata("design:type", Date)
+], Product.prototype, "rent_start_time", void 0);
+__decorate([
+    (0, sequelize_typescript_1.Column)({
+        type: sequelize_typescript_1.DataType.DATE,
+        allowNull: true,
+    }),
+    __metadata("design:type", Date)
+], Product.prototype, "rent_end_time", void 0);
 Product = __decorate([
     (0, sequelize_typescript_1.Table)({
         timestamps: true,

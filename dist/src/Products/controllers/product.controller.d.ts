@@ -1,6 +1,7 @@
 /// <reference types="multer" />
+import { HttpStatus } from '@nestjs/common';
 import { ProductService } from '../services/product.service';
-import { ProductDto } from '../dtos/index';
+import { ProductDto, UpdateRentStart } from '../dtos/index';
 import { Request } from 'express';
 export declare class ProductController {
     private productService;
@@ -34,6 +35,8 @@ export declare class ProductController {
         overview: string;
         label: string;
         mainImage: string;
+        rent_start_time: Date;
+        rent_end_time: Date;
         createdAt?: any;
         updatedAt?: any;
         deletedAt?: any;
@@ -51,6 +54,18 @@ export declare class ProductController {
     deleteProduct({ productId }: {
         productId: any;
     }): Promise<{
+        message: string;
+    }>;
+    updateRentProduct(req: Request, { productId }: {
+        productId: any;
+    }, payload: UpdateRentStart): Promise<{
+        status: HttpStatus;
+        message: string;
+    }>;
+    updateProducQuantity(req: Request, { productId }: {
+        productId: any;
+    }, payload: any): Promise<{
+        status: HttpStatus;
         message: string;
     }>;
 }

@@ -3,6 +3,7 @@ import ProductImageRepository from '../repositories/product_images.repository';
 import ProductSpecsRepository from '../repositories/product_specifications.repository';
 import ProductTypeRepository from '../repositories/product_type.repository';
 import PurchasedProduct from 'src/Transactions/entities/purchased-product.entity';
+import { UpdateRentStart } from '../dtos';
 import ProductAccessoriesRepository from '../repositories/product_accessories.repository';
 import { FileService } from 'src/Files/services/file.service';
 export declare class ProductService {
@@ -40,6 +41,8 @@ export declare class ProductService {
         overview: string;
         label: string;
         mainImage: string;
+        rent_start_time: Date;
+        rent_end_time: Date;
         createdAt?: any;
         updatedAt?: any;
         deletedAt?: any;
@@ -57,4 +60,6 @@ export declare class ProductService {
     productAvailability(products: any): Promise<any[]>;
     recordPurchasedProduct(products: any): void;
     deleteProduct(productId: any): Promise<number[]>;
+    addRentConfirmTime(productId: any, payload: UpdateRentStart): Promise<[affectedCount: number]>;
+    increaseProductQuantity(productId: any, payload: any): Promise<[affectedCount: number]>;
 }

@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.BrandSchema = exports.productTypeSchema = exports.updateProductSchema = exports.productSchema = exports.ProductTypeDto = exports.BrandDto = exports.ProductDto = void 0;
+exports.updateQuantity = exports.startRentSchema = exports.BrandSchema = exports.productTypeSchema = exports.updateProductSchema = exports.productSchema = exports.UpdateRentStart = exports.ProductTypeDto = exports.BrandDto = exports.ProductDto = void 0;
 const Joi = require("joi");
 class ProductDto {
 }
@@ -11,6 +11,9 @@ exports.BrandDto = BrandDto;
 class ProductTypeDto {
 }
 exports.ProductTypeDto = ProductTypeDto;
+class UpdateRentStart {
+}
+exports.UpdateRentStart = UpdateRentStart;
 exports.productSchema = Joi.object().keys({
     productTypeId: Joi.string().uuid().required(),
     name: Joi.string().optional(),
@@ -49,5 +52,13 @@ exports.BrandSchema = Joi.object().keys({
     name: Joi.string().required(),
     slug: Joi.string().required(),
     image: Joi.string().required(),
+});
+exports.startRentSchema = Joi.object().keys({
+    rentStart: Joi.date().optional(),
+    productId: Joi.string().optional()
+});
+exports.updateQuantity = Joi.object().keys({
+    quantity: Joi.number().integer().optional(),
+    productId: Joi.string().optional()
 });
 //# sourceMappingURL=product.dto.js.map

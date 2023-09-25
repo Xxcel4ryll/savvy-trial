@@ -82,6 +82,27 @@ let ProductsRepository = class ProductsRepository {
             offset: parseInt(offset) || 0
         });
     }
+    findOne(productId) {
+        return this.productEntity.findOne({
+            where: {
+                id: productId
+            },
+            include: [
+                {
+                    model: this.productImages,
+                    attributes: ['productId', 'image']
+                },
+                {
+                    model: this.productSpecs,
+                    attributes: ['productId', 'specifications']
+                },
+                {
+                    model: this.productType,
+                    attributes: ['name']
+                }
+            ],
+        });
+    }
     findAll(_a) {
         var { limit, offset } = _a, criteria = __rest(_a, ["limit", "offset"]);
         return this.productEntity.findAndCountAll({
@@ -185,6 +206,13 @@ let ProductsRepository = class ProductsRepository {
             });
         }
         return [deleteProductAccessories, deleteProductAccessories];
+    }
+    async addConfirmTime(productId) {
+        const product = await this.productEntity.findOne({
+            where: {
+                id: productId,
+            }
+        });
     }
 };
 ProductsRepository = __decorate([

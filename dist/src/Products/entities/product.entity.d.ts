@@ -23,4 +23,6 @@ export default class Product extends Model<Product> {
     overview: string;
     label: string;
     mainImage: string;
+    rent_start_time: Date;
+    rent_end_time: Date;
 }

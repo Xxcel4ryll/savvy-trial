@@ -4,12 +4,12 @@ import ProductImageRepository from '../repositories/product_images.repository';
 import ProductSpecsRepository from '../repositories/product_specifications.repository';
 import ProductTypeRepository from '../repositories/product_type.repository';
 import PurchasedProduct from 'src/Transactions/entities/purchased-product.entity';
-import { ProductDto } from '../dtos';
+import { ProductDto, UpdateRentStart } from '../dtos';
 import { databaseProviders } from 'src/Database/providers';
 import * as _ from 'lodash' 
 import ProductAccessoriesRepository from '../repositories/product_accessories.repository';
 import { FileService } from 'src/Files/services/file.service';
-import { map } from 'rxjs';
+import * as moment from 'moment';
 const sequelize = databaseProviders[0].useFactory();
 
 @Injectable()
@@ -260,4 +260,46 @@ export class ProductService {
   async deleteProduct(productId) {
     return this.productRepository.delete(productId)
   }
+
+  async addRentConfirmTime(productId, payload: UpdateRentStart) {
+   const product = await this.productRepository.findOne(productId);
+
+   if (product.productType != "RENT") {
+    throw new HttpException(
+      {
+        statusCode: HttpStatus.PRECONDITION_FAILED,
+        name: 'PRODUCT',
+        error: `${product.name} is for ${product.productType}`,
+      },
+      HttpStatus.PRECONDITION_FAILED,
+    );
+   }else{
+      return await this.productRepository.modify({
+        id: product.id
+     }, {
+      rent_start_time: payload.rentStart || moment(),
+     })
+   }
+  }
+
+ async increaseProductQuantity(productId, payload) {
+  const product = await this.productRepository.findOne(productId);
+
+  if (!product) {
+   throw new HttpException(
+     {
+       statusCode: HttpStatus.PRECONDITION_FAILED,
+       name: 'PRODUCT',
+       error: `Product not found`,
+     },
+     HttpStatus.PRECONDITION_FAILED,
+   );
+  }else{
+     return await this.productRepository.modify({
+       id: product.id
+    }, {
+     quantity: product.quantity += payload.quantity || 1
+    })
+  }
+ }
 }

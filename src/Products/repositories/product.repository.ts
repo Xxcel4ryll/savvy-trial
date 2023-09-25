@@ -72,6 +72,28 @@ export default class ProductsRepository {
     });
   }
 
+  findOne(productId): Promise<Products> {    
+    return this.productEntity.findOne<Products>({
+      where: {
+        id: productId
+      },
+      include: [  
+        {
+          model: this.productImages,
+          attributes: ['productId', 'image']
+        }, 
+        {
+          model: this.productSpecs,
+          attributes: ['productId', 'specifications']
+        },
+        {
+          model: this.productType,
+          attributes: ['name']
+        }
+      ],
+    });
+  }
+
   findAll({ limit, offset, ...criteria}): Promise<{ rows: Products[]; count: number }> {    
     return this.productEntity.findAndCountAll<Products>({
       where: criteria,
@@ -177,5 +199,13 @@ export default class ProductsRepository {
     
 
     return [ deleteProductAccessories, deleteProductAccessories]
+  }
+
+  async addConfirmTime(productId) {
+    const product = await this.productEntity.findOne<Products>({
+      where: {
+        id: productId,
+      }
+    })
   }
 }

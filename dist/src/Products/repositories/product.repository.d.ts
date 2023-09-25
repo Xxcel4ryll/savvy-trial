@@ -20,6 +20,7 @@ export default class ProductsRepository {
         rows: Products[];
         count: number;
     }>;
+    findOne(productId: any): Promise<Products>;
     findAll({ limit, offset, ...criteria }: {
         [x: string]: any;
         limit: any;
@@ -31,4 +32,5 @@ export default class ProductsRepository {
     check(user?: any, criteria?: any): Promise<Products>;
     search(user: any, query: any): Promise<Products>;
     delete(productId: any): Promise<number[]>;
+    addConfirmTime(productId: any): Promise<void>;
 }
