@@ -141,4 +141,16 @@ export default class Product extends Model<Product> {
     allowNull: false,
   })
   mainImage: string
+
+  @Column({
+    type: DataType.DATE,
+    allowNull: true,
+  })
+  rent_start_time: Date;
+
+  @Column({
+    type: DataType.DATE,
+    allowNull: true,
+  })
+  rent_end_time: Date;
 }

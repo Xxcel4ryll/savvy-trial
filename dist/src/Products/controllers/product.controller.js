@@ -48,6 +48,20 @@ let ProductController = class ProductController {
             message: `Product: ${productId} deleted succesfully`
         };
     }
+    async updateRentProduct(req, { productId }, payload) {
+        const data = await this.productService.addRentConfirmTime(productId, payload);
+        return {
+            status: common_1.HttpStatus.OK,
+            message: "Rent date for product has been triggered.",
+        };
+    }
+    async updateProducQuantity(req, { productId }, payload) {
+        const data = await this.productService.increaseProductQuantity(productId, payload);
+        return {
+            status: common_1.HttpStatus.OK,
+            message: "Quanity for product has been updated.",
+        };
+    }
 };
 __decorate([
     (0, common_1.UseGuards)((0, role_guard_1.default)([role_enum_1.default.Admin, role_enum_1.default.User])),
@@ -114,6 +128,28 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], ProductController.prototype, "deleteProduct", null);
+__decorate([
+    (0, common_1.UseGuards)((0, role_guard_1.default)([role_enum_1.default.Admin])),
+    (0, common_1.UsePipes)(new validate_pipe_1.JoiValidationPipe(index_1.startRentSchema)),
+    (0, common_1.Patch)('admin/:productId'),
+    __param(0, (0, common_1.Req)()),
+    __param(1, (0, common_1.Param)()),
+    __param(2, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Object, index_1.UpdateRentStart]),
+    __metadata("design:returntype", Promise)
+], ProductController.prototype, "updateRentProduct", null);
+__decorate([
+    (0, common_1.UseGuards)((0, role_guard_1.default)([role_enum_1.default.Admin])),
+    (0, common_1.Patch)('admin/quantity/:productId'),
+    (0, common_1.UsePipes)(new validate_pipe_1.JoiValidationPipe(index_1.updateQuantity)),
+    __param(0, (0, common_1.Req)()),
+    __param(1, (0, common_1.Param)()),
+    __param(2, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Object, Object]),
+    __metadata("design:returntype", Promise)
+], ProductController.prototype, "updateProducQuantity", null);
 ProductController = __decorate([
     (0, common_1.Controller)('products'),
     __metadata("design:paramtypes", [product_service_1.ProductService])

@@ -22,6 +22,7 @@ const providers_1 = require("../../Database/providers");
 const _ = require("lodash");
 const product_accessories_repository_1 = require("../repositories/product_accessories.repository");
 const file_service_1 = require("../../Files/services/file.service");
+const moment = require("moment");
 const sequelize = providers_1.databaseProviders[0].useFactory();
 let ProductService = class ProductService {
     constructor(purchasedProduct, productRepository, productTypeRepository, productImageRepository, productSpecsRepository, productAcessoryRepository, fileService) {
@@ -203,6 +204,40 @@ let ProductService = class ProductService {
     }
     async deleteProduct(productId) {
         return this.productRepository.delete(productId);
+    }
+    async addRentConfirmTime(productId, payload) {
+        const product = await this.productRepository.findOne(productId);
+        if (product.productType != "RENT") {
+            throw new common_1.HttpException({
+                statusCode: common_1.HttpStatus.PRECONDITION_FAILED,
+                name: 'PRODUCT',
+                error: `${product.name} is for ${product.productType}`,
+            }, common_1.HttpStatus.PRECONDITION_FAILED);
+        }
+        else {
+            return await this.productRepository.modify({
+                id: product.id
+            }, {
+                rent_start_time: payload.rentStart || moment(),
+            });
+        }
+    }
+    async increaseProductQuantity(productId, payload) {
+        const product = await this.productRepository.findOne(productId);
+        if (!product) {
+            throw new common_1.HttpException({
+                statusCode: common_1.HttpStatus.PRECONDITION_FAILED,
+                name: 'PRODUCT',
+                error: `Product not found`,
+            }, common_1.HttpStatus.PRECONDITION_FAILED);
+        }
+        else {
+            return await this.productRepository.modify({
+                id: product.id
+            }, {
+                quantity: product.quantity += payload.quantity || 1
+            });
+        }
     }
 };
 ProductService = __decorate([

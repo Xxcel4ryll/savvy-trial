@@ -3,7 +3,9 @@ import {
   Controller,
   Delete,
   Get,
+  HttpStatus,
   Param,
+  Patch,
   Post,
   Put,
   Req,
@@ -13,7 +15,7 @@ import {
   UsePipes,
 } from '@nestjs/common';
 import { ProductService } from '../services/product.service';
-import { ProductDto, productSchema, updateProductSchema } from '../dtos/index';
+import { ProductDto, UpdateRentStart, productSchema, startRentSchema, updateProductSchema, updateQuantity } from '../dtos/index';
 import { JoiValidationPipe } from 'src/Globals/providers/validate/validate.pipe';
 import Roles from 'src/Globals/role.enum';
 import RoleGuard from 'src/Globals/Guards/role.guard';
@@ -81,6 +83,30 @@ export class ProductController {
     const data =  await this.productService.deleteProduct(productId);
     return {
       message: `Product: ${productId} deleted succesfully`
+    }
+  }
+
+  @UseGuards(RoleGuard([Roles.Admin]))
+  @UsePipes(new JoiValidationPipe(startRentSchema))
+  @Patch('admin/:productId')
+  async updateRentProduct(@Req() req: Request, @Param() { productId }, @Body() payload: UpdateRentStart) {
+    const data = await this.productService.addRentConfirmTime(productId, payload)
+
+    return {
+      status: HttpStatus.OK,
+      message: "Rent date for product has been triggered.",
+    }
+  }
+
+  @UseGuards(RoleGuard([Roles.Admin]))
+  @Patch('admin/quantity/:productId')
+  @UsePipes(new JoiValidationPipe(updateQuantity))
+  async updateProducQuantity(@Req() req: Request, @Param() { productId }, @Body() payload) {
+    const data = await this.productService.increaseProductQuantity(productId, payload)
+
+    return {
+      status: HttpStatus.OK,
+      message: "Quanity for product has been updated.",
     }
   }
 }

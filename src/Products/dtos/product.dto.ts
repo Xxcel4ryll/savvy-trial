@@ -25,6 +25,9 @@ export class ProductTypeDto {
   name: string;
   description: string;
 }
+export class UpdateRentStart {
+  rentStart: Date
+}
 
 export const productSchema = Joi.object().keys({
   productTypeId: Joi.string().uuid().required(),
@@ -78,4 +81,13 @@ export const BrandSchema = Joi.object().keys({
   name: Joi.string().required(),
   slug: Joi.string().required(),
   image: Joi.string().required(),
+});
+
+export const startRentSchema = Joi.object().keys({
+  rentStart: Joi.date().optional(),
+  productId: Joi.string().optional()
+});
+export const updateQuantity = Joi.object().keys({
+ quantity: Joi.number().integer().optional(),
+ productId: Joi.string().optional()
 });
