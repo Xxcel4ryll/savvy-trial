@@ -25,4 +25,5 @@ export declare class TransactionService {
         rows: import("../entities/transaction.entity").default[];
         count: number;
     }>;
+    getPurchasedProducts(calculatedQuery: any, type?: string): Promise<import("../../dto/response/paginated.data.dto").PaginationData<any>>;
 }

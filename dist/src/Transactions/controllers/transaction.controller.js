@@ -19,6 +19,8 @@ const index_1 = require("../dtos/index");
 const validate_pipe_1 = require("../../Globals/providers/validate/validate.pipe");
 const role_enum_1 = require("../../Globals/role.enum");
 const role_guard_1 = require("../../Globals/Guards/role.guard");
+const find_data_request_dto_1 = require("../../dto/request/find.data.request.dto");
+const helper_1 = require("../../utils/helper");
 let TransactionController = class TransactionController {
     constructor(transactionService) {
         this.transactionService = transactionService;
@@ -37,6 +39,20 @@ let TransactionController = class TransactionController {
     }
     transactionWebhook(webhook) {
         return this.transactionService.transactionWebhook(webhook);
+    }
+    async fetchPurchaseProduct(query) {
+        const calculatedQuery = (0, helper_1.calculate_query_params)(query);
+        const { current_page, total_items, data_response: data, total_pages, } = await this.transactionService.getPurchasedProducts(calculatedQuery, query.type);
+        return {
+            status: common_1.HttpStatus.OK,
+            message: 'Purchased Products retrived successfuly',
+            data,
+            meta: {
+                total_items,
+                total_pages,
+                current_page
+            }
+        };
     }
 };
 __decorate([
@@ -83,6 +99,14 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)
 ], TransactionController.prototype, "transactionWebhook", null);
+__decorate([
+    (0, common_1.UseGuards)((0, role_guard_1.default)(role_enum_1.default.Admin)),
+    (0, common_1.Get)('products'),
+    __param(0, (0, common_1.Query)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [find_data_request_dto_1.FindDataRequestDto]),
+    __metadata("design:returntype", Promise)
+], TransactionController.prototype, "fetchPurchaseProduct", null);
 TransactionController = __decorate([
     (0, common_1.Controller)('transactions'),
     __metadata("design:paramtypes", [transaction_service_1.TransactionService])
