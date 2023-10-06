@@ -55,7 +55,7 @@ export class TransactionController {
   }
 
 
-  // @UseGuards(RoleGuard(Roles.Admin))
+  @UseGuards(RoleGuard(Roles.Admin))
   @Get('products')
   async fetchPurchaseProduct(@Query() query: FindDataRequestDto) {
     const calculatedQuery = calculate_query_params(query);

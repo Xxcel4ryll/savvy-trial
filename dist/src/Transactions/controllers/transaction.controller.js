@@ -100,6 +100,7 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], TransactionController.prototype, "transactionWebhook", null);
 __decorate([
+    (0, common_1.UseGuards)((0, role_guard_1.default)(role_enum_1.default.Admin)),
     (0, common_1.Get)('products'),
     __param(0, (0, common_1.Query)()),
     __metadata("design:type", Function),
