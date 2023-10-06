@@ -29,6 +29,7 @@ const product_service_1 = require("../../Products/services/product.service");
 const user_repository_1 = require("../../Users/repositories/user.repository");
 const payment_1 = require("../../Globals/providers/payment");
 const _ = require("lodash");
+const helper_1 = require("../../utils/helper");
 const DB = providers_1.databaseProviders[0].useFactory();
 let TransactionService = class TransactionService {
     constructor(transactionRepository, productsService, paymentService, walletRepository, userRepository) {
@@ -49,7 +50,8 @@ let TransactionService = class TransactionService {
                         userId,
                         userType,
                     });
-                    if (balance['walletBalance'] >= totalAmount) {
+                    console.log(balance);
+                    if (balance['walletBalance'] <= totalAmount) {
                         const txObject = await this.debit({
                             userId: user.id,
                             userType: user.userType,
@@ -195,6 +197,20 @@ let TransactionService = class TransactionService {
         catch (error) {
             throw error;
         }
+    }
+    async getPurchasedProducts(calculatedQuery, type) {
+        const { limit_query, offset_query, query_page, condition, searchParam } = calculatedQuery;
+        const where = {};
+        const meta = {
+            limit: limit_query,
+            offset: offset_query,
+        };
+        if (Object.keys(condition).length) {
+            const key = Object.keys(condition)[0];
+            where[key] = searchParam;
+        }
+        const orders = await this.transactionRepository.fetchAllPurchaseProducts(calculatedQuery);
+        return (0, helper_1.calculate_pagination_data)(orders, query_page, meta.limit);
     }
 };
 TransactionService = __decorate([

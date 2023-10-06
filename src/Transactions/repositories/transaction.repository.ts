@@ -2,6 +2,8 @@ import { Injectable, Inject } from '@nestjs/common';
 import { Sequelize, Op } from 'sequelize';
 import { databaseProviders } from 'src/Database/providers';
 import Transaction from '../entities/transaction.entity';
+import PurchasedProduct from '../entities/purchased-product.entity';
+import Users from 'src/Users/entities/user.entity';
 
 const DB = databaseProviders[0].useFactory();
 
@@ -10,6 +12,10 @@ export default class TransactionRepository {
   constructor(
     @Inject('TRANSACTION_ENTITY')
     private readonly transactionEntity: typeof Transaction,
+    @Inject('PURCHASED_ENTITY')
+    private readonly purchaseProductEntity: typeof PurchasedProduct,
+    @Inject('USER_ENTITY')
+    private readonly userEntity: typeof Users,
   ) {}
 
   async deposit(
@@ -133,5 +139,19 @@ export default class TransactionRepository {
         transactionReference: reference,
       },
     });
+  }
+
+  fetchAllPurchaseProducts(meta): Promise<{ rows: PurchasedProduct[], count: number}> {
+    return this.purchaseProductEntity.findAndCountAll<PurchasedProduct>({
+      include: [
+        {
+          model: this.userEntity,
+          as: 'users',
+          attributes: ['firstName', 'lastName', 'userId', 'phoneNumber', 'profilePicture']
+        }
+      ],
+      order: [['createdAt', 'DESC']],
+      ...meta,
+    })
   }
 }

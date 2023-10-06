@@ -3,7 +3,10 @@ import {
   Column,
   Model,
   DataType,
+  ForeignKey,
+  BelongsTo,
 } from 'sequelize-typescript';
+import Users from 'src/Users/entities/user.entity';
 
 @Table({
   timestamps: true,
@@ -31,6 +34,7 @@ export default class PurchasedProduct extends Model<PurchasedProduct> {
   })
   paymentType: string;
 
+  @ForeignKey(() => Users)
   @Column({
     type: DataType.STRING,
     allowNull: false,
@@ -48,4 +52,11 @@ export default class PurchasedProduct extends Model<PurchasedProduct> {
     allowNull: false,
   })
   amount: number;
+
+  @BelongsTo(() => Users, {
+    foreignKey: 'user_id',
+    targetKey: 'id',
+    as: 'users'
+  })
+  users: Users;
 }

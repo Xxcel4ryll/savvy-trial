@@ -1,5 +1,7 @@
+import { HttpStatus } from '@nestjs/common';
 import { TransactionService } from '../services/transaction.service';
 import { Request } from 'express';
+import { FindDataRequestDto } from 'src/dto/request/find.data.request.dto';
 export declare class TransactionController {
     private transactionService;
     constructor(transactionService: TransactionService);
@@ -14,4 +16,14 @@ export declare class TransactionController {
     payment(req: Request, payload: object): Promise<any>;
     verifyPayment(req: Request, payload: object): Promise<void>;
     transactionWebhook(webhook: object): Promise<any>;
+    fetchPurchaseProduct(query: FindDataRequestDto): Promise<{
+        status: HttpStatus;
+        message: string;
+        data: any;
+        meta: {
+            total_items: number;
+            total_pages: number;
+            current_page: number;
+        };
+    }>;
 }

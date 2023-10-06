@@ -1,7 +1,11 @@
 import Transaction from '../entities/transaction.entity';
+import PurchasedProduct from '../entities/purchased-product.entity';
+import Users from 'src/Users/entities/user.entity';
 export default class TransactionRepository {
     private readonly transactionEntity;
-    constructor(transactionEntity: typeof Transaction);
+    private readonly purchaseProductEntity;
+    private readonly userEntity;
+    constructor(transactionEntity: typeof Transaction, purchaseProductEntity: typeof PurchasedProduct, userEntity: typeof Users);
     deposit(txObject: any, { returnObj }?: {
         returnObj?: boolean;
     }): Promise<any>;
@@ -24,4 +28,8 @@ export default class TransactionRepository {
         category?: string[];
     }): Promise<Transaction>;
     findByReference(reference: any): Promise<number>;
+    fetchAllPurchaseProducts(meta: any): Promise<{
+        rows: PurchasedProduct[];
+        count: number;
+    }>;
 }

@@ -8,6 +8,7 @@ import { PaystackService } from '../../Globals/providers/payment';
 
 import * as _ from 'lodash';
 import { Op } from 'sequelize';
+import { calculate_pagination_data } from 'src/utils/helper';
 
 
 const DB = databaseProviders[0].useFactory();
@@ -39,8 +40,12 @@ export class TransactionService {
             userId,
             userType,
           });
+
+          console.log(balance);
+          
+
     
-          if (balance['walletBalance'] >= totalAmount) {
+          if (balance['walletBalance'] <= totalAmount) {
             const txObject = await this.debit({
               userId: user.id,
               userType: user.userType,
@@ -255,5 +260,24 @@ export class TransactionService {
     } catch (error: any) {
       throw error;
     }
+  }
+
+  async getPurchasedProducts(calculatedQuery,type?: string) {
+    const { limit_query, offset_query, query_page, condition, searchParam } =
+    calculatedQuery;
+  const where: { type?: string } = {};
+
+  const meta = {
+    limit: limit_query,
+    offset: offset_query,
+  };
+
+  if (Object.keys(condition).length) {
+    const key = Object.keys(condition)[0];
+    where[key] = searchParam;
+  }
+
+  const orders = await this.transactionRepository.fetchAllPurchaseProducts(calculatedQuery);
+    return calculate_pagination_data(orders, query_page, meta.limit)
   }
 }
