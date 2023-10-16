@@ -17,10 +17,11 @@ const sequelize_1 = require("sequelize");
 const providers_1 = require("../../Database/providers");
 const DB = providers_1.databaseProviders[0].useFactory();
 let TransactionRepository = class TransactionRepository {
-    constructor(transactionEntity, purchaseProductEntity, userEntity) {
+    constructor(transactionEntity, purchaseProductEntity, userEntity, productEntity) {
         this.transactionEntity = transactionEntity;
         this.purchaseProductEntity = purchaseProductEntity;
         this.userEntity = userEntity;
+        this.productEntity = productEntity;
     }
     async deposit(txObject, { returnObj = false } = {}) {
         return (await DB).transaction(async (transaction) => {
@@ -122,6 +123,10 @@ let TransactionRepository = class TransactionRepository {
                     model: this.userEntity,
                     as: 'users',
                     attributes: ['firstName', 'lastName', 'userId', 'phoneNumber', 'profilePicture']
+                },
+                {
+                    model: this.productEntity,
+                    as: 'products',
                 }
             ], order: [['createdAt', 'DESC']] }, meta));
     }
@@ -131,7 +136,8 @@ TransactionRepository = __decorate([
     __param(0, (0, common_1.Inject)('TRANSACTION_ENTITY')),
     __param(1, (0, common_1.Inject)('PURCHASED_ENTITY')),
     __param(2, (0, common_1.Inject)('USER_ENTITY')),
-    __metadata("design:paramtypes", [Object, Object, Object])
+    __param(3, (0, common_1.Inject)('PRODUCT_ENTITY')),
+    __metadata("design:paramtypes", [Object, Object, Object, Object])
 ], TransactionRepository);
 exports.default = TransactionRepository;
 //# sourceMappingURL=transaction.repository.js.map

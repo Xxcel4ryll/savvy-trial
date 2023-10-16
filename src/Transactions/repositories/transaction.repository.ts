@@ -4,6 +4,7 @@ import { databaseProviders } from 'src/Database/providers';
 import Transaction from '../entities/transaction.entity';
 import PurchasedProduct from '../entities/purchased-product.entity';
 import Users from 'src/Users/entities/user.entity';
+import Product from 'src/Products/entities/product.entity';
 
 const DB = databaseProviders[0].useFactory();
 
@@ -16,6 +17,8 @@ export default class TransactionRepository {
     private readonly purchaseProductEntity: typeof PurchasedProduct,
     @Inject('USER_ENTITY')
     private readonly userEntity: typeof Users,
+    @Inject('PRODUCT_ENTITY')
+    private readonly productEntity: typeof Product,
   ) {}
 
   async deposit(
@@ -148,6 +151,11 @@ export default class TransactionRepository {
           model: this.userEntity,
           as: 'users',
           attributes: ['firstName', 'lastName', 'userId', 'phoneNumber', 'profilePicture']
+        },
+        {
+          model: this.productEntity,
+          as: 'products',
+          // attributes: ['firstName', 'lastName', 'userId', 'phoneNumber', 'profilePicture']
         }
       ],
       order: [['createdAt', 'DESC']],

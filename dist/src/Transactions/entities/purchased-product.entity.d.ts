@@ -1,4 +1,5 @@
 import { Model } from 'sequelize-typescript';
+import Product from 'src/Products/entities/product.entity';
 import Users from 'src/Users/entities/user.entity';
 export default class PurchasedProduct extends Model<PurchasedProduct> {
     id: string;
@@ -7,5 +8,6 @@ export default class PurchasedProduct extends Model<PurchasedProduct> {
     userId: string;
     productId: string;
     amount: number;
+    products: Product;
     users: Users;
 }

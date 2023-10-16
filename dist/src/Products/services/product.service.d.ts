@@ -43,6 +43,7 @@ export declare class ProductService {
         mainImage: string;
         rent_start_time: Date;
         rent_end_time: Date;
+        products: PurchasedProduct[];
         createdAt?: any;
         updatedAt?: any;
         deletedAt?: any;

@@ -6,6 +6,7 @@ import {
   ForeignKey,
   BelongsTo,
 } from 'sequelize-typescript';
+import Product from 'src/Products/entities/product.entity';
 import Users from 'src/Users/entities/user.entity';
 
 @Table({
@@ -41,6 +42,7 @@ export default class PurchasedProduct extends Model<PurchasedProduct> {
   })
   userId: string;
 
+  @ForeignKey(() => Product)
   @Column({
     type: DataType.STRING,
     allowNull: false,
@@ -52,6 +54,13 @@ export default class PurchasedProduct extends Model<PurchasedProduct> {
     allowNull: false,
   })
   amount: number;
+
+  @BelongsTo(() => Product, {
+    foreignKey: 'product_id',
+    targetKey: 'id',
+    as: 'products'
+  })
+  products: Product;
 
   @BelongsTo(() => Users, {
     foreignKey: 'user_id',
