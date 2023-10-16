@@ -14,6 +14,7 @@ import ProductImages from './product_images.entity';
 import ProductSpecs from './product_specification.entity';
 import UserFavourite from 'src/Users/entities/user_favourite.entity';
 import ProductAccessory from './product_accessories.entity';
+import PurchasedProduct from 'src/Transactions/entities/purchased-product.entity';
 
 @Table({
   timestamps: true,
@@ -153,4 +154,7 @@ export default class Product extends Model<Product> {
     allowNull: true,
   })
   rent_end_time: Date;
+  
+  @HasMany(() => PurchasedProduct)
+  products: PurchasedProduct[];
 }

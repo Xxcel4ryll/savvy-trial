@@ -37,6 +37,7 @@ export declare class ProductController {
         mainImage: string;
         rent_start_time: Date;
         rent_end_time: Date;
+        products: import("../../Transactions/entities/purchased-product.entity").default[];
         createdAt?: any;
         updatedAt?: any;
         deletedAt?: any;

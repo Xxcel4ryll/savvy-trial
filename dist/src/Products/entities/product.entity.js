@@ -15,6 +15,7 @@ const product_images_entity_1 = require("./product_images.entity");
 const product_specification_entity_1 = require("./product_specification.entity");
 const user_favourite_entity_1 = require("../../Users/entities/user_favourite.entity");
 const product_accessories_entity_1 = require("./product_accessories.entity");
+const purchased_product_entity_1 = require("../../Transactions/entities/purchased-product.entity");
 let Product = class Product extends sequelize_typescript_1.Model {
     get price() {
         var _a;
@@ -169,6 +170,10 @@ __decorate([
     }),
     __metadata("design:type", Date)
 ], Product.prototype, "rent_end_time", void 0);
+__decorate([
+    (0, sequelize_typescript_1.HasMany)(() => purchased_product_entity_1.default),
+    __metadata("design:type", Array)
+], Product.prototype, "products", void 0);
 Product = __decorate([
     (0, sequelize_typescript_1.Table)({
         timestamps: true,

@@ -1,11 +1,13 @@
 import Transaction from '../entities/transaction.entity';
 import PurchasedProduct from '../entities/purchased-product.entity';
 import Users from 'src/Users/entities/user.entity';
+import Product from 'src/Products/entities/product.entity';
 export default class TransactionRepository {
     private readonly transactionEntity;
     private readonly purchaseProductEntity;
     private readonly userEntity;
-    constructor(transactionEntity: typeof Transaction, purchaseProductEntity: typeof PurchasedProduct, userEntity: typeof Users);
+    private readonly productEntity;
+    constructor(transactionEntity: typeof Transaction, purchaseProductEntity: typeof PurchasedProduct, userEntity: typeof Users, productEntity: typeof Product);
     deposit(txObject: any, { returnObj }?: {
         returnObj?: boolean;
     }): Promise<any>;
