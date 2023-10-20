@@ -8,6 +8,7 @@ export default class PurchasedProduct extends Model<PurchasedProduct> {
     userId: string;
     productId: string;
     amount: number;
+    status: string;
     products: Product;
     users: Users;
 }
