@@ -61,6 +61,15 @@ __decorate([
     __metadata("design:type", Number)
 ], PurchasedProduct.prototype, "amount", void 0);
 __decorate([
+    (0, sequelize_typescript_1.Column)({
+        type: sequelize_typescript_1.DataType.ENUM,
+        values: ['confirmed', 'shipped', 'processing'],
+        defaultValue: 'processing',
+        allowNull: false,
+    }),
+    __metadata("design:type", String)
+], PurchasedProduct.prototype, "status", void 0);
+__decorate([
     (0, sequelize_typescript_1.BelongsTo)(() => product_entity_1.default, {
         foreignKey: 'product_id',
         targetKey: 'id',

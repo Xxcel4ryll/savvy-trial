@@ -55,6 +55,14 @@ export default class PurchasedProduct extends Model<PurchasedProduct> {
   })
   amount: number;
 
+  @Column({
+    type: DataType.ENUM,
+    values: ['confirmed', 'shipped', 'processing'],
+    defaultValue: 'processing',
+    allowNull: false,
+  })
+  status: string;
+
   @BelongsTo(() => Product, {
     foreignKey: 'product_id',
     targetKey: 'id',
