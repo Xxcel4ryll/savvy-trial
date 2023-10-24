@@ -130,6 +130,11 @@ let TransactionRepository = class TransactionRepository {
                 }
             ], order: [['createdAt', 'DESC']] }, meta));
     }
+    async modify(criteriaObj, updates) {
+        await this.purchaseProductEntity.update(updates, {
+            where: criteriaObj,
+        });
+    }
 };
 TransactionRepository = __decorate([
     (0, common_1.Injectable)(),

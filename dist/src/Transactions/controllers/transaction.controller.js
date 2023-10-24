@@ -54,6 +54,14 @@ let TransactionController = class TransactionController {
             }
         };
     }
+    async editPurchaedProductsStatus({ id }, query) {
+        console.log(`---run test ${id} --- ${query.status}`);
+        await this.transactionService.updateStatus(id, query.status);
+        return {
+            status: common_1.HttpStatus.OK,
+            message: 'Order Status updated.',
+        };
+    }
 };
 __decorate([
     (0, common_1.UseGuards)((0, role_guard_1.default)([role_enum_1.default.Admin, role_enum_1.default.User])),
@@ -107,6 +115,15 @@ __decorate([
     __metadata("design:paramtypes", [find_data_request_dto_1.FindDataRequestDto]),
     __metadata("design:returntype", Promise)
 ], TransactionController.prototype, "fetchPurchaseProduct", null);
+__decorate([
+    (0, common_1.UseGuards)((0, role_guard_1.default)(role_enum_1.default.Admin)),
+    (0, common_1.Patch)('products/:id'),
+    __param(0, (0, common_1.Param)()),
+    __param(1, (0, common_1.Query)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:returntype", Promise)
+], TransactionController.prototype, "editPurchaedProductsStatus", null);
 TransactionController = __decorate([
     (0, common_1.Controller)('transactions'),
     __metadata("design:paramtypes", [transaction_service_1.TransactionService])

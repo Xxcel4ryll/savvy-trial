@@ -280,4 +280,20 @@ export class TransactionService {
   const orders = await this.transactionRepository.fetchAllPurchaseProducts(calculatedQuery);
     return calculate_pagination_data(orders, query_page, meta.limit)
   }
+
+  async updateStatus(id: string, status: string) {
+    const updatedStatus:string = status.toLowerCase()
+    const updates = {
+      status: updatedStatus
+    }
+    const where = {
+      id: id
+    }
+   const updatedPrder =  await this.transactionRepository.modify(where, updates);
+    
+
+    return {
+      message: `Admin updated order to ${updatedStatus}`,
+    }
+  }
 }

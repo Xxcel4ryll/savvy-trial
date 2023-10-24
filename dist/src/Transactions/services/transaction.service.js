@@ -212,6 +212,19 @@ let TransactionService = class TransactionService {
         const orders = await this.transactionRepository.fetchAllPurchaseProducts(calculatedQuery);
         return (0, helper_1.calculate_pagination_data)(orders, query_page, meta.limit);
     }
+    async updateStatus(id, status) {
+        const updatedStatus = status.toLowerCase();
+        const updates = {
+            status: updatedStatus
+        };
+        const where = {
+            id: id
+        };
+        const updatedPrder = await this.transactionRepository.modify(where, updates);
+        return {
+            message: `Admin updated order to ${updatedStatus}`,
+        };
+    }
 };
 TransactionService = __decorate([
     (0, common_1.Injectable)(),

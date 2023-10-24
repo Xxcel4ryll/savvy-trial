@@ -26,4 +26,10 @@ export declare class TransactionController {
             current_page: number;
         };
     }>;
+    editPurchaedProductsStatus({ id }: {
+        id: any;
+    }, query: any): Promise<{
+        status: HttpStatus;
+        message: string;
+    }>;
 }

@@ -162,4 +162,11 @@ export default class TransactionRepository {
       ...meta,
     })
   }
+
+  async modify(criteriaObj, updates) { 
+    await  this.purchaseProductEntity.update<PurchasedProduct>(updates, {
+      where: criteriaObj,
+    });
+    
+  }
 }
