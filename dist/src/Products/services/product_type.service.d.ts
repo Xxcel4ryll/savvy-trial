@@ -6,5 +6,6 @@ export declare class ProductTypeService {
         rows: import("../entities/product_type.entity").default[];
         count: number;
     }>;
+    findOneAndPopulate(user: any, query: any): Promise<import("../entities/product_type.entity").default>;
     create(payload: any): Promise<import("../entities/product_type.entity").default>;
 }

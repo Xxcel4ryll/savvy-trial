@@ -48,6 +48,25 @@ export default class ProductTypesRepository {
     });
   }
 
+  findOneandPopulate(user, where): Promise<ProductTypes> {    
+    return this.productTypesEntity.findOne<ProductTypes>({
+      where,
+      include: {
+        model: this.productEntity,
+        attributes: {
+          include: [
+            [
+              this.favouriteEntity.isUserFavouriteQuery({
+              userId: user.id,
+              column: `'${this.productEntity.name}.id'` // Line logic is wrong (update)
+              }), 
+            'isFavorite'],
+          ],
+        },
+      }
+    });
+  }
+
   findOne(criteria, attributes = []): Promise<ProductTypes> {
     return this.productTypesEntity.findOne<ProductTypes>({
       where: criteria,

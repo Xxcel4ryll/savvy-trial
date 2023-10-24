@@ -15,6 +15,13 @@ export class ProductTypeService {
     return this.productTypeRepository.find(user,query);
   }
 
+  findOneAndPopulate(user,query) {
+    const where = {
+      name: query
+    }
+    return this.productTypeRepository.findOneandPopulate(user,where);
+  }
+
   async create(payload) {
     const [productType, created] = await this.productTypeRepository.create(
       payload,

@@ -12,5 +12,6 @@ export default class ProductTypesRepository {
         rows: ProductTypes[];
         count: number;
     }>;
+    findOneandPopulate(user: any, where: any): Promise<ProductTypes>;
     findOne(criteria: any, attributes?: any[]): Promise<ProductTypes>;
 }

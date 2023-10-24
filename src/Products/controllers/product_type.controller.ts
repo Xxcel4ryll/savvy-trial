@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Get,
+  HttpStatus,
   Post,
   Req,
   UseGuards,
@@ -22,6 +23,18 @@ export class ProductTypeController {
   @Get()
   getProductTypes(@Req() req: Request) {
     return this.productTypeService.find(req.user, req.query);
+  }
+
+
+  @UseGuards(RoleGuard([Roles.Admin, Roles.User]))
+  @Get('filter')
+  async searchProductType(@Req() req: Request) {
+    const data = await this.productTypeService.findOneAndPopulate(req.user, req.query.search);
+
+    return {
+      status: HttpStatus.OK,
+      data,
+    }
   }
 
   @UseGuards(RoleGuard([Roles.Admin, Roles.User]))
