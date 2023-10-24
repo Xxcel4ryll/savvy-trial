@@ -280,4 +280,45 @@ export class TransactionService {
   const orders = await this.transactionRepository.fetchAllPurchaseProducts(calculatedQuery);
     return calculate_pagination_data(orders, query_page, meta.limit)
   }
+
+  async updateStatus(id: string, status: string) {
+    const updatedStatus:string = status.toLowerCase()
+    const updates = {
+      status: updatedStatus
+    }
+    const where = {
+      id: id
+    }
+
+    const findOrder = await this.transactionRepository.findPurchasedProduct(id);
+
+    if (findOrder.status === "shipped") {
+      throw new HttpException(
+        {
+          statusCode: HttpStatus.UNAUTHORIZED,
+          name: 'UNAUTHORIZED',
+          error: `${updatedStatus} status already exists.`,
+        },
+        HttpStatus.UNAUTHORIZED,
+      );
+    }else if (findOrder.status === "confirmed" && updatedStatus === "confirmed") {
+      throw new HttpException(
+        {
+          statusCode: HttpStatus.UNAUTHORIZED,
+          name: 'UNAUTHORIZED',
+          error: `${updatedStatus} status already exists.`,
+        },
+        HttpStatus.UNAUTHORIZED,
+      );
+    }
+    else{
+      const updatedPrder =  await this.transactionRepository.modify(where, updates);
+    
+
+    return {
+      message: `Admin updated order to ${updatedStatus}`,
+    }
+    }
+   
+  }
 }

@@ -34,4 +34,6 @@ export default class TransactionRepository {
         rows: PurchasedProduct[];
         count: number;
     }>;
+    modify(criteriaObj: any, updates: any): Promise<void>;
+    findPurchasedProduct(id: any): Promise<PurchasedProduct>;
 }

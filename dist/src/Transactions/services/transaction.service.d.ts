@@ -26,4 +26,7 @@ export declare class TransactionService {
         count: number;
     }>;
     getPurchasedProducts(calculatedQuery: any, type?: string): Promise<import("../../dto/response/paginated.data.dto").PaginationData<any>>;
+    updateStatus(id: string, status: string): Promise<{
+        message: string;
+    }>;
 }

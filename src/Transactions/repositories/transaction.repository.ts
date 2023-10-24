@@ -162,4 +162,19 @@ export default class TransactionRepository {
       ...meta,
     })
   }
+
+  async modify(criteriaObj, updates) { 
+    await  this.purchaseProductEntity.update<PurchasedProduct>(updates, {
+      where: criteriaObj,
+    });
+    
+  }
+
+  findPurchasedProduct(id): Promise<PurchasedProduct> {
+    return this.purchaseProductEntity.findOne<PurchasedProduct>({
+      where: {
+        id,
+      },
+    });
+  }
 }

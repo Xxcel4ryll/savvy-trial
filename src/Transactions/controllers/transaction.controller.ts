@@ -3,6 +3,8 @@ import {
   Controller,
   Get,
   HttpStatus,
+  Param,
+  Patch,
   Post,
   Query,
   Req,
@@ -74,6 +76,18 @@ export class TransactionController {
         total_pages,
         current_page
       }
+    }
+  }
+
+  @UseGuards(RoleGuard(Roles.Admin))
+  @Patch('products/:id')
+  async editPurchaedProductsStatus(@Param() { id }, @Query() query) {
+    console.log(`---run test ${id} --- ${query.status}`);
+    
+     await this.transactionService.updateStatus(id, query.status)
+    return {
+      status: HttpStatus.OK,
+      message: 'Order Status updated.',
     }
   }
 }
