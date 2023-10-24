@@ -52,6 +52,25 @@ let ProductTypesRepository = class ProductTypesRepository {
             }
         });
     }
+    findOneandPopulate(user, where) {
+        return this.productTypesEntity.findOne({
+            where,
+            include: {
+                model: this.productEntity,
+                attributes: {
+                    include: [
+                        [
+                            this.favouriteEntity.isUserFavouriteQuery({
+                                userId: user.id,
+                                column: `'${this.productEntity.name}.id'`
+                            }),
+                            'isFavorite'
+                        ],
+                    ],
+                },
+            }
+        });
+    }
     findOne(criteria, attributes = []) {
         return this.productTypesEntity.findOne({
             where: criteria,

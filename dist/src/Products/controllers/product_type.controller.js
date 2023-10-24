@@ -26,6 +26,13 @@ let ProductTypeController = class ProductTypeController {
     getProductTypes(req) {
         return this.productTypeService.find(req.user, req.query);
     }
+    async searchProductType(req) {
+        const data = await this.productTypeService.findOneAndPopulate(req.user, req.query.search);
+        return {
+            status: common_1.HttpStatus.OK,
+            data,
+        };
+    }
     createProductType(productType) {
         return this.productTypeService.create(productType);
     }
@@ -38,6 +45,14 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)
 ], ProductTypeController.prototype, "getProductTypes", null);
+__decorate([
+    (0, common_1.UseGuards)((0, role_guard_1.default)([role_enum_1.default.Admin, role_enum_1.default.User])),
+    (0, common_1.Get)('filter'),
+    __param(0, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], ProductTypeController.prototype, "searchProductType", null);
 __decorate([
     (0, common_1.UseGuards)((0, role_guard_1.default)([role_enum_1.default.Admin, role_enum_1.default.User])),
     (0, common_1.UsePipes)(new validate_pipe_1.JoiValidationPipe(index_1.productTypeSchema)),
