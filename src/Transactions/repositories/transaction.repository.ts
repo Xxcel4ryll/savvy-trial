@@ -169,4 +169,12 @@ export default class TransactionRepository {
     });
     
   }
+
+  findPurchasedProduct(id): Promise<PurchasedProduct> {
+    return this.purchaseProductEntity.findOne<PurchasedProduct>({
+      where: {
+        id,
+      },
+    });
+  }
 }

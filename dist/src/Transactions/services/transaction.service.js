@@ -220,10 +220,27 @@ let TransactionService = class TransactionService {
         const where = {
             id: id
         };
-        const updatedPrder = await this.transactionRepository.modify(where, updates);
-        return {
-            message: `Admin updated order to ${updatedStatus}`,
-        };
+        const findOrder = await this.transactionRepository.findPurchasedProduct(id);
+        if (findOrder.status === "shipped") {
+            throw new common_1.HttpException({
+                statusCode: common_1.HttpStatus.UNAUTHORIZED,
+                name: 'UNAUTHORIZED',
+                error: `${updatedStatus} status already exists.`,
+            }, common_1.HttpStatus.UNAUTHORIZED);
+        }
+        else if (findOrder.status === "confirmed" && updatedStatus === "confirmed") {
+            throw new common_1.HttpException({
+                statusCode: common_1.HttpStatus.UNAUTHORIZED,
+                name: 'UNAUTHORIZED',
+                error: `${updatedStatus} status already exists.`,
+            }, common_1.HttpStatus.UNAUTHORIZED);
+        }
+        else {
+            const updatedPrder = await this.transactionRepository.modify(where, updates);
+            return {
+                message: `Admin updated order to ${updatedStatus}`,
+            };
+        }
     }
 };
 TransactionService = __decorate([

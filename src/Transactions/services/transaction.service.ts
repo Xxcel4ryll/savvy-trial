@@ -289,11 +289,36 @@ export class TransactionService {
     const where = {
       id: id
     }
-   const updatedPrder =  await this.transactionRepository.modify(where, updates);
+
+    const findOrder = await this.transactionRepository.findPurchasedProduct(id);
+
+    if (findOrder.status === "shipped") {
+      throw new HttpException(
+        {
+          statusCode: HttpStatus.UNAUTHORIZED,
+          name: 'UNAUTHORIZED',
+          error: `${updatedStatus} status already exists.`,
+        },
+        HttpStatus.UNAUTHORIZED,
+      );
+    }else if (findOrder.status === "confirmed" && updatedStatus === "confirmed") {
+      throw new HttpException(
+        {
+          statusCode: HttpStatus.UNAUTHORIZED,
+          name: 'UNAUTHORIZED',
+          error: `${updatedStatus} status already exists.`,
+        },
+        HttpStatus.UNAUTHORIZED,
+      );
+    }
+    else{
+      const updatedPrder =  await this.transactionRepository.modify(where, updates);
     
 
     return {
       message: `Admin updated order to ${updatedStatus}`,
     }
+    }
+   
   }
 }

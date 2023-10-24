@@ -135,6 +135,13 @@ let TransactionRepository = class TransactionRepository {
             where: criteriaObj,
         });
     }
+    findPurchasedProduct(id) {
+        return this.purchaseProductEntity.findOne({
+            where: {
+                id,
+            },
+        });
+    }
 };
 TransactionRepository = __decorate([
     (0, common_1.Injectable)(),
