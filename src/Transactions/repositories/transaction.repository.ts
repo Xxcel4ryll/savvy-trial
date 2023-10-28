@@ -175,6 +175,13 @@ export default class TransactionRepository {
       where: {
         id,
       },
+      include: [
+        {
+          model: this.userEntity,
+          as: 'users',
+          attributes: ['firstName', 'lastName', 'userId', 'phoneNumber', 'profilePicture']
+        },
+      ],
     });
   }
 }

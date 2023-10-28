@@ -242,6 +242,12 @@ let TransactionService = class TransactionService {
             };
         }
     }
+    async viewPuchasedProducts(id) {
+        const order = await this.transactionRepository.findPurchasedProduct(id);
+        const product = await this.productsService.singleProduct(order.productId);
+        order.dataValues['product'] = product;
+        return order;
+    }
 };
 TransactionService = __decorate([
     (0, common_1.Injectable)(),

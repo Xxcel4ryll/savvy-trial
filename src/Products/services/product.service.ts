@@ -168,11 +168,18 @@ export class ProductService {
 
     const accessories = await this.productAcessoryRepository.find({
       productId: product.id
+    });
+
+    const purchasedProduct = await this.purchasedProduct.findOne<PurchasedProduct>({
+      where: {
+        productId: product.id
+      }
     })
 
     product.dataValues['images'] = images;
     product.dataValues['specifications'] = specification;
     product.dataValues['accessories'] = accessories;
+    product.dataValues['purchasedProduct'] = purchasedProduct;
 
     return product;
   }
@@ -302,4 +309,38 @@ export class ProductService {
     })
   }
  }
+
+
+
+
+ async singleProduct(productId) {
+  const product = await this.productRepository.check(
+    {id: productId}
+  );
+
+  const images = await this.productImageRepository.find({
+    productId: product.id
+  });
+
+  const specification = await this.productSpecsRepository.find({
+    productId: product.id
+  });
+
+  const accessories = await this.productAcessoryRepository.find({
+    productId: product.id
+  });
+
+  const purchasedProduct = await this.purchasedProduct.findOne<PurchasedProduct>({
+    where: {
+      productId: product.id
+    }
+  })
+
+  product.dataValues['images'] = images;
+  product.dataValues['specifications'] = specification;
+  product.dataValues['accessories'] = accessories;
+  product.dataValues['purchasedProduct'] = purchasedProduct;
+
+  return product;
+}
 }

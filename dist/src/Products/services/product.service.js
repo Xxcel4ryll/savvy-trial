@@ -139,9 +139,15 @@ let ProductService = class ProductService {
         const accessories = await this.productAcessoryRepository.find({
             productId: product.id
         });
+        const purchasedProduct = await this.purchasedProduct.findOne({
+            where: {
+                productId: product.id
+            }
+        });
         product.dataValues['images'] = images;
         product.dataValues['specifications'] = specification;
         product.dataValues['accessories'] = accessories;
+        product.dataValues['purchasedProduct'] = purchasedProduct;
         return product;
     }
     async search(user, query) {
@@ -238,6 +244,28 @@ let ProductService = class ProductService {
                 quantity: product.quantity += payload.quantity || 1
             });
         }
+    }
+    async singleProduct(productId) {
+        const product = await this.productRepository.check({ id: productId });
+        const images = await this.productImageRepository.find({
+            productId: product.id
+        });
+        const specification = await this.productSpecsRepository.find({
+            productId: product.id
+        });
+        const accessories = await this.productAcessoryRepository.find({
+            productId: product.id
+        });
+        const purchasedProduct = await this.purchasedProduct.findOne({
+            where: {
+                productId: product.id
+            }
+        });
+        product.dataValues['images'] = images;
+        product.dataValues['specifications'] = specification;
+        product.dataValues['accessories'] = accessories;
+        product.dataValues['purchasedProduct'] = purchasedProduct;
+        return product;
     }
 };
 ProductService = __decorate([

@@ -32,4 +32,11 @@ export declare class TransactionController {
         status: HttpStatus;
         message: string;
     }>;
+    fetchSingleProduct({ id }: {
+        id: any;
+    }, query: any): Promise<{
+        status: HttpStatus;
+        message: string;
+        data: import("../entities/purchased-product.entity").default;
+    }>;
 }

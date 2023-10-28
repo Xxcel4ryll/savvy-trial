@@ -90,4 +90,16 @@ export class TransactionController {
       message: 'Order Status updated.',
     }
   }
+
+  @UseGuards(RoleGuard(Roles.Admin))
+  @Get('purchasedProduct/:id')
+  async fetchSingleProduct(@Param() { id }, @Query() query) {
+    
+     const data = await this.transactionService.viewPuchasedProducts(id)
+    return {
+      status: HttpStatus.OK,
+      message: 'Purchased Product fetched successfully!',
+      data
+    }
+  }
 }
