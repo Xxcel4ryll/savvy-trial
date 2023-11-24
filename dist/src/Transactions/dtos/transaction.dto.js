@@ -9,7 +9,11 @@ exports.transactionsSchema = Joi.object().keys({
     txType: Joi.string(),
 });
 exports.paymentSchema = Joi.object().keys({
-    products: Joi.array().required(),
+    products: Joi.array().required().items(Joi.object({
+        paymentType: Joi.string().allow('Rent', 'Buy').required(),
+        id: Joi.string().required(),
+        quantity: Joi.number().required()
+    })),
     paymentMethod: Joi.string().allow('Wallet', 'Card', 'Bank').required(),
 });
 exports.verifyPaymentSchema = Joi.object().keys({
