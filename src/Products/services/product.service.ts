@@ -215,9 +215,9 @@ export class ProductService {
   productAvailability(products) {
     return Promise.all(
       products.map(async product => {
-        const isProduct = await this.productRepository.check({
-          id: product.id,
-        });
+        const isProduct = await this.productRepository.checkProduct(product.id)
+        console.log(isProduct);
+        
 
         if (!isProduct) {
           throw new HttpException(

@@ -171,9 +171,8 @@ let ProductService = class ProductService {
     }
     productAvailability(products) {
         return Promise.all(products.map(async (product) => {
-            const isProduct = await this.productRepository.check({
-                id: product.id,
-            });
+            const isProduct = await this.productRepository.checkProduct(product.id);
+            console.log(isProduct);
             if (!isProduct) {
                 throw new common_1.HttpException({
                     statusCode: common_1.HttpStatus.PRECONDITION_FAILED,

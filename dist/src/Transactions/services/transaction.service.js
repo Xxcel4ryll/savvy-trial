@@ -43,6 +43,7 @@ let TransactionService = class TransactionService {
         try {
             const { id: userId, userType } = user;
             const availableProducts = await this.productsService.productAvailability(payload.products);
+            console.log(payload.products);
             console.log(availableProducts);
             const totalAmount = availableProducts.reduce((total, item) => total + item.price, 0);
             return (await DB).transaction(async (transaction) => {

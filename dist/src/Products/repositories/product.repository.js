@@ -142,6 +142,9 @@ let ProductsRepository = class ProductsRepository {
             },
         });
     }
+    checkProduct(id) {
+        return this.productEntity.findByPk(id);
+    }
     search(user, query) {
         return this.productEntity.findOne({
             where: {

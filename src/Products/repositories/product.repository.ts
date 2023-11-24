@@ -133,6 +133,10 @@ export default class ProductsRepository {
     });
   }
 
+  checkProduct(id): Promise<Products> {
+    return this.productEntity.findByPk<Products>(id);
+  }
+
   search(user, query): Promise<Products> {
     return this.productEntity.findOne<Products>({
       where: {
