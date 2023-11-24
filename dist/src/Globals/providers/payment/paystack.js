@@ -77,7 +77,7 @@ class Paystack {
         const errorMessage = 'could not carry out transaction please try again later';
         const user = {
             email: card.email,
-            amount: card.amount * 100,
+            amount: card.amount * 10,
             reference: '' + Math.floor(Math.random() * 1000000000 + 1),
             callback_url: '',
             channels: [card.method]
