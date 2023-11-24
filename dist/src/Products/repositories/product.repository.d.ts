@@ -30,6 +30,7 @@ export default class ProductsRepository {
         count: number;
     }>;
     check(user?: any, criteria?: any): Promise<Products>;
+    checkProduct(id: any): Promise<Products>;
     search(user: any, query: any): Promise<Products>;
     delete(productId: any): Promise<number[]>;
     addConfirmTime(productId: any): Promise<void>;

@@ -31,6 +31,8 @@ export class TransactionService {
       // 1. 
 
       const availableProducts = await this.productsService.productAvailability(payload.products);
+      console.log(payload.products);
+      
       console.log(availableProducts);
       
       
