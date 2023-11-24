@@ -31,12 +31,13 @@ export class TransactionService {
       // 1. 
 
       const availableProducts = await this.productsService.productAvailability(payload.products);
-      console.log(payload.products);
       
       console.log(availableProducts);
       
       
-      const totalAmount = availableProducts.reduce((total, item) => total + item.price, 0)
+      const totalAmount = availableProducts.reduce((total, item) => total + (item.price * item.paidQuantity), 0);
+      console.log(totalAmount);
+      
       
       return (await DB).transaction(async (transaction) => {
         if (payload.paymentMethod.toLowerCase() === 'wallet') {
