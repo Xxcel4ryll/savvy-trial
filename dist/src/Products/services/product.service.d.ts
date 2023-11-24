@@ -63,4 +63,5 @@ export declare class ProductService {
     deleteProduct(productId: any): Promise<number[]>;
     addRentConfirmTime(productId: any, payload: UpdateRentStart): Promise<[affectedCount: number]>;
     increaseProductQuantity(productId: any, payload: any): Promise<[affectedCount: number]>;
+    singleProduct(productId: any): Promise<import("../entities/product.entity").default>;
 }

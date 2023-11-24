@@ -29,4 +29,5 @@ export declare class TransactionService {
     updateStatus(id: string, status: string): Promise<{
         message: string;
     }>;
+    viewPuchasedProducts(id: any): Promise<import("../entities/purchased-product.entity").default>;
 }

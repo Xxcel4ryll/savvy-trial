@@ -62,6 +62,14 @@ let TransactionController = class TransactionController {
             message: 'Order Status updated.',
         };
     }
+    async fetchSingleProduct({ id }, query) {
+        const data = await this.transactionService.viewPuchasedProducts(id);
+        return {
+            status: common_1.HttpStatus.OK,
+            message: 'Purchased Product fetched successfully!',
+            data
+        };
+    }
 };
 __decorate([
     (0, common_1.UseGuards)((0, role_guard_1.default)([role_enum_1.default.Admin, role_enum_1.default.User])),
@@ -124,6 +132,15 @@ __decorate([
     __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Promise)
 ], TransactionController.prototype, "editPurchaedProductsStatus", null);
+__decorate([
+    (0, common_1.UseGuards)((0, role_guard_1.default)(role_enum_1.default.Admin)),
+    (0, common_1.Get)('purchasedProduct/:id'),
+    __param(0, (0, common_1.Param)()),
+    __param(1, (0, common_1.Query)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:returntype", Promise)
+], TransactionController.prototype, "fetchSingleProduct", null);
 TransactionController = __decorate([
     (0, common_1.Controller)('transactions'),
     __metadata("design:paramtypes", [transaction_service_1.TransactionService])

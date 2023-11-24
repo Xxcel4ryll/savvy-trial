@@ -31,6 +31,8 @@ export class TransactionService {
       // 1. 
 
       const availableProducts = await this.productsService.productAvailability(payload.products);
+      console.log(availableProducts);
+      
       
       const totalAmount = availableProducts.reduce((total, item) => total + item.price, 0)
       
@@ -42,27 +44,43 @@ export class TransactionService {
           });
 
           console.log(balance);
-          
 
+
+         
+
+          
+          // const paymentType = availableProducts.map((e) => e.paymentType);
     
           if (balance['walletBalance'] <= totalAmount) {
-            const txObject = await this.debit({
-              userId: user.id,
-              userType: user.userType,
-              category: payload.paymentType,
-              currency: 'NGN',
-              email: user.email,
-              amount: totalAmount,
-            });
+            let txObject;
+            for (const product of payload.products) {
+              const fetchTx = await this.debit({
+                userId: user.id,
+                userType: user.userType,
+                category: product.paymentType,
+                currency: 'NGN',
+                email: user.email,
+                amount: totalAmount,
+              });
+              txObject = fetchTx;
+            }
+
+            
+
+            
 
             const productCharge = await this.transactionRepository.debit(txObject);
+
+           
             
             // Record and update purchase products
-            await this.productsService.recordPurchasedProduct({
-              transactionId: productCharge.id,
-              paymentType: payload.paymentType,
-              userId,
-              products: availableProducts,
+            await payload.products.forEach(product => {
+              this.productsService.recordPurchasedProduct({
+                transactionId: productCharge.id,
+                paymentType: product.paymentType,
+                userId,
+                products: availableProducts,
+              });
             });
 
             return _.omit(productCharge.dataValues, [
@@ -320,5 +338,16 @@ export class TransactionService {
     }
     }
    
+  }
+
+
+  async viewPuchasedProducts(id) {
+    const order = await this.transactionRepository.findPurchasedProduct(id);
+
+    const product = await this.productsService.singleProduct(order.productId);
+
+    order.dataValues['product'] = product;
+
+    return order;
   }
 }
