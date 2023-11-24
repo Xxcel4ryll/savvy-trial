@@ -43,6 +43,7 @@ let TransactionService = class TransactionService {
         try {
             const { id: userId, userType } = user;
             const availableProducts = await this.productsService.productAvailability(payload.products);
+            console.log(availableProducts);
             const totalAmount = availableProducts.reduce((total, item) => total + item.price, 0);
             return (await DB).transaction(async (transaction) => {
                 if (payload.paymentMethod.toLowerCase() === 'wallet') {
@@ -52,20 +53,26 @@ let TransactionService = class TransactionService {
                     });
                     console.log(balance);
                     if (balance['walletBalance'] <= totalAmount) {
-                        const txObject = await this.debit({
-                            userId: user.id,
-                            userType: user.userType,
-                            category: payload.paymentType,
-                            currency: 'NGN',
-                            email: user.email,
-                            amount: totalAmount,
-                        });
+                        let txObject;
+                        for (const product of payload.products) {
+                            const fetchTx = await this.debit({
+                                userId: user.id,
+                                userType: user.userType,
+                                category: product.paymentType,
+                                currency: 'NGN',
+                                email: user.email,
+                                amount: totalAmount,
+                            });
+                            txObject = fetchTx;
+                        }
                         const productCharge = await this.transactionRepository.debit(txObject);
-                        await this.productsService.recordPurchasedProduct({
-                            transactionId: productCharge.id,
-                            paymentType: payload.paymentType,
-                            userId,
-                            products: availableProducts,
+                        await payload.products.forEach(product => {
+                            this.productsService.recordPurchasedProduct({
+                                transactionId: productCharge.id,
+                                paymentType: product.paymentType,
+                                userId,
+                                products: availableProducts,
+                            });
                         });
                         return _.omit(productCharge.dataValues, [
                             'currency',

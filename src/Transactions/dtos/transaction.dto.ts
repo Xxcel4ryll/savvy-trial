@@ -9,7 +9,7 @@ export const transactionsSchema = Joi.object().keys({
 });
 
 export const paymentSchema = Joi.object().keys({
-  paymentType: Joi.string().allow('Rent', 'Buy').required(),
+  // paymentType: Joi.string().allow('Rent', 'Buy').required(),
   products: Joi.array().required(),
   paymentMethod: Joi.string().allow('Wallet', 'Card', 'Bank').required(),
 });
