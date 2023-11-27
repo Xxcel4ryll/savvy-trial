@@ -21,6 +21,14 @@ export default class ProductsRepository {
         count: number;
     }>;
     findOne(productId: any): Promise<Products>;
+    findAllBrandsProducts({ limit, offset, where }: {
+        limit: any;
+        offset: any;
+        where: any;
+    }): Promise<{
+        rows: Products[];
+        count: number;
+    }>;
     findAll({ limit, offset, ...criteria }: {
         [x: string]: any;
         limit: any;

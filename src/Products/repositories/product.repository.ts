@@ -94,6 +94,29 @@ export default class ProductsRepository {
     });
   }
 
+  findAllBrandsProducts({ limit, offset, where}): Promise<{ rows: Products[]; count: number }> {    
+    return this.productEntity.findAndCountAll<Products>({
+      where,
+      include: [  
+        {
+          model: this.productImages,
+          attributes: ['productId', 'image']
+        }, 
+        {
+          model: this.productSpecs,
+          attributes: ['productId', 'specifications']
+        },
+        {
+          model: this.productType,
+          attributes: ['name']
+        }
+      ],
+      order: [['createdAt', 'DESC']],
+      limit: parseInt(limit) || 10,
+      offset: parseInt(offset) || 0
+    });
+  }
+
   findAll({ limit, offset, ...criteria}): Promise<{ rows: Products[]; count: number }> {    
     return this.productEntity.findAndCountAll<Products>({
       where: criteria,

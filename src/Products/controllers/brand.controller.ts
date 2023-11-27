@@ -20,8 +20,13 @@ import { Request } from 'express';
 export class BrandController {
   constructor(private brandService: BrandService) {}
 
+  @Get(':brandId')
+  getBrands(@Param() { brandId }, @Req()  req: Request) {    
+    return this.brandService.viewBrandProduct(req.query, brandId);
+  }
+
   @Get()
-  getBrands(@Req() req: Request) {    
+  getBrand(@Req() req: Request) {    
     return this.brandService.find(req.query);
   }
 
