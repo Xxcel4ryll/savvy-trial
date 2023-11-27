@@ -23,7 +23,10 @@ let BrandController = class BrandController {
     constructor(brandService) {
         this.brandService = brandService;
     }
-    getBrands(req) {
+    getBrands({ brandId }, req) {
+        return this.brandService.viewBrandProduct(req.query, brandId);
+    }
+    getBrand(req) {
         return this.brandService.find(req.query);
     }
     createBrand(req, brandPayload) {
@@ -31,12 +34,20 @@ let BrandController = class BrandController {
     }
 };
 __decorate([
+    (0, common_1.Get)(':brandId'),
+    __param(0, (0, common_1.Param)()),
+    __param(1, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:returntype", void 0)
+], BrandController.prototype, "getBrands", null);
+__decorate([
     (0, common_1.Get)(),
     __param(0, (0, common_1.Req)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)
-], BrandController.prototype, "getBrands", null);
+], BrandController.prototype, "getBrand", null);
 __decorate([
     (0, common_1.UseGuards)((0, role_guard_1.default)([role_enum_1.default.Admin, role_enum_1.default.User])),
     (0, common_1.UsePipes)(new validate_pipe_1.JoiValidationPipe(index_1.BrandSchema)),

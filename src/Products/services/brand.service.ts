@@ -2,16 +2,33 @@ import { Injectable, HttpException, HttpStatus, Inject } from '@nestjs/common';
 import BrandRepository from '../repositories/brand.repository';
 import { ProductDto } from '../dtos';
 import { databaseProviders } from 'src/Database/providers';
+import ProductsRepository from '../repositories/product.repository';
 const sequelize = databaseProviders[0].useFactory();
 
 @Injectable()
 export class BrandService {
   constructor(
     private brandRepository: BrandRepository,
+    private productRepository: ProductsRepository
   ) {}
 
   async find(query) {
     return this.brandRepository.find(query)
+  }
+
+  async viewBrandProduct(query, brand) {
+    const where = {
+      brand: brand
+    }
+    console.log(where);
+    
+    let data = {
+      where: where,
+      limit: query.limit,
+      offset: query.offset
+    }
+    const fetchProducts = await this.productRepository.findAllBrandsProducts(data);
+    return fetchProducts;
   }
 
   async create(payload) {

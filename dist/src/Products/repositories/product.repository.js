@@ -103,6 +103,28 @@ let ProductsRepository = class ProductsRepository {
             ],
         });
     }
+    findAllBrandsProducts({ limit, offset, where }) {
+        return this.productEntity.findAndCountAll({
+            where,
+            include: [
+                {
+                    model: this.productImages,
+                    attributes: ['productId', 'image']
+                },
+                {
+                    model: this.productSpecs,
+                    attributes: ['productId', 'specifications']
+                },
+                {
+                    model: this.productType,
+                    attributes: ['name']
+                }
+            ],
+            order: [['createdAt', 'DESC']],
+            limit: parseInt(limit) || 10,
+            offset: parseInt(offset) || 0
+        });
+    }
     findAll(_a) {
         var { limit, offset } = _a, criteria = __rest(_a, ["limit", "offset"]);
         return this.productEntity.findAndCountAll({
