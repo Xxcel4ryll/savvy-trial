@@ -185,9 +185,10 @@ export class ProductService {
   }
 
   async search(user, query) {
-    const product = await this.productRepository.search(user, query);
+    const results = [];
+    const products = await this.productRepository.searchAll(user, query);
 
-    if (!product) {
+    if (!products) {
       throw new HttpException(
         {
           statusCode: HttpStatus.PRECONDITION_FAILED,
@@ -198,18 +199,24 @@ export class ProductService {
       );
     }
 
-    const images = await this.productImageRepository.find({
-      productId: product.id
-    });
+    for (const product of products) {
+      const images = await this.productImageRepository.find({
+        productId: product.id
+      });
+  
+      const specification = await this.productSpecsRepository.find({
+        productId: product.id
+      });
+  
+      product.dataValues['images'] = images;
+      product.dataValues['specifications'] = specification;
+      
+      results.push(product);
+    }
 
-    const specification = await this.productSpecsRepository.find({
-      productId: product.id
-    });
+    
 
-    product.dataValues['images'] = images;
-    product.dataValues['specifications'] = specification;
-
-    return product;
+    return results;
   }
 
   productAvailability(products) {

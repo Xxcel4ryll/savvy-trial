@@ -160,6 +160,51 @@ export default class ProductsRepository {
     return this.productEntity.findByPk<Products>(id);
   }
 
+  searchAll(user, query): Promise<Products[]> {
+    return this.productEntity.findAll<Products>({
+      where: {
+        isVisible: true,
+        [Op.or]: [
+          {
+            title: {
+              [Op.like]: `%${query}%`,
+            },
+          },
+          {
+            name: {
+              [Op.like]: `%${query}%`,
+            },
+          },
+          {
+            brand: {
+              [Op.like]: `%${query}%`,
+            },
+          },
+          {
+            price: {
+              [Op.like]: `%${query}%`,
+            },
+          },
+          {
+            description: {
+              [Op.like]: `%${query}%`,
+            },
+          },
+        ]
+      },
+      attributes: {
+				include: [
+					[
+            this.favouriteEntity.isUserFavouriteQuery({
+            userId: user.id,
+            column: `${this.productEntity.name}.id`
+          }), 
+          'isFavorite'],
+				],
+			},
+    });
+  }
+
   search(user, query): Promise<Products> {
     return this.productEntity.findOne<Products>({
       where: {
