@@ -167,6 +167,51 @@ let ProductsRepository = class ProductsRepository {
     checkProduct(id) {
         return this.productEntity.findByPk(id);
     }
+    searchAll(user, query) {
+        return this.productEntity.findAll({
+            where: {
+                isVisible: true,
+                [sequelize_1.Op.or]: [
+                    {
+                        title: {
+                            [sequelize_1.Op.like]: `%${query}%`,
+                        },
+                    },
+                    {
+                        name: {
+                            [sequelize_1.Op.like]: `%${query}%`,
+                        },
+                    },
+                    {
+                        brand: {
+                            [sequelize_1.Op.like]: `%${query}%`,
+                        },
+                    },
+                    {
+                        price: {
+                            [sequelize_1.Op.like]: `%${query}%`,
+                        },
+                    },
+                    {
+                        description: {
+                            [sequelize_1.Op.like]: `%${query}%`,
+                        },
+                    },
+                ]
+            },
+            attributes: {
+                include: [
+                    [
+                        this.favouriteEntity.isUserFavouriteQuery({
+                            userId: user.id,
+                            column: `${this.productEntity.name}.id`
+                        }),
+                        'isFavorite'
+                    ],
+                ],
+            },
+        });
+    }
     search(user, query) {
         return this.productEntity.findOne({
             where: {

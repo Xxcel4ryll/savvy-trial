@@ -57,7 +57,7 @@ export declare class ProductService {
     }>;
     update(payload: any): Promise<"Product successfully updated!" | "Product failed to update">;
     view(user: any, productId: any): Promise<import("../entities/product.entity").default>;
-    search(user: any, query: any): Promise<import("../entities/product.entity").default>;
+    search(user: any, query: any): Promise<any[]>;
     productAvailability(products: any): Promise<any[]>;
     recordPurchasedProduct(products: any): void;
     deleteProduct(productId: any): Promise<number[]>;
