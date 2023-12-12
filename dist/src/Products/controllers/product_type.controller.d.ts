@@ -13,5 +13,13 @@ export declare class ProductTypeController {
         status: HttpStatus;
         data: import("../entities/product_type.entity").default;
     }>;
+    filterProductType(req: Request): Promise<{
+        status: HttpStatus;
+        data: import("../entities/product_type.entity").default | {
+            status: HttpStatus;
+            message: string;
+            products: any[];
+        };
+    }>;
     createProductType(productType: ProductTypeDto): Promise<import("../entities/product_type.entity").default>;
 }
