@@ -2,6 +2,8 @@ import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import ProductTypeRepository from '../repositories/product_type.repository';
 import { ProductTypeDto } from '../dtos';
 import { databaseProviders } from 'src/Database/providers';
+import { Op } from 'sequelize';
+import e from 'express';
 
 // const sequelize = databaseProviders[0].useFactory();
 
@@ -20,6 +22,27 @@ export class ProductTypeService {
       name: query
     }
     return this.productTypeRepository.findOneandPopulate(user,where);
+  }
+
+
+  async filterOne(user, query){
+    const where = {
+      id: {
+        [Op.like]: query
+      }
+    }
+    const type = await this.productTypeRepository.findType(where);
+    console.log(type);
+    
+
+    if (!type) {
+      return {
+        status: HttpStatus.OK,
+        message: `No product found for ${query}`,
+        products: []
+      }
+    }
+    return await this.productTypeRepository.findOneandPopulate(user,where)
   }
 
   async create(payload) {

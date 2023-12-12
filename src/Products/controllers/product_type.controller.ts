@@ -38,6 +38,17 @@ export class ProductTypeController {
   }
 
   @UseGuards(RoleGuard([Roles.Admin, Roles.User]))
+  @Get('filter-type')
+  async filterProductType(@Req() req: Request) {
+    const data = await this.productTypeService.filterOne(req.user, req.query.search);
+
+    return {
+      status: HttpStatus.OK,
+      data,
+    }
+  }
+
+  @UseGuards(RoleGuard([Roles.Admin, Roles.User]))
   @UsePipes(new JoiValidationPipe(productTypeSchema))
   @Post()
   createProductType(@Body() productType: ProductTypeDto) {
